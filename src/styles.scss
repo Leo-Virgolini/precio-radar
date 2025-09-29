@@ -1,1 +1,84 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'primeflex/primeflex.css';
+@import 'primeicons/primeicons.css';
+
+/* Google Fonts Typography */
+:root {
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Global Typography - Using PrimeFlex classes */
+* {
+  font-family: var(--font-primary);
+}
+
+/* Headings - Using PrimeFlex font weight classes */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+}
+
+/* Body Text - Using PrimeFlex font weight classes */
+body {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  /* Use font-normal class */
+}
+
+p {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  /* Use font-normal class */
+}
+
+/* Buttons - Using PrimeFlex font weight classes */
+.p-button {
+  font-family: var(--font-primary);
+  /* Use font-medium class */
+}
+
+/* Input Fields - Using PrimeFlex font weight classes */
+.p-inputtext {
+  font-family: var(--font-primary);
+  /* Use font-normal class */
+}
+
+/* Cards - Using PrimeFlex font weight classes */
+.p-card .p-card-title {
+  font-family: var(--font-heading);
+  /* Use font-semibold class */
+}
+
+.p-card .p-card-subtitle {
+  font-family: var(--font-primary);
+  /* Use font-normal class */
+}
+
+.p-card .p-card-content {
+  font-family: var(--font-primary);
+  /* Use font-normal class */
+}
+
+/* Tags - Using PrimeFlex font weight classes */
+.p-tag {
+  font-family: var(--font-primary);
+  /* Use font-medium class */
+}
+
+/* Messages - Using PrimeFlex font weight classes */
+.p-message {
+  font-family: var(--font-primary);
+  /* Use font-normal class */
+}
+
+/* Select Dropdowns - Using PrimeFlex font weight classes */
+.p-select {
+  font-family: var(--font-primary);
+  /* Use font-normal class */
+}
