@@ -11,20 +11,30 @@ export interface SearchData {
 export class SearchService {
 
   private readonly searchTrigger = signal<SearchData | null>(null);
+  private readonly clearTrigger = signal(false);
 
-  // Method to trigger a search
   triggerSearch(query: string, category: string = ''): void {
     this.searchTrigger.set({ query, category });
   }
 
-  // Signal to listen for search triggers
   getSearchTrigger() {
     return this.searchTrigger.asReadonly();
   }
 
-  // Method to clear the search trigger
   clearSearchTrigger(): void {
     this.searchTrigger.set(null);
+  }
+
+  triggerClear(): void {
+    this.clearTrigger.set(true);
+  }
+
+  getClearTrigger() {
+    return this.clearTrigger.asReadonly();
+  }
+
+  clearClearTrigger(): void {
+    this.clearTrigger.set(false);
   }
 
 }

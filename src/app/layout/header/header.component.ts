@@ -1,15 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { Component, signal, OnInit, inject } from '@angular/core';
+
+import { Component, signal, OnInit, inject, effect } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { SearchService } from '../../services/search.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [ButtonModule, CommonModule, MegaMenuModule, ReactiveFormsModule, InputTextModule, SelectModule],
+  imports: [ButtonModule, MegaMenuModule, ReactiveFormsModule, InputTextModule, SelectModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -20,8 +21,16 @@ export class HeaderComponent implements OnInit {
 
   isDark = signal<boolean>(false);
   isLoading = signal<boolean>(false);
-  
+
   searchForm!: FormGroup;
+
+  private readonly clearEffect = effect(() => {
+    const shouldClear = this.searchService.getClearTrigger()();
+    if (shouldClear) {
+      this.searchForm?.reset({ searchQuery: '', selectedCategory: '' });
+      this.searchService.clearClearTrigger();
+    }
+  });
 
   // Categories for search
   protected readonly categories = [
@@ -37,6 +46,22 @@ export class HeaderComponent implements OnInit {
 
   // MegaMenu data
   protected readonly megaMenuItems = [
+    {
+      label: 'Guía de Compra',
+      icon: 'pi pi-book',
+      items: [
+        [
+          {
+            label: 'Cómo Comprar',
+            items: [
+              { label: 'Guía Completa', icon: 'pi pi-book', routerLink: '/guia-amazon' },
+              { label: 'Envíos a Argentina', icon: 'pi pi-truck', routerLink: '/guia-amazon' },
+              { label: 'Impuestos y Tarifas', icon: 'pi pi-calculator', routerLink: '/guia-amazon' }
+            ]
+          }
+        ]
+      ]
+    },
     {
       label: 'Electrónicos',
       icon: 'pi pi-mobile',
@@ -71,7 +96,7 @@ export class HeaderComponent implements OnInit {
           {
             label: 'Gaming',
             items: [
-              { label: 'Consolas', icon: 'pi pi-gamepad' },
+              { label: 'Consolas', icon: 'pi pi-desktop' },
               { label: 'Videojuegos', icon: 'pi pi-play' },
               { label: 'Accesorios Gaming', icon: 'pi pi-cog' }
             ]
@@ -172,18 +197,18 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  protected onGoHome(): void {
+    this.searchForm.reset({ searchQuery: '', selectedCategory: '' });
+    this.searchService.triggerSearch('', '');
+  }
+
   protected onSearch(): void {
-    if (this.searchForm.invalid) {
-      return;
-    }
-
     const formValue = this.searchForm.value;
+    const query = formValue.searchQuery?.trim() || '';
+
     this.isLoading.set(true);
+    this.searchService.triggerSearch(query, formValue.selectedCategory || '');
 
-    // Use the search service to trigger search
-    this.searchService.triggerSearch(formValue.searchQuery, formValue.selectedCategory);
-
-    // Reset loading state after a short delay to show the loading indicator
     setTimeout(() => {
       this.isLoading.set(false);
     }, 500);

@@ -1,21 +1,8 @@
-// Custom DataView styling for rounded borders
-:host ::ng-deep {
-  .p-dataview {
-    border-radius: 0.5rem 0.5rem 0 0;
-    overflow: hidden;
-    
-    .p-dataview-content {
-      border-radius: 0.5rem 0.5rem 0 0;
-    }
-    
-    .p-paginator {
-      border-radius: 0 0 0.5rem 0.5rem;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-    
-    .p-dataview-header {
-      border-radius: 0.5rem 0.5rem 0 0;
-    }
-  }
+// Product title line clamp (3 lines max) - no PrimeFlex equivalent
+.product-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -2,72 +2,52 @@
   <!-- Quick Actions -->
   <div class="bg-white-alpha-10 backdrop-blur-md border-round p-4 border-white-alpha-20">
     <div class="flex flex-wrap gap-2 justify-content-center">
-      <p-button *ngFor="let action of quickActions" [label]="action.label" [icon]="action.icon" severity="secondary" size="small" (onClick)="onQuickAction(action)" class="mb-2" />
+      @for (action of quickActions; track action.action) {
+        <p-button [label]="action.label" [icon]="action.icon" severity="secondary" size="small" (onClick)="onQuickAction(action)" class="mb-2" />
+      }
     </div>
   </div>
 
   <!-- Loading State -->
-  <div *ngIf="isLoading()" class="bg-white-alpha-5 backdrop-blur-md border-round p-6 border-white-alpha-10">
-    <div class="text-center mb-4">
-      <p-progressSpinner />
-      <p class="mt-3 text-white">Buscando productos...</p>
+  @if (isLoading()) {
+    <div class="bg-white-alpha-5 backdrop-blur-md border-round p-6 border-white-alpha-10">
+      <div class="text-center mb-4">
+        <p-progressSpinner />
+        <p class="mt-3 text-white">Buscando productos...</p>
+      </div>
     </div>
-  </div>
+  }
 
   <!-- Error State -->
-  <div *ngIf="errorMessage()" class="mb-4">
-    <p-message severity="error" [text]="errorMessage()" />
-  </div>
+  @if (errorMessage()) {
+    <div class="mb-4">
+      <p-message severity="error" [text]="errorMessage()" />
+    </div>
+  }
 
   <!-- Results -->
-  <div *ngIf="searchResults() && !isLoading()" class="bg-white-alpha-5 backdrop-blur-md border-round border-white-alpha-10">
-    <!-- DataView Controls -->
-    <form [formGroup]="filterForm">
-      <div class="flex flex-column md:flex-row justify-content-between align-items-center gap-3">
-        <div class="flex align-items-center gap-3">
-          <h2 class="text-xl md:text-2xl font-semibold text-white">
-            Resultados de búsqueda
-          </h2>
-          <span class="text-sm md:text-base font-normal text-blue-100">
-            ({{ searchResults()?.totalResults || 0 }} productos encontrados)
-          </span>
-        </div>
-        <!-- Sort Options -->
-        <div class="flex align-items-center gap-3">
-          <label for="sortOptions" class="text-white font-medium block">Ordenar por:</label>
-          <p-select [options]="sortOptions" formControlName="selectedSort" optionLabel="label" optionValue="value" (onChange)="onSortChange($event.value)" placeholder="Ordenar por"
-            class="w-12rem">
-            <ng-template #item let-option>
-              <div class="flex align-items-center gap-2">
-                <i [class]="option.icon"></i>
-                <span>{{ option.label }}</span>
-              </div>
-            </ng-template>
-          </p-select>
-        </div>
-      </div>
-    </form>
-
-    <div class="grid">
-      <!-- Filters Sidebar -->
-      <div class="col-12 md:col-2">
-        <form [formGroup]="filterForm" class="bg-white-alpha-10 backdrop-blur-md border-round p-4 border-white-alpha-20">
-          <h4 class="text-white font-semibold mt-0">Filtros</h4>
-
-          <!-- Max Price Filter -->
-          <div class="mb-4">
-            <label class="text-white font-medium mb-2 block">Precio Máximo</label>
-            <p-slider formControlName="maxPrice" [min]="0" [max]="10000" (onChange)="onPriceRangeChange($event)" class="w-full">
-            </p-slider>
-            <div class="text-center text-white text-sm mt-2">
-              <span>${{ filterForm.get('maxPrice')?.value || 0 }} USD</span>
-            </div>
+  @if (searchResults() && !isLoading()) {
+    <div class="bg-white-alpha-5 backdrop-blur-md border-round border-white-alpha-10">
+      <!-- DataView Controls -->
+      <form [formGroup]="filterForm">
+        <div class="flex flex-column md:flex-row justify-content-between align-items-center gap-3">
+          <div class="flex align-items-center gap-3">
+            <h2 class="text-xl md:text-2xl font-semibold text-white">
+              @if (searchQuery) {
+                Resultados de búsqueda de "{{ searchQuery }}"
+              } @else {
+                Resultados de búsqueda
+              }
+            </h2>
+            <span class="text-sm md:text-base font-normal text-blue-100">
+              ({{ searchResults()?.totalResults || 0 }} productos encontrados)
+            </span>
           </div>
-
-          <!-- Category Filter -->
-          <div class="mb-4">
-            <label class="text-white font-medium mb-2 block">Categoría</label>
-            <p-select [options]="categories" formControlName="selectedCategory" optionLabel="label" optionValue="value" placeholder="Todas las categorías" class="w-full">
+          <!-- Sort Options -->
+          <div class="flex align-items-center gap-3">
+            <label for="sortOptions" class="text-white font-medium block">Ordenar por:</label>
+            <p-select [options]="sortOptions" formControlName="selectedSort" optionLabel="label" optionValue="value" (onChange)="onSortChange($event.value)" placeholder="Ordenar por"
+              class="w-12rem">
               <ng-template #item let-option>
                 <div class="flex align-items-center gap-2">
                   <i [class]="option.icon"></i>
@@ -76,204 +56,260 @@
               </ng-template>
             </p-select>
           </div>
+        </div>
+      </form>
 
-          <!-- Availability Filter -->
-          <div class="mb-4">
-            <label class="text-white font-medium mb-2 block">Disponibilidad</label>
-            <div class="flex gap-2">
-              <label for="stock">En Stock</label>
-              <p-checkbox formControlName="inStock" [binary]="true" inputId="stock" name="inStock" value="inStock" inputClass="text-red-200" />
+      <div class="grid">
+        <!-- Filters Sidebar -->
+        <div class="col-12 md:col-2">
+          <form [formGroup]="filterForm" class="bg-white-alpha-10 backdrop-blur-md border-round p-4 border-white-alpha-20">
+            <h4 class="text-white font-semibold mt-0">Filtros</h4>
+
+            <!-- Max Price Filter -->
+            <div class="mb-4">
+              <label class="text-white font-medium mb-2 block">Precio Máximo</label>
+              <p-slider formControlName="maxPrice" [min]="0" [max]="10000" (onChange)="applyFilters()" class="w-full">
+              </p-slider>
+              <div class="text-center text-white text-sm mt-2">
+                <span>{{ getCurrencySymbol() }}{{ filterForm.get('maxPrice')?.value || 0 }} {{ getCurrencyCode() }}</span>
+              </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="mb-4">
+              <label class="text-white font-medium mb-2 block">Categoría</label>
+              <p-select [options]="categories" formControlName="selectedCategory" optionLabel="label" optionValue="value" placeholder="Todas las categorías" (onChange)="applyFilters()" class="w-full">
+                <ng-template #item let-option>
+                  <div class="flex align-items-center gap-2">
+                    <i [class]="option.icon"></i>
+                    <span>{{ option.label }}</span>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <!-- Free Shipping Filter -->
+            <div class="mb-4">
+              <label class="text-white font-medium mb-2 block">Envío</label>
+              <div class="flex align-items-center gap-2">
+                <p-checkbox formControlName="freeShippingOnly" [binary]="true" inputId="freeShipping" (onChange)="applyFilters()" />
+                <label for="freeShipping" class="text-sm text-white">Solo envío gratis ({{ getFreeShippingThreshold() }})</label>
+              </div>
+            </div>
+
+            <!-- Clear Filters -->
+            <p-button label="Limpiar" icon="pi pi-filter-slash" severity="secondary" size="small" class="w-full" (onClick)="clearFilters()" />
+          </form>
+        </div>
+
+        <!-- DataView Content -->
+        <div class="col-12 md:col-10">
+          <div class="bg-white-alpha-10 backdrop-blur-md border-round-xl p-4 border-white-alpha-20">
+            <p-dataView #dv [value]="searchResults()?.products" [layout]="selectedLayout()" [paginator]="true" [rows]="12" [totalRecords]="searchResults()?.totalResults || 0"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos" class="w-full border-round-xl overflow-hidden">
+
+              <ng-template #header>
+                <div class="flex justify-content-between align-items-center">
+                  <h3 class="font-semibold mb-0">Productos</h3>
+                  <form [formGroup]="layoutForm">
+                    <p-selectbutton [options]="layoutOptions" formControlName="selectedLayout" [allowEmpty]="false" optionValue="value" (onChange)="onLayoutChange($event.value)"
+                      class="w-12rem">
+                      <ng-template #item let-option>
+                        <div class="flex align-items-center gap-2">
+                          <i [class]="option.icon"></i>
+                        </div>
+                      </ng-template>
+                    </p-selectbutton>
+                  </form>
+                </div>
+              </ng-template>
+
+              <!-- Grid Layout Template -->
+              <ng-template #grid let-items>
+                <div class="grid p-3">
+                  @for (product of items; track product.asin) {
+                    <div class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
+                      <p-card class="h-full border-round-xl overflow-hidden transition-all transition-duration-300 hover:shadow-6 cursor-pointer" (click)="openAmazonProduct(product.url)">
+                        <ng-template #header>
+                          <div class="relative overflow-hidden flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
+                            <img [src]="getProductImage(product)" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
+                              (error)="onImageError($event)" />
+                            @if (product.price.original) {
+                              <div class="absolute top-0 right-0 m-2">
+                                <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" class="text-base" />
+                              </div>
+                            }
+                          </div>
+                        </ng-template>
+
+                        <ng-template #content>
+                          <div class="flex flex-column" style="min-height: 14rem;">
+                            <!-- Category -->
+                            <div class="mb-2">
+                              <p-tag [value]="product.category" icon="pi pi-tag" severity="info" />
+                            </div>
+
+                            <!-- Product Title -->
+                            <h4 class="product-title text-base font-semibold m-0 line-height-3" style="color: var(--p-text-color)">
+                              {{ product.title }}
+                            </h4>
+
+                            <!-- Price block pushed to bottom -->
+                            <div class="flex flex-column gap-2 mt-auto">
+                              <p-divider />
+                              <!-- Current price -->
+                              <div class="flex align-items-baseline gap-2">
+                                <span class="text-2xl font-bold price-green">
+                                  {{ getCurrencySymbol() }}{{ formatPrice(product.price.current) }}
+                                </span>
+                                <span class="text-xs" style="color: var(--p-text-muted-color)">{{ getCurrencyCode() }}</span>
+                                @if (product.price.original) {
+                                  <span class="text-sm line-through" style="color: var(--p-text-muted-color)">
+                                    {{ getCurrencySymbol() }}{{ formatPrice(product.price.original) }}
+                                  </span>
+                                }
+                              </div>
+
+                              <!-- Shipping -->
+                              <div class="flex align-items-center gap-2 text-sm">
+                                <i class="pi pi-truck text-xs" [ngClass]="isFreeShipping(product) ? 'price-green' : ''" [style.color]="!isFreeShipping(product) ? 'var(--p-text-muted-color)' : null"></i>
+                                @if (isFreeShipping(product)) {
+                                  <span class="price-green font-medium">Envío GRATIS (pedidos {{ getFreeShippingThreshold() }} {{ getCurrencyCode() }})</span>
+                                }
+                                @if (!isFreeShipping(product)) {
+                                  <span style="color: var(--p-text-muted-color)">Envío gratis en pedidos {{ getFreeShippingThreshold() }} {{ getCurrencyCode() }}</span>
+                                }
+                              </div>
+
+                              <!-- Total (only when different from price) -->
+                              @if (getShippingPrice(product) > 0) {
+                                <div class="flex align-items-center justify-content-center gap-2 p-2 border-round total-price-bg">
+                                  <span class="text-lg font-bold price-total">
+                                    Total: {{ getCurrencySymbol() }}{{ formatPrice(getTotalPrice(product)) }} {{ getCurrencyCode() }}
+                                  </span>
+                                </div>
+                              }
+
+                              <!-- Button -->
+                              <div class="flex justify-content-center">
+                                <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn"
+                                  (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </p-card>
+                    </div>
+                  }
+                </div>
+              </ng-template>
+
+              <!-- List Layout Template -->
+              <ng-template #list let-items>
+                <div class="flex flex-column gap-3 p-3">
+                  @for (product of items; track product.asin) {
+                    <p-card class="border-round-xl overflow-hidden transition-all transition-duration-300 hover:shadow-4 cursor-pointer" (click)="openAmazonProduct(product.url)">
+                      <ng-template #content>
+                        <div class="flex flex-column md:flex-row gap-4">
+                          <!-- Product Image -->
+                          <div class="flex-shrink-0 md:w-18rem">
+                            <div class="relative overflow-hidden border-round flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
+                              <img [src]="getProductImage(product)" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
+                                (error)="onImageError($event)" />
+                              @if (product.price.original) {
+                                <div class="absolute top-0 right-0 m-2">
+                                  <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" class="text-base" />
+                                </div>
+                              }
+                            </div>
+                          </div>
+
+                          <!-- Product Details -->
+                          <div class="flex-1 flex flex-column gap-2">
+                            <!-- Category -->
+                            <div>
+                              <p-tag [value]="product.category" icon="pi pi-tag" severity="info" />
+                            </div>
+
+                            <!-- Title -->
+                            <h4 class="text-lg font-semibold m-0 line-height-3" style="color: var(--p-text-color)">
+                              {{ product.title }}
+                            </h4>
+
+                            <p-divider />
+
+                            <!-- Price and actions -->
+                            <div class="flex flex-column md:flex-row justify-content-between align-items-start md:align-items-center gap-3 mt-auto">
+                              <div class="flex align-items-center gap-3 flex-wrap">
+                                <!-- Price -->
+                                <div class="flex align-items-baseline gap-2">
+                                  <span class="text-2xl font-bold price-green">
+                                    {{ getCurrencySymbol() }}{{ formatPrice(product.price.current) }}
+                                  </span>
+                                  <span class="text-xs" style="color: var(--p-text-muted-color)">{{ getCurrencyCode() }}</span>
+                                  @if (product.price.original) {
+                                    <span class="text-sm line-through" style="color: var(--p-text-muted-color)">
+                                      {{ getCurrencySymbol() }}{{ formatPrice(product.price.original) }}
+                                    </span>
+                                  }
+                                </div>
+
+                                <!-- Shipping -->
+                                <div class="flex align-items-center gap-1 text-sm">
+                                  <i class="pi pi-truck text-xs" [ngClass]="isFreeShipping(product) ? 'price-green' : ''" [style.color]="!isFreeShipping(product) ? 'var(--p-text-muted-color)' : null"></i>
+                                  @if (isFreeShipping(product)) {
+                                    <span class="price-green font-medium">Envío GRATIS</span>
+                                  }
+                                  @if (!isFreeShipping(product)) {
+                                    <span style="color: var(--p-text-muted-color)">Envío gratis en {{ getFreeShippingThreshold() }}</span>
+                                  }
+                                </div>
+
+                                <!-- Total (only when different from price) -->
+                                @if (getShippingPrice(product) > 0) {
+                                  <div class="flex align-items-center gap-2 p-2 border-round total-price-bg">
+                                    <span class="font-bold price-total">
+                                      Total: {{ getCurrencySymbol() }}{{ formatPrice(getTotalPrice(product)) }} {{ getCurrencyCode() }}
+                                    </span>
+                                  </div>
+                                }
+                              </div>
+
+                              <!-- Button -->
+                              <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn"
+                                (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </p-card>
+                  }
+                </div>
+              </ng-template>
+            </p-dataView>
+
+            <!-- Price Disclaimer -->
+            <div class="mt-3 p-3 border-round bg-white-alpha-10">
+              <p class="text-xs text-blue-200 m-0">
+                <i class="pi pi-info-circle mr-1"></i>
+                Los precios y la disponibilidad de los productos son precisos a la fecha/hora indicada y estan sujetos a cambios.
+                Cualquier información de precios mostrada en el momento de la compra se aplicará a la misma.
+                Como Asociado de Amazon, obtengo ingresos por compras adscritas.
+              </p>
             </div>
           </div>
-        </form>
-      </div>
-
-      <!-- DataView Content -->
-      <div class="col-12 md:col-10">
-        <div class="bg-white-alpha-10 backdrop-blur-md border-round p-4 border-white-alpha-20">
-          <p-dataView #dv [value]="searchResults()?.products" [layout]="selectedLayout()" [paginator]="true" [rows]="12" [totalRecords]="searchResults()?.totalResults || 0"
-            [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos" class="w-full">
-
-            <ng-template #header>
-              <div class="flex justify-content-between align-items-center">
-                <h3 class="font-semibold mb-0">Productos</h3>
-                <form [formGroup]="layoutForm">
-                  <p-selectbutton [options]="layoutOptions" formControlName="selectedLayout" [allowEmpty]="false" optionValue="value" (onChange)="onLayoutChange($event.value)"
-                    class="w-12rem">
-                    <ng-template #item let-option>
-                      <div class="flex align-items-center gap-2">
-                        <i [class]="option.icon"></i>
-                      </div>
-                    </ng-template>
-                  </p-selectbutton>
-                </form>
-              </div>
-            </ng-template>
-
-            <!-- Grid Layout Template -->
-            <ng-template #grid let-items>
-              <div class="grid">
-                <div *ngFor="let product of items" class="col-12 sm:col-6 lg:col-4 xl:col-3">
-                  <p-card class="h-full transition-all transition-duration-300 hover:shadow-6 hover:scale-105 cursor-pointer p-2" (click)="openAmazonProduct(product.url)">
-                    <ng-template #header>
-                      <div class="relative overflow-hidden border-round-top">
-                        <p-image [src]="getProductImage(product)" [alt]="product.title" class="w-full" imageClass="w-10rem h-10rem" [preview]="false"
-                          (onImageError)="onImageError($event)" />
-                        <div *ngIf="product.price.original" class="absolute top-0 right-0 m-2">
-                          <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" />
-                        </div>
-                        <div class="absolute bottom-0 left-0 m-2">
-                          <p-tag [value]="product.category" icon="pi pi-tag" />
-                        </div>
-                        <div class="absolute bottom-0 right-0 m-2">
-                          <p-tag *ngIf="!isFreeShipping(product)" value="Envío a Argentina" icon="pi pi-truck" severity="info" />
-                          <p-tag *ngIf="isFreeShipping(product)" value="Envío GRATIS" icon="pi pi-truck" severity="success" />
-                        </div>
-                      </div>
-                    </ng-template>
-
-                    <ng-template #content>
-                      <div class="flex flex-column gap-3">
-                        <!-- Product Title -->
-                        <div class="line-height-3">
-                          <h4 class="text-lg font-semibold text-blue-600 m-0 mb-2 line-height-3">
-                            {{ product.title }}
-                          </h4>
-                        </div>
-
-                        <!-- Rating -->
-                        <div class="flex align-items-center gap-2">
-                          <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" styleClass="text-sm" />
-                          <span class="text-sm text-gray-600 font-medium">
-                            ({{ product.rating }})
-                          </span>
-                        </div>
-
-                        <!-- Price -->
-                        <div class="flex flex-column gap-1">
-                          <div class="flex align-items-center gap-2">
-                            <span class="text-2xl font-bold text-green-600">
-                              ${{ formatPrice(product.price.current) }}
-                            </span>
-                            <span class="text-sm text-gray-600">USD</span>
-                            <span *ngIf="product.price.original" class="text-sm text-gray-500 line-through">
-                              ${{ formatPrice(product.price.original) }} USD
-                            </span>
-                            <div *ngIf="product.price.original">
-                              <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" />
-                            </div>
-                          </div>
-                          <div class="flex align-items-center gap-2 text-sm text-gray-600">
-                            <i class="pi pi-truck text-xs" [ngClass]="isFreeShipping(product) ? 'text-green-600' : 'text-gray-500'"></i>
-                            <span *ngIf="!isFreeShipping(product)">Envío a Argentina: ${{ formatPrice(getShippingPrice(product)) }} USD</span>
-                            <span *ngIf="isFreeShipping(product)" class="text-green-600 font-semibold">¡Envío GRATIS a Argentina!</span>
-                          </div>
-                          <p-divider />
-                          <div class="flex align-items-center gap-2 text-lg font-semibold text-blue-600">
-                            <i class="pi pi-calculator text-sm"></i>
-                            <span>Total: ${{ formatPrice(getTotalPrice(product)) }} USD</span>
-                          </div>
-                        </div>
-                        <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" size="small" class="flex-1"
-                          (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
-                        <!-- <p-button icon="pi pi-heart" severity="secondary" size="small" [outlined]="true" pTooltip="Agregar a favoritos"
-                          (onClick)="addToFavorites(product); $event.stopPropagation()" /> -->
-                      </div>
-                    </ng-template>
-                  </p-card>
-                </div>
-              </div>
-            </ng-template>
-
-            <!-- List Layout Template -->
-            <ng-template #list let-items>
-              <div class="grid">
-                <div class="col-12" *ngFor="let product of items; let first = first">
-                  <p-card class="mb-3 transition-all transition-duration-300 hover:shadow-4" [ngClass]="{ 'mt-0': first, 'mt-3': !first }">
-                    <ng-template #content>
-                      <div class="flex flex-column md:flex-row gap-4">
-                        <!-- Product Image -->
-                        <div class="flex-shrink-0 md:w-20rem">
-                          <div class="relative overflow-hidden border-round">
-                            <p-image [src]="getProductImage(product)" [alt]="product.title" class="w-full" imageClass="w-full h-12rem md:h-15rem object-cover" [preview]="true"
-                              (onImageError)="onImageError($event)" />
-                            <div *ngIf="product.price.original" class="absolute top-0 right-0 m-2">
-                              <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="danger" />
-                            </div>
-                            <div class="absolute bottom-0 left-0 m-2">
-                              <p-tag [value]="product.category" icon="pi pi-tag" />
-                            </div>
-                            <div class="absolute bottom-0 right-0 m-2">
-                              <p-tag *ngIf="!isFreeShipping(product)" value="Envío a Argentina" icon="pi pi-truck" severity="info" />
-                              <p-tag *ngIf="isFreeShipping(product)" value="Envío GRATIS" icon="pi pi-truck" severity="success" />
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Product Details -->
-                        <div class="flex-1 flex flex-column gap-3">
-                          <!-- Title and Rating Row -->
-                          <div class="flex flex-column md:flex-row justify-content-between align-items-start gap-2">
-                            <div class="flex-1">
-                              <h4 class="text-xl font-semibold text-blue-700 m-0 mb-2 line-height-3">
-                                {{ product.title }}
-                              </h4>
-                              <div class="flex align-items-center gap-2">
-                                <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" styleClass="text-sm" />
-                                <span class="text-sm text-gray-600 font-medium">
-                                  ({{ product.rating }})
-                                </span>
-                              </div>
-                            </div>
-
-                            <!-- Price Section -->
-                            <div class="flex flex-column align-items-end gap-1">
-                              <div class="flex align-items-center gap-2">
-                                <span class="text-3xl font-bold text-orange-500">
-                                  ${{ formatPrice(product.price.current) }}
-                                </span>
-                                <span class="text-sm text-gray-600">USD</span>
-                              </div>
-                              <span *ngIf="product.price.original" class="text-sm text-gray-500 line-through">
-                                ${{ formatPrice(product.price.original) }} USD
-                              </span>
-                              <div class="flex align-items-center gap-2 text-sm text-gray-600">
-                                <i class="pi pi-truck text-xs" [ngClass]="isFreeShipping(product) ? 'text-green-500' : 'text-gray-500'"></i>
-                                <span *ngIf="!isFreeShipping(product)">Envío: ${{ formatPrice(getShippingPrice(product)) }} USD</span>
-                                <span *ngIf="isFreeShipping(product)" class="text-green-600 font-semibold">¡Envío GRATIS!</span>
-                              </div>
-                              <div class="flex align-items-center gap-2 text-xl font-bold text-orange-500">
-                                <i class="pi pi-calculator text-sm"></i>
-                                <span>Total: ${{ formatPrice(getTotalPrice(product)) }} USD</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- Action Buttons -->
-                          <div class="flex flex-column md:flex-row gap-2 mt-auto">
-                            <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" size="small" class="flex-1 md:flex-initial md:w-auto"
-                              (onClick)="openAmazonProduct(product.url)" />
-                            <!-- <p-button icon="pi pi-heart" label="Favoritos" severity="secondary" size="small" [outlined]="true" pTooltip="Agregar a favoritos"
-                              (onClick)="addToFavorites(product)" /> -->
-                          </div>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </p-card>
-                </div>
-              </div>
-            </ng-template>
-          </p-dataView>
         </div>
       </div>
-    </div>
 
-  </div>
+    </div>
+  }
 
   <!-- Empty State -->
-  <div *ngIf="!searchResults() && !isLoading() && !errorMessage()" class="text-center py-8">
-    <i class="pi pi-search text-6xl text-blue-200 mb-4"></i>
-    <h3 class="text-lg md:text-xl font-semibold text-white mb-2">No hay productos para mostrar</h3>
-    <p class="text-base md:text-lg font-normal text-blue-100">Realiza una búsqueda para encontrar productos increíbles</p>
-  </div>
+  @if (!searchResults() && !isLoading() && !errorMessage()) {
+    <div class="text-center py-8">
+      <i class="pi pi-search text-6xl text-blue-200 mb-4"></i>
+      <h3 class="text-lg md:text-xl font-semibold text-white mb-2">No hay productos para mostrar</h3>
+      <p class="text-base md:text-lg font-normal text-blue-100">Realiza una búsqueda para encontrar productos increíbles</p>
+    </div>
+  }
 </div>

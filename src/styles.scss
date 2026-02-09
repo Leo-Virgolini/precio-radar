@@ -82,3 +82,102 @@ p {
   font-family: var(--font-primary);
   /* Use font-normal class */
 }
+
+/* DataView paginator - remove top border-radius to connect with content */
+.p-dataview-paginator-bottom {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/* Product image container */
+.product-image-bg {
+  background: #f8f9fa;
+}
+
+/* Total price highlight */
+.total-price-bg {
+  background: #eef2ff;
+}
+
+/* Adaptive price colors - auto-adapt via dark mode overrides */
+.price-green {
+  color: #16a34a;
+}
+
+.price-total {
+  color: #1d4ed8;
+}
+
+/* Card hover effect */
+.p-card:hover {
+  outline: 1px solid var(--p-primary-300);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+/* ========== Dark Mode Overrides ========== */
+.my-app-dark {
+  /* Main page blue backgrounds → dark */
+  section.bg-primary,
+  section.bg-primary .bg-primary {
+    background: var(--p-surface-900) !important;
+  }
+
+  /* Hero section text - visible on dark background */
+  section.bg-primary h1,
+  section.bg-primary h2,
+  section.bg-primary h3,
+  section.bg-primary p,
+  section.bg-primary li {
+    color: var(--p-surface-100) !important;
+  }
+
+  /* Product image container - dark background */
+  .product-image-bg {
+    background: var(--p-surface-800) !important;
+  }
+
+  /* Total price highlight - dark variant */
+  .total-price-bg {
+    background: rgba(59, 130, 246, 0.15) !important;
+  }
+
+  /* Card hover - more visible on dark backgrounds */
+  .p-card:hover {
+    outline: 1px solid var(--p-primary-400) !important;
+    box-shadow: 0 0 15px rgba(96, 165, 250, 0.25) !important;
+  }
+
+  /* Adaptive price colors */
+  .price-green {
+    color: var(--p-green-400) !important;
+  }
+
+  .price-total {
+    color: var(--p-blue-300) !important;
+  }
+
+  /* Footer - dark background */
+  footer.bg-primary-700 {
+    background: var(--p-surface-950) !important;
+  }
+
+  /* Scroll to top button */
+  p-scrolltop button {
+    background: #fff !important;
+    border-color: #fff !important;
+    color: var(--p-surface-900) !important;
+  }
+
+  /* Header buttons - visible on dark megamenu */
+  .p-megamenu .p-button:not([text]):not([plain]) {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.7) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .p-megamenu .p-button:not([text]):not([plain]):hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: #fff !important;
+    color: #fff !important;
+  }
+}

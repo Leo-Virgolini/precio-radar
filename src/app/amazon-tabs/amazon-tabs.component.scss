@@ -1,0 +1,47 @@
+:host ::ng-deep {
+  // Override PrimeNG theme CSS variables to remove default borders
+  .p-tabs {
+    --p-tabs-tablist-border-color: transparent;
+    --p-tabs-tab-border-color: transparent;
+    --p-tabs-active-bar-height: 0px;
+    --p-tabs-active-bar-bottom: 0px;
+    --p-tabs-tablist-border-width: 0;
+  }
+
+  .p-tablist {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 4px;
+    overflow: visible;
+  }
+
+  .p-tablist-content {
+    overflow: visible;
+  }
+
+  .p-tab {
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.7);
+    border: 2px solid transparent;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+
+    &[data-p-active='true'] {
+      background: white;
+      color: var(--p-primary-600, #2563eb);
+      border-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .p-tabpanels {
+    padding: 0;
+    background: transparent;
+  }
+}

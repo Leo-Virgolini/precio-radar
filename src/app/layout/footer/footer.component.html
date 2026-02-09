@@ -1,24 +1,5 @@
 <footer class="bg-primary-700 text-white p-3">
     <div class="flex flex-column align-items-center justify-content-center md:flex-row md:justify-content-between gap-4">
-        <!-- Redes Sociales -->
-        <div class="flex flex-column">
-            <h4 class="mb-2 mt-0" style="font-size: 1.5rem">Seguinos</h4>
-            <div class="flex align-items-center gap-3 text-xl">
-                <a *ngIf="instagramUrl" [href]="instagramUrl" target="_blank"
-                    class="text-white p-1 hover:text-blue-300 hover:text-primary-200 transition-colors transition-duration-200 border-round hover:bg-white-alpha-10">
-                    <i class="pi pi-instagram text-pink-600" style="font-size: 2.5rem"></i>
-                </a>
-                <a *ngIf="tiktokUrl" [href]="tiktokUrl" target="_blank"
-                    class="text-white p-1 hover:text-blue-300 hover:text-primary-200 transition-colors transition-duration-200 border-round hover:bg-white-alpha-10">
-                    <i class="pi pi-tiktok text-black" style="font-size: 2.5rem"></i>
-                </a>
-                <a *ngIf="facebookUrl" [href]="facebookUrl" target="_blank"
-                    class="text-white p-1 hover:text-blue-300 hover:text-primary-200 transition-colors transition-duration-200 border-round hover:bg-white-alpha-10">
-                    <i class="pi pi-facebook text-blue-600" style="font-size: 2.5rem"></i>
-                </a>
-            </div>
-        </div>
-
         <!-- Secciones -->
         <div class="flex flex-column">
             <h4 class="mb-1 text-lg mt-0 font-bold">Secciones</h4>
@@ -28,31 +9,43 @@
                     <i class="pi pi-home text-sm"></i>
                     <span class="font-medium">Inicio</span>
                 </a>
-                <a routerLink="/productos"
+                <a routerLink="/guia-amazon"
                     class="flex align-items-center gap-2 text-white no-underline hover:text-primary-200 transition-colors transition-duration-200 p-2 border-round hover:bg-white-alpha-10">
-                    <i class="pi pi-shopping-bag text-sm"></i>
-                    <span class="font-medium">Productos</span>
+                    <i class="pi pi-book text-sm"></i>
+                    <span class="font-medium">Guía de Compra</span>
                 </a>
-                <a routerLink="/personalizar"
+                <a routerLink="/sobre-nosotros"
                     class="flex align-items-center gap-2 text-white no-underline hover:text-primary-200 transition-colors transition-duration-200 p-2 border-round hover:bg-white-alpha-10">
-                    <i class="pi pi-palette text-sm"></i>
-                    <span class="font-medium">Personalizar</span>
+                    <i class="pi pi-users text-sm"></i>
+                    <span class="font-medium">Sobre Nosotros</span>
                 </a>
-                <a routerLink="/contacto"
+                <a routerLink="/privacidad"
                     class="flex align-items-center gap-2 text-white no-underline hover:text-primary-200 transition-colors transition-duration-200 p-2 border-round hover:bg-white-alpha-10">
-                    <i class="pi pi-envelope text-sm"></i>
-                    <span class="font-medium">Contacto</span>
+                    <i class="pi pi-shield text-sm"></i>
+                    <span class="font-medium">Política de Privacidad</span>
                 </a>
             </div>
         </div>
 
+        <!-- Affiliate Disclosure -->
+        <div class="flex flex-column max-w-25rem">
+            <h4 class="mb-1 text-lg mt-0 font-bold">Aviso Legal</h4>
+            <p class="text-sm text-white-alpha-80 line-height-3 m-0">
+                Como Asociado de Amazon, obtengo ingresos por compras adscritas.
+                Los precios y la disponibilidad de los productos son precisos a la fecha/hora indicada y están sujetos a cambios.
+                Cualquier información de precios mostrada en Amazon al momento de la compra se aplicará a la misma.
+                Cierto contenido que aparece en este sitio proviene de Amazon. Este contenido se proporciona "tal cual" y está sujeto a cambios o eliminación en cualquier momento.
+            </p>
+        </div>
+
         <!-- Logo y derechos -->
         <div class="flex flex-column align-items-center">
-            <div class="mb-1 p-2 bg-white-alpha-10 border-round-lg">
-                <img src="logos/logo2.png" alt="Logo" style="width: 130px;" class="border-round-md" />
+            <div class="mb-2 flex align-items-center gap-2">
+                <i class="pi pi-globe text-3xl"></i>
+                <span class="text-xl font-bold">Ofertas del Mundo</span>
             </div>
             <div class="text-center">
-                <small class="text-white-alpha-80 font-medium">© 2025 BorDados</small>
+                <small class="text-white-alpha-80 font-medium">&copy; {{ currentYear }} Ofertas del Mundo</small>
                 <br>
                 <small class="text-white-alpha-60">Todos los derechos reservados</small>
             </div>

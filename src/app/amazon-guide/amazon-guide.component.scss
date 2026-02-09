@@ -1,0 +1,118 @@
+.amazon-guide-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.guide-header {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.prose {
+  color: #374151;
+  line-height: 1.7;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
+.prose ul {
+  margin-bottom: 1rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+// Custom scroll behavior
+html {
+  scroll-behavior: smooth;
+}
+
+// Card hover effects
+.p-card {
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.p-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+// Table of contents hover effect
+.cursor-pointer:hover {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  transform: translateX(4px);
+}
+
+// Step number styling
+.border-left-3 {
+  border-left-width: 3px !important;
+}
+
+// Badge styling
+.p-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+// FAQ list styling - using PrimeFlex utilities instead
+.faq-list {
+  .faq-item {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateX(4px);
+    }
+  }
+}
+
+// Button styling
+.p-button {
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.p-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .guide-header h1 {
+    font-size: 2rem !important;
+  }
+  
+  .guide-header p {
+    font-size: 1rem !important;
+  }
+  
+  .max-w-6xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+// Print styles
+@media print {
+  .amazon-guide-container {
+    background: white;
+  }
+  
+  .p-card {
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .p-button {
+    display: none;
+  }
+}

@@ -1,18 +1,24 @@
 <!-- MegaMenu Navigation -->
-<p-megamenu [model]="megaMenuItems" class="bg-white backdrop-blur-md border-noround-top border-white-alpha-20 shadow-2">
+<p-megamenu [model]="megaMenuItems" class="backdrop-blur-md border-noround-top border-white-alpha-20 shadow-2">
     <ng-template #start>
         <div class="flex align-items-center gap-2">
-            <i class="pi pi-amazon text-2xl text-black"></i>
-            <span class="text-xl font-bold text-black">Amazon Argentina</span>
-            <picture>
-                <source type="image/webp" srcset="https://flagcdn.com/32x24/ar.webp,
-                        https://flagcdn.com/64x48/ar.webp 2x,
-                        https://flagcdn.com/96x72/ar.webp 3x">
-                <source type="image/png" srcset="https://flagcdn.com/32x24/ar.png,
-                        https://flagcdn.com/64x48/ar.png 2x,
-                        https://flagcdn.com/96x72/ar.png 3x">
-                <img src="https://flagcdn.com/32x24/ar.png" width="32" height="24" alt="Argentina">
-            </picture>
+            <p-button routerLink="/" (onClick)="onGoHome()" [text]="true" [plain]="true" class="no-underline hover:text-primary transition-colors transition-duration-200">
+                <ng-template #content>
+                    <div class="flex align-items-center gap-2">
+                        <i class="pi pi-globe text-2xl"></i>
+                        <span class="text-xl font-bold">Ofertas del Mundo</span>
+                        <picture>
+                            <source type="image/webp" srcset="https://flagcdn.com/32x24/ar.webp,
+                                    https://flagcdn.com/64x48/ar.webp 2x,
+                                    https://flagcdn.com/96x72/ar.webp 3x">
+                            <source type="image/png" srcset="https://flagcdn.com/32x24/ar.png,
+                                    https://flagcdn.com/64x48/ar.png 2x,
+                                    https://flagcdn.com/96x72/ar.png 3x">
+                            <img src="https://flagcdn.com/32x24/ar.png" width="32" height="24" alt="Argentina">
+                        </picture>
+                    </div>
+                </ng-template>
+            </p-button>
         </div>
     </ng-template>
     <ng-template #end>
@@ -22,10 +28,6 @@
                 <div class="flex flex-column md:flex-row align-items-center gap-3">
                     <div class="flex-1">
                         <input type="text" pInputText formControlName="searchQuery" placeholder="Buscar productos..." class="w-full" />
-                        <!-- <div *ngIf="searchForm.get('searchQuery')?.invalid && searchForm.get('searchQuery')?.touched" class="text-red-200 text-sm mt-1">
-                            <span *ngIf="searchForm.get('searchQuery')?.errors?.['required']">El término de búsqueda es requerido</span>
-                            <span *ngIf="searchForm.get('searchQuery')?.errors?.['minlength']">Mínimo 2 caracteres</span>
-                        </div> -->
                     </div>
                     <div class="w-full md:w-20rem">
                         <p-select formControlName="selectedCategory" [options]="categories" placeholder="Categoría" class="w-full" optionLabel="label" optionValue="value">

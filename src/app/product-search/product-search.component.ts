@@ -1,7 +1,6 @@
 import { Component, signal, inject, OnInit, Input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
@@ -15,22 +14,19 @@ import { DataViewModule } from 'primeng/dataview';
 import { SliderModule } from 'primeng/slider';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ImageModule } from 'primeng/image';
-import { RatingModule } from 'primeng/rating';
 import { BadgeModule } from 'primeng/badge';
 import { TooltipModule } from 'primeng/tooltip';
 import { AmazonApiService, AmazonProduct, SearchResponse } from '../services/amazon-api.service';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { SearchService, SearchData } from '../services/search.service';
+import { SearchService } from '../services/search.service';
 
 @Component({
   selector: 'app-product-search',
-  standalone: true,
   templateUrl: './product-search.component.html',
   styleUrl: './product-search.component.scss',
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
     InputTextModule,
     ButtonModule,
     SelectModule,
@@ -45,7 +41,6 @@ import { SearchService, SearchData } from '../services/search.service';
     SelectButtonModule,
     SliderModule,
     CheckboxModule,
-    RatingModule,
     BadgeModule,
     TooltipModule
   ]
@@ -58,18 +53,33 @@ export class ProductSearchComponent implements OnInit {
 
   private readonly amazonApiService = inject(AmazonApiService);
   private readonly formBuilder = inject(FormBuilder);
-  private readonly router = inject(Router);
   private readonly searchService = inject(SearchService);
 
   // Reactive forms
   protected filterForm!: FormGroup;
   protected layoutForm!: FormGroup;
 
+  // Effect for listening to search service
+  private readonly searchEffect = effect(() => {
+    const searchData = this.searchService.getSearchTrigger()();
+    if (searchData) {
+      if (searchData.query) {
+        this.performSearch(searchData.query, searchData.category);
+      } else {
+        this.resetFilters();
+      }
+      this.searchService.clearSearchTrigger();
+    }
+  });
+
   // Signals for reactive state management
   protected readonly searchResults = signal<SearchResponse | null>(null);
   protected readonly isLoading = signal(false);
   protected readonly errorMessage = signal('');
   protected readonly currentPage = signal(1);
+
+  // Store original unfiltered results for price filter
+  private originalProducts: AmazonProduct[] = [];
 
   // Component data
   protected readonly categories = [
@@ -100,7 +110,7 @@ export class ProductSearchComponent implements OnInit {
     { label: 'Relevancia', value: 'relevance', icon: 'pi pi-search' },
     { label: 'Precio: Menor a Mayor', value: 'price-asc', icon: 'pi pi-sort-amount-up' },
     { label: 'Precio: Mayor a Menor', value: 'price-desc', icon: 'pi pi-sort-amount-down' },
-    { label: 'Calificación', value: 'rating', icon: 'pi pi-star' },
+    { label: 'Mayor Descuento', value: 'discount-desc', icon: 'pi pi-percentage' },
     { label: 'Más Recientes', value: 'newest', icon: 'pi pi-clock' }
   ];
   protected readonly maxPrice = 10000;
@@ -110,25 +120,13 @@ export class ProductSearchComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForms();
     this.loadTopSellingProducts();
-    this.listenToSearchService();
-  }
-
-  private listenToSearchService(): void {
-    effect(() => {
-      const searchData = this.searchService.getSearchTrigger()();
-      if (searchData) {
-        this.performSearch(searchData.query, searchData.category);
-        this.searchService.clearSearchTrigger();
-      }
-    });
   }
 
   private initializeForms(): void {
     this.filterForm = this.formBuilder.group({
       selectedCategory: [''],
       maxPrice: [this.maxPrice],
-      inStock: [true],
-      shippingToArgentina: [true],
+      freeShippingOnly: [false],
       selectedSort: ['relevance']
     });
 
@@ -152,6 +150,7 @@ export class ProductSearchComponent implements OnInit {
     this.amazonApiService.searchProducts(searchQuery, this.currentPage(), 10, this.amazonRegion)
       .subscribe({
         next: (results) => {
+          this.originalProducts = results.products;
           this.searchResults.set(results);
           this.isLoading.set(false);
         },
@@ -191,6 +190,7 @@ export class ProductSearchComponent implements OnInit {
     this.amazonApiService.getTopSellingProducts(selectedCategory, this.amazonRegion)
       .subscribe({
         next: (results) => {
+          this.originalProducts = results.products;
           this.searchResults.set(results);
           this.isLoading.set(false);
         },
@@ -304,8 +304,15 @@ export class ProductSearchComponent implements OnInit {
       case 'rating':
         sortedProducts.sort((a, b) => b.rating - a.rating);
         break;
+      case 'discount-desc':
+        sortedProducts.sort((a, b) => {
+          const discountA = a.price.original ? ((a.price.original - a.price.current) / a.price.original) * 100 : 0;
+          const discountB = b.price.original ? ((b.price.original - b.price.current) / b.price.original) * 100 : 0;
+          return discountB - discountA;
+        });
+        break;
       case 'newest':
-        // For demo purposes, we'll sort by ASIN (newer ASINs first)
+        // Sort by ASIN (newer ASINs first)
         sortedProducts.sort((a, b) => b.asin.localeCompare(a.asin));
         break;
       default:
@@ -319,14 +326,20 @@ export class ProductSearchComponent implements OnInit {
     });
   }
 
-  protected onPriceRangeChange(event: any): void {
+  protected applyFilters(): void {
     const results = this.searchResults();
     if (!results) return;
 
     const maxPrice = this.filterForm.get('maxPrice')?.value || this.maxPrice;
-    const filteredProducts = results.products.filter(product =>
-      product.price.current <= maxPrice
-    );
+    const freeShippingOnly = this.filterForm.get('freeShippingOnly')?.value || false;
+    const selectedCategory = this.filterForm.get('selectedCategory')?.value || '';
+
+    const filteredProducts = this.originalProducts.filter((product: AmazonProduct) => {
+      if (product.price.current > maxPrice) return false;
+      if (freeShippingOnly && !this.isFreeShipping(product)) return false;
+      if (selectedCategory && product.category !== selectedCategory) return false;
+      return true;
+    });
 
     this.searchResults.set({
       ...results,
@@ -354,6 +367,35 @@ export class ProductSearchComponent implements OnInit {
 
   protected formatPrice(price: number): string {
     return price.toFixed(2);
+  }
+
+  protected getCurrencySymbol(): string {
+    return this.amazonRegion === 'ES' ? '€' : '$';
+  }
+
+  protected getCurrencyCode(): string {
+    return this.amazonRegion === 'ES' ? 'EUR' : 'USD';
+  }
+
+  protected getFreeShippingThreshold(): string {
+    return this.amazonRegion === 'ES' ? '€29+' : '$99+';
+  }
+
+  private resetFilters(): void {
+    this.filterForm?.patchValue({
+      selectedCategory: '',
+      maxPrice: this.maxPrice,
+      freeShippingOnly: false,
+      selectedSort: 'relevance'
+    });
+    this.searchQuery = '';
+    this.searchCategory = '';
+    this.loadTopSellingProducts();
+  }
+
+  protected clearFilters(): void {
+    this.resetFilters();
+    this.searchService.triggerClear();
   }
 
   // Public method to be called from parent component

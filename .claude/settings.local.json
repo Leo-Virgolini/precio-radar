@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(npx ng build)",
+      "Bash(npx ng version:*)",
+      "Bash(npm outdated:*)",
+      "Bash(npx ng update:*)",
+      "Bash(npm install:*)",
+      "Bash(npm i:*)",
+      "Bash(npm ls:*)",
+      "WebFetch(domain:primeng.org)",
+      "Bash(findstr:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm uninstall:*)",
+      "WebFetch(domain:affiliate-program.amazon.com)",
+      "WebFetch(domain:www.amazon.com)",
+      "WebFetch(domain:www.stanley1913.com)",
+      "Bash(npx ng serve)"
+    ]
+  }
+}
