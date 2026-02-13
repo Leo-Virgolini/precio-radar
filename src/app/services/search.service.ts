@@ -1,8 +1,9 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 export interface SearchData {
   query: string;
   category: string;
+  version: number;
 }
 
 @Injectable({
@@ -10,31 +11,20 @@ export interface SearchData {
 })
 export class SearchService {
 
-  private readonly searchTrigger = signal<SearchData | null>(null);
-  private readonly clearTrigger = signal(false);
+  private searchVersion = 0;
+  private clearVersion = 0;
+
+  private readonly _searchTrigger = signal<SearchData | null>(null);
+  private readonly _clearTrigger = signal(0);
+
+  readonly searchTrigger = this._searchTrigger.asReadonly();
+  readonly clearTrigger = this._clearTrigger.asReadonly();
 
   triggerSearch(query: string, category: string = ''): void {
-    this.searchTrigger.set({ query, category });
-  }
-
-  getSearchTrigger() {
-    return this.searchTrigger.asReadonly();
-  }
-
-  clearSearchTrigger(): void {
-    this.searchTrigger.set(null);
+    this._searchTrigger.set({ query, category, version: ++this.searchVersion });
   }
 
   triggerClear(): void {
-    this.clearTrigger.set(true);
+    this._clearTrigger.update(v => v + 1);
   }
-
-  getClearTrigger() {
-    return this.clearTrigger.asReadonly();
-  }
-
-  clearClearTrigger(): void {
-    this.clearTrigger.set(false);
-  }
-
 }

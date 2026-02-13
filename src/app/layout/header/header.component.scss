@@ -1,1 +1,51 @@
+.header-logo {
+  height: 48px;
+}
 
+@media (min-width: 768px) {
+  .header-logo {
+    height: 40px;
+  }
+}
+
+// Make megamenu wrap properly at all sizes
+:host ::ng-deep {
+  .p-megamenu {
+    flex-wrap: wrap;
+  }
+
+  // End section: always fill available width (same line or wrapped)
+  .p-megamenu-end {
+    flex: 1 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .p-megamenu-start {
+      flex: 1;
+    }
+
+    .p-megamenu-end {
+      width: 100%;
+      padding-top: 0.5rem;
+    }
+
+    .p-megamenu-end form {
+      width: 100%;
+    }
+
+    .p-megamenu-end form > div {
+      width: 100%;
+    }
+
+    .p-megamenu-end .p-inputtext,
+    .p-megamenu-end p-select,
+    .p-megamenu-end .p-select {
+      width: 100%;
+    }
+
+    // Match select height to input
+    .p-megamenu-end .p-select {
+      height: 2.5rem;
+    }
+  }
+}

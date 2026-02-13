@@ -83,6 +83,63 @@ p {
   /* Use font-normal class */
 }
 
+/* Main content stretches to push footer down */
+main.flex-auto {
+  display: flex;
+  flex-direction: column;
+
+  > :not(router-outlet) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ========== Custom Utilities (not in PrimeFlex) ========== */
+
+/* White glass button for colored backgrounds */
+.p-button.p-button-glass {
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.p-button.p-button-glass:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Glassmorphism blur effect */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Max-width container (72rem = 1152px) */
+.max-w-6xl {
+  max-width: 72rem;
+}
+
+/* Vertical spacing between children */
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Semantic text colors mapped to PrimeNG theme */
+.text-body {
+  color: var(--p-text-color);
+}
+
+.text-muted {
+  color: var(--p-text-muted-color);
+}
+
+/* ========== PrimeNG Component Overrides ========== */
+
+/* Tab panels - remove default white background */
+.p-tabpanel {
+  background: transparent !important;
+}
+
 /* DataView paginator - remove top border-radius to connect with content */
 .p-dataview-paginator-bottom {
   border-top-left-radius: 0 !important;
@@ -96,7 +153,8 @@ p {
 
 /* Total price highlight */
 .total-price-bg {
-  background: #eef2ff;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
 }
 
 /* Adaptive price colors - auto-adapt via dark mode overrides */
@@ -105,13 +163,49 @@ p {
 }
 
 .price-total {
-  color: #1d4ed8;
+  color: #c2410c;
+}
+
+.shipping-info {
+  color: #d97706;
+}
+
+.savings-highlight {
+  color: #b91c1c;
+  background: #fef2f2;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+  width: fit-content;
+}
+
+/* Filter rating stars - visible on blue background */
+.filter-rating .p-rating-icon {
+  color: rgba(255, 255, 255, 0.35) !important;
+  font-size: 1.25rem !important;
+}
+
+.filter-rating .p-rating-icon.p-rating-on-icon {
+  color: #facc15 !important;
+}
+
+/* Slider - darker range on blue backgrounds */
+.p-slider-range {
+  background: #0062ff !important;
+}
+
+.p-slider-handle {
+  background: white !important;
+  border-color: #0062ff !important;
 }
 
 /* Card hover effect */
+.p-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
 .p-card:hover {
-  outline: 1px solid var(--p-primary-300);
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* ========== Dark Mode Overrides ========== */
@@ -138,13 +232,13 @@ p {
 
   /* Total price highlight - dark variant */
   .total-price-bg {
-    background: rgba(59, 130, 246, 0.15) !important;
+    background: rgba(251, 146, 60, 0.15) !important;
+    border: 1px solid rgba(251, 146, 60, 0.3) !important;
   }
 
   /* Card hover - more visible on dark backgrounds */
   .p-card:hover {
-    outline: 1px solid var(--p-primary-400) !important;
-    box-shadow: 0 0 15px rgba(96, 165, 250, 0.25) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
   }
 
   /* Adaptive price colors */
@@ -153,7 +247,16 @@ p {
   }
 
   .price-total {
-    color: var(--p-blue-300) !important;
+    color: var(--p-orange-300) !important;
+  }
+
+  .shipping-info {
+    color: var(--p-yellow-400) !important;
+  }
+
+  .savings-highlight {
+    color: var(--p-red-300) !important;
+    background: rgba(239, 68, 68, 0.15) !important;
   }
 
   /* Footer - dark background */

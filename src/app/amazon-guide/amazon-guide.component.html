@@ -4,22 +4,18 @@
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-6">
                 <div class="mb-4">
-                    <p-tag value="GUÍA 2025" severity="info" class="mr-2"></p-tag>
+                    <p-tag value="GUÍA 2026" severity="info" class="mr-2"></p-tag>
                     <p-tag value="ACTUALIZADA" severity="success"></p-tag>
                 </div>
 
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                    <i class="pi pi-globe text-5xl mr-3"></i>
+                    <i class="pi pi-compass text-5xl mr-3"></i>
                     Guía Definitiva: Cómo Comprar en Amazon desde Argentina
                 </h1>
 
                 <p class="text-lg md:text-xl font-normal mb-4 opacity-90">
                     Aprende a aprovechar el envío internacional gratis en pedidos de $99 USD o más en productos seleccionados
                 </p>
-
-                <div class="flex flex-wrap justify-center gap-2 mb-4">
-                    <p-badge value="Envío GRATIS $99+" severity="success"></p-badge>
-                </div>
 
                 <p class="text-sm opacity-75">
                     <i class="pi pi-clock mr-1"></i>
@@ -56,7 +52,7 @@
         </section>
 
         <!-- Introduction -->
-        <section id="introduccion" class="mb-8">
+        <section id="introduccion" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -65,12 +61,12 @@
                     </div>
                 </ng-template>
 
-                <div class="prose max-w-none">
-                    <p class="text-lg leading-relaxed mb-4">
+                <div class="prose">
+                    <p class="text-lg line-height-3 mb-4">
                         ¿Sabías que ahora puedes comprar en <strong>Amazon desde Argentina</strong> con envío internacional gratis en pedidos de $99 USD o más en productos seleccionados?
                     </p>
 
-                    <p class="text-base leading-relaxed mb-4">
+                    <p class="text-base line-height-3 mb-4">
                         Este beneficio facilita el acceso a miles de productos internacionales. Aquí te explicamos cómo aprovechar esta opción y ahorrar en tus compras.
                     </p>
 
@@ -82,7 +78,7 @@
         </section>
 
         <!-- Step by Step -->
-        <section id="paso-a-paso" class="mb-8">
+        <section id="paso-a-paso" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -91,48 +87,52 @@
                     </div>
                 </ng-template>
 
-                <!-- Timeline View -->
-                <div class="mb-6">
-                    <h4 class="text-primary-800 font-semibold mb-4">Proceso de Compra</h4>
-                    <p-timeline [value]="timelineEvents" align="left">
-                        <ng-template #content let-event>
-                            <div class="flex align-items-center gap-2 mb-2">
-                                <i [class]="event.icon" class="text-primary text-lg"></i>
-                                <h5 class="text-primary-800 font-semibold mb-0">{{ event.title }}</h5>
-                            </div>
-                            <p class="text-primary-600 mb-0">{{ event.description }}</p>
-                        </ng-template>
-                    </p-timeline>
-                </div>
+                <div class="grid">
+                    <!-- Timeline View (Left) -->
+                    <div class="col-12 md:col-4">
+                        <h2 class="text-primary-800 font-semibold mb-4 text-lg">Proceso de Compra</h2>
+                        <p-timeline [value]="timelineEvents" align="left">
+                            <ng-template #content let-event>
+                                <div class="flex align-items-center gap-2 mb-2">
+                                    <i [class]="event.icon" class="text-primary text-lg"></i>
+                                    <h3 class="text-primary-800 font-semibold mb-0 text-base">{{ event.title }}</h3>
+                                </div>
+                                <p class="text-primary-600 mb-0">{{ event.description }}</p>
+                            </ng-template>
+                        </p-timeline>
+                    </div>
 
-                <p-divider></p-divider>
-
-                <!-- Detailed Steps -->
-                <div class="mt-6">
-                    <h4 class="text-primary-800 font-semibold mb-4">Instrucciones Detalladas</h4>
-                    <div class="grid">
+                    <!-- Detailed Steps (Right) -->
+                    <div class="col-12 md:col-8">
+                        <h2 class="text-primary-800 font-semibold mb-4 text-lg">Instrucciones Detalladas</h2>
                         @for (step of steps; track step.number) {
-                            <div class="col-12">
-                                <p-panel [header]="step.title" [toggleable]="true" class="mb-4">
-                                    <div class="flex align-items-start gap-3">
-                                        <p-avatar [icon]="step.icon" size="large" styleClass="bg-primary text-white"></p-avatar>
-                                        <div class="flex-1">
-                                            <p class="text-primary-700 mb-3">{{ step.description }}</p>
+                            <p-panel [header]="step.title" [toggleable]="true" class="mb-4">
+                                <div class="flex align-items-start gap-3">
+                                    <p-avatar [icon]="step.icon" size="large" styleClass="bg-primary text-white"></p-avatar>
+                                    <div class="flex-1">
+                                        <p class="text-primary-700 mb-3">{{ step.description }}</p>
 
-                                            <div class="grid">
-                                                @for (detail of step.details; track $index) {
-                                                    <div class="col-12">
-                                                        <div class="flex align-items-center gap-2 mb-2">
-                                                            <p-chip label="✓" styleClass="bg-green-100 text-green-800"></p-chip>
-                                                            <span class="text-primary-600">{{ detail }}</span>
-                                                        </div>
+                                        <div class="grid">
+                                            @for (detail of step.details; track $index) {
+                                                <div class="col-12">
+                                                    <div class="flex align-items-center gap-2 mb-2">
+                                                        <p-chip label="✓" styleClass="bg-green-100 text-green-800"></p-chip>
+                                                        <span class="text-primary-600">{{ detail }}</span>
                                                     </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        @if (step.links) {
+                                            <div class="flex gap-2 mt-3">
+                                                @for (link of step.links; track link.url) {
+                                                    <p-button [label]="link.label" [icon]="link.icon" severity="info" [outlined]="true" size="small"
+                                                        (onClick)="openLink(link.url)" />
                                                 }
                                             </div>
-                                        </div>
+                                        }
                                     </div>
-                                </p-panel>
-                            </div>
+                                </div>
+                            </p-panel>
                         }
                     </div>
                 </div>
@@ -140,11 +140,11 @@
         </section>
 
         <!-- Restrictions -->
-        <section id="restricciones" class="mb-8">
+        <section id="restricciones" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
-                        <i class="pi pi-exclamation-triangle text-warn"></i>
+                        <i class="pi pi-exclamation-triangle text-primary"></i>
                         <span>Restricciones y Consideraciones</span>
                     </div>
                 </ng-template>
@@ -173,7 +173,7 @@
         </section>
 
         <!-- Taxes and Fees -->
-        <section id="impuestos" class="mb-8">
+        <section id="impuestos" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -182,7 +182,7 @@
                     </div>
                 </ng-template>
 
-                <h3 class="text-primary-800 font-semibold mb-3">¿Cómo funcionan los impuestos?</h3>
+                <h2 class="text-primary-800 font-semibold mb-3 text-lg">¿Cómo funcionan los impuestos?</h2>
 
                 <p class="text-primary-700 mb-4">
                     Amazon cobra los impuestos de importación por adelantado. Esto significa que:
@@ -206,7 +206,7 @@
         </section>
 
         <!-- Tips -->
-        <section id="consejos" class="mb-8">
+        <section id="consejos" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -233,7 +233,7 @@
         </section>
 
         <!-- FAQ -->
-        <section id="faq" class="mb-8">
+        <section id="faq" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -249,7 +249,7 @@
                                 <div class="flex align-items-start gap-3">
                                     <p-avatar icon="pi pi-question-circle" size="normal" styleClass="bg-primary text-white"></p-avatar>
                                     <div class="flex-1">
-                                        <p class="text-primary-700 leading-relaxed mb-0">{{ item.answer }}</p>
+                                        <p class="text-primary-700 line-height-3 mb-0">{{ item.answer }}</p>
                                     </div>
                                 </div>
                             </p-panel>
@@ -260,7 +260,7 @@
         </section>
 
         <!-- Conclusion -->
-        <section id="conclusion" class="mb-8">
+        <section id="conclusion" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -269,8 +269,8 @@
                     </div>
                 </ng-template>
 
-                <div class="prose max-w-none">
-                    <p class="text-lg leading-relaxed mb-4">
+                <div class="prose">
+                    <p class="text-lg line-height-3 mb-4">
                         Comprar en Amazon desde Argentina nunca fue tan fácil. Con esta guía, puedes aprovechar el envío internacional gratis en pedidos de $99 USD o más
                         en productos elegibles, y acceder a miles de productos internacionales sin complicaciones.
                     </p>
@@ -289,10 +289,14 @@
             </p-card>
         </section>
 
-        <!-- Affiliate Disclosure -->
-        <section class="mb-8">
-            <div class="bg-blue-50 border-round p-4">
-                <p class="text-sm text-blue-800 line-height-3 m-0">
+    </div>
+
+    <!-- Bottom Section -->
+    <section class="bg-primary text-white p-6">
+        <div class="max-w-6xl mx-auto">
+            <!-- Affiliate Disclosure -->
+            <div class="bg-white-alpha-10 border-round-xl p-4 mb-4">
+                <p class="text-sm text-blue-100 line-height-3 m-0">
                     <i class="pi pi-info-circle mr-1"></i>
                     <strong>Aviso:</strong> Como Asociado de Amazon, obtengo ingresos por compras adscritas.
                     Los precios y la disponibilidad de los productos son precisos a la fecha/hora indicada y están sujetos a cambios.
@@ -300,21 +304,19 @@
                     podemos recibir una comisión sin costo adicional para vos.
                 </p>
             </div>
-        </section>
 
-        <!-- Footer Note -->
-        <section class="mb-8">
-            <div class="bg-gray-50 border-round p-6 text-center">
-                <h3 class="text-gray-800 font-semibold mb-2">¿Tenés dudas?</h3>
-                <p class="text-gray-600 mb-4">
+            <!-- Footer Note -->
+            <div class="text-center">
+                <h2 class="text-white font-semibold mb-2 text-xl">¿Tenés dudas?</h2>
+                <p class="text-blue-100 mb-4">
                     Esta guía está basada en información actualizada y regulaciones argentinas vigentes.
                     Los precios y políticas pueden cambiar, siempre verificá la información más reciente.
                 </p>
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-blue-200">
                     <i class="pi pi-info-circle mr-1"></i>
                     Última actualización: {{ currentDate }}
                 </p>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 </div>

@@ -8,6 +8,7 @@ import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import { es } from './es.json';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -42,6 +43,6 @@ export const appConfig: ApplicationConfig = {
         }
       },
       translation: es
-    })
+    }), provideClientHydration(withEventReplay())
   ]
 };

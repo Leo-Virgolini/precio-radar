@@ -1,76 +1,94 @@
-<section class="bg-primary p-3">
+<section class="bg-primary p-1 md:p-3">
   <!-- Header -->
-  <div class="text-center mb-6">
-    <h1 class="text-4xl md:text-5xl font-bold mb-2">
-      <i class="pi pi-globe text-5xl mr-2"></i>
+  <div class="text-center mb-2 md:mb-6">
+    <h1 class="text-3xl md:text-5xl font-bold mb-2">
+      <img src="logo-icon.svg" alt="" class="logo-icon vertical-align-middle mr-2" />
       Productos con Envío a Argentina
       <picture>
-        <source type="image/webp" srcset="https://flagcdn.com/48x36/ar.webp,
-            https://flagcdn.com/96x72/ar.webp 2x,
-            https://flagcdn.com/144x108/ar.webp 3x">
-        <source type="image/png" srcset="https://flagcdn.com/48x36/ar.png,
-            https://flagcdn.com/96x72/ar.png 2x,
-            https://flagcdn.com/144x108/ar.png 3x">
-        <img src="https://flagcdn.com/48x36/ar.png" width="48" height="36" alt="Argentina">
+        <source type="image/webp" srcset="https://flagcdn.com/28x21/ar.webp,
+            https://flagcdn.com/48x36/ar.webp 2x,
+            https://flagcdn.com/96x72/ar.webp 3x">
+        <source type="image/png" srcset="https://flagcdn.com/28x21/ar.png,
+            https://flagcdn.com/48x36/ar.png 2x,
+            https://flagcdn.com/96x72/ar.png 3x">
+        <img src="https://flagcdn.com/28x21/ar.png" class="flag-title" alt="Argentina">
       </picture>
     </h1>
-    <p class="text-lg md:text-xl font-normal mb-4">
-      Encuentra los productos más vendidos y mejores ofertas con envío disponible a Argentina
+    <p class="text-sm md:text-xl font-normal mb-3 md:mb-4">
+      Productos de Amazon USA
+      <picture>
+        <source type="image/webp" srcset="https://flagcdn.com/24x18/us.webp, https://flagcdn.com/48x36/us.webp 2x">
+        <img src="https://flagcdn.com/24x18/us.png" width="24" height="18" alt="USA" />
+      </picture>
+      y Amazon España
+      <picture>
+        <source type="image/webp" srcset="https://flagcdn.com/24x18/es.webp, https://flagcdn.com/48x36/es.webp 2x">
+        <img src="https://flagcdn.com/24x18/es.png" width="24" height="18" alt="España" />
+      </picture>
+      con envío a Argentina
+      <picture>
+        <source type="image/webp" srcset="https://flagcdn.com/24x18/ar.webp, https://flagcdn.com/48x36/ar.webp 2x">
+        <img src="https://flagcdn.com/24x18/ar.png" width="24" height="18" alt="Argentina" />
+      </picture>
     </p>
 
   </div>
 
   <!-- Amazon Tabs -->
-  <p-tabs value="0" class="w-full">
-    <p-tablist class="bg-white-alpha-20 border-round-xl">
+  <p-tabs [(value)]="activeTab" class="w-full">
+    <p-tablist>
       <p-tab value="0">
         <div class="flex align-items-center gap-2">
-          <picture>
-            <source type="image/webp" srcset="https://flagcdn.com/32x24/us.webp,
-                  https://flagcdn.com/64x48/us.webp 2x,
-                  https://flagcdn.com/96x72/us.webp 3x">
-            <source type="image/png" srcset="https://flagcdn.com/32x24/us.png,
-                  https://flagcdn.com/64x48/us.png 2x,
-                  https://flagcdn.com/96x72/us.png 3x">
-            <img src="https://flagcdn.com/32x24/us.png" width="32" height="24" alt="United States">
-          </picture>
+          <i class="pi pi-globe"></i>
           <span>{{ tabs[0].label }}</span>
         </div>
       </p-tab>
       <p-tab value="1">
         <div class="flex align-items-center gap-2">
           <picture>
-            <source type="image/webp" srcset="https://flagcdn.com/32x24/es.webp,
-                  https://flagcdn.com/64x48/es.webp 2x,
-                  https://flagcdn.com/96x72/es.webp 3x">
-            <source type="image/png" srcset="https://flagcdn.com/32x24/es.png,
-                  https://flagcdn.com/64x48/es.png 2x,
-                  https://flagcdn.com/96x72/es.png 3x">
-            <img src="https://flagcdn.com/32x24/es.png" width="32" height="24" alt="Spain">
+            <source type="image/webp" srcset="https://flagcdn.com/24x18/us.webp, https://flagcdn.com/48x36/us.webp 2x">
+            <img src="https://flagcdn.com/24x18/us.png" width="24" height="18" alt="USA">
           </picture>
           <span>{{ tabs[1].label }}</span>
         </div>
       </p-tab>
+      <p-tab value="2">
+        <div class="flex align-items-center gap-2">
+          <picture>
+            <source type="image/webp" srcset="https://flagcdn.com/24x18/es.webp, https://flagcdn.com/48x36/es.webp 2x">
+            <img src="https://flagcdn.com/24x18/es.png" width="24" height="18" alt="España">
+          </picture>
+          <span>{{ tabs[2].label }}</span>
+        </div>
+      </p-tab>
     </p-tablist>
 
-    <p-tabpanels class="bg-primary">
+    <p-tabpanels>
       <p-tabpanel value="0">
-        <h3 class="text-white text-center font-medium">{{ tabs[0].description }}</h3>
-        <app-product-search [amazonRegion]="'US'"></app-product-search>
+        @if (activeTab() === '0') {
+          <app-product-search [amazonRegion]="'ALL'"></app-product-search>
+        }
       </p-tabpanel>
 
       <p-tabpanel value="1">
-        <h3 class="text-white text-center font-medium">{{ tabs[1].description }}</h3>
-        <app-product-search [amazonRegion]="'ES'"></app-product-search>
+        @if (activeTab() === '1') {
+          <app-product-search [amazonRegion]="'US'"></app-product-search>
+        }
+      </p-tabpanel>
+
+      <p-tabpanel value="2">
+        @if (activeTab() === '2') {
+          <app-product-search [amazonRegion]="'ES'"></app-product-search>
+        }
       </p-tabpanel>
     </p-tabpanels>
   </p-tabs>
 
   <!-- Info Footer -->
-  <div class="mt-12 bg-white-alpha-10 backdrop-blur-md border-round p-6 border-white-alpha-20">
+  <div class="mt-3 bg-white-alpha-10 border-round-xl p-3 md:p-6 border-white-alpha-20">
     <div class="grid">
       <div class="col-12 md:col-6">
-        <h4 class="text-base md:text-lg font-medium text-white mb-3">Sobre Ofertas del Mundo</h4>
+        <h2 class="text-base md:text-lg font-medium text-white mb-3"><i class="pi pi-info-circle mr-2"></i>Sobre PrecioRadar</h2>
         <ul class="text-sm md:text-base font-normal text-blue-100 space-y-2">
           <li>Te ayudamos a encontrar los mejores productos con envío a Argentina</li>
           <li>Comparamos precios y disponibilidad de envío internacional</li>
@@ -79,7 +97,7 @@
         </ul>
       </div>
       <div class="col-12 md:col-6">
-        <h4 class="text-base md:text-lg font-medium text-white mb-3">Información importante</h4>
+        <h2 class="text-base md:text-lg font-medium text-white mb-3"><i class="pi pi-exclamation-circle mr-2"></i>Información importante</h2>
         <ul class="text-sm md:text-base font-normal text-blue-100 space-y-2">
           <li>Como Asociado de Amazon, obtengo ingresos por compras adscritas</li>
           <li>Los precios y la disponibilidad están sujetos a cambios</li>

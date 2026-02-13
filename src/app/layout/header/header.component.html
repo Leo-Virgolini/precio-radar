@@ -1,36 +1,34 @@
 <!-- MegaMenu Navigation -->
-<p-megamenu [model]="megaMenuItems" class="backdrop-blur-md border-noround-top border-white-alpha-20 shadow-2">
+<nav aria-label="Navegación principal">
+<p-megamenu [model]="megaMenuItems" class="border-noround-top border-white-alpha-20 shadow-2">
     <ng-template #start>
-        <div class="flex align-items-center gap-2">
-            <p-button routerLink="/" (onClick)="onGoHome()" [text]="true" [plain]="true" class="no-underline hover:text-primary transition-colors transition-duration-200">
-                <ng-template #content>
-                    <div class="flex align-items-center gap-2">
-                        <i class="pi pi-globe text-2xl"></i>
-                        <span class="text-xl font-bold">Ofertas del Mundo</span>
-                        <picture>
-                            <source type="image/webp" srcset="https://flagcdn.com/32x24/ar.webp,
-                                    https://flagcdn.com/64x48/ar.webp 2x,
-                                    https://flagcdn.com/96x72/ar.webp 3x">
-                            <source type="image/png" srcset="https://flagcdn.com/32x24/ar.png,
-                                    https://flagcdn.com/64x48/ar.png 2x,
-                                    https://flagcdn.com/96x72/ar.png 3x">
-                            <img src="https://flagcdn.com/32x24/ar.png" width="32" height="24" alt="Argentina">
-                        </picture>
-                    </div>
-                </ng-template>
-            </p-button>
+        <div class="flex align-items-center gap-2 w-full">
+            <a routerLink="/" (click)="onGoHome()" class="no-underline cursor-pointer">
+                <img src="logo.svg" alt="PrecioRadar" class="header-logo" />
+            </a>
+            <!-- Mobile only: Favorites + Dark Mode -->
+            <div class="ml-auto flex align-items-center gap-1 md:hidden">
+                <p-button [text]="true" [rounded]="true" icon="pi pi-heart" routerLink="/favoritos"
+                  [badge]="favoritesService.count() > 0 ? '' + favoritesService.count() : undefined" badgeSeverity="danger" />
+                <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" />
+            </div>
         </div>
     </ng-template>
     <ng-template #end>
-        <!-- Search Form -->
-        <div class="flex flex-column md:flex-row align-items-center gap-3">
-            <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-                <div class="flex flex-column md:flex-row align-items-center gap-3">
-                    <div class="flex-1">
+        <div class="flex flex-column md:flex-row align-items-stretch md:align-items-center gap-2 w-full">
+            <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="flex-1">
+                <div class="flex flex-column md:flex-row align-items-stretch md:align-items-center gap-2">
+                    <div class="w-full md:flex-1">
                         <input type="text" pInputText formControlName="searchQuery" placeholder="Buscar productos..." class="w-full" />
                     </div>
-                    <div class="w-full md:w-20rem">
+                    <div class="w-full md:w-16rem">
                         <p-select formControlName="selectedCategory" [options]="categories" placeholder="Categoría" class="w-full" optionLabel="label" optionValue="value">
+                            <ng-template #selectedItem let-option>
+                                <div class="flex align-items-center gap-2">
+                                    <i [class]="option.icon"></i>
+                                    <span>{{ option.label }}</span>
+                                </div>
+                            </ng-template>
                             <ng-template #item let-option>
                                 <div class="flex align-items-center gap-2">
                                     <i [class]="option.icon"></i>
@@ -39,13 +37,18 @@
                             </ng-template>
                         </p-select>
                     </div>
-                    <div>
-                        <p-button type="submit" label="Buscar" icon="pi pi-search" [loading]="isLoading()" class="w-full md:w-auto" />
+                    <div class="flex gap-2">
+                        <p-button type="submit" label="Buscar" icon="pi pi-search" [loading]="isLoading()" styleClass="w-full md:w-auto" class="flex-1 md:flex-none" />
+                        <!-- Desktop only: Favorites + Dark Mode -->
+                        <div class="hidden md:flex align-items-center gap-1">
+                            <p-button [text]="true" [rounded]="true" icon="pi pi-heart" routerLink="/favoritos"
+                              [badge]="favoritesService.count() > 0 ? '' + favoritesService.count() : undefined" badgeSeverity="danger" />
+                            <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" />
+                        </div>
                     </div>
                 </div>
             </form>
-            <!-- Dark Mode Toggle -->
-            <p-button [raised]="true" [rounded]="true" [outlined]="true" severity="primary" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" />
         </div>
     </ng-template>
 </p-megamenu>
+</nav>

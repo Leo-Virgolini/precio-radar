@@ -16,7 +16,14 @@
       "WebFetch(domain:affiliate-program.amazon.com)",
       "WebFetch(domain:www.amazon.com)",
       "WebFetch(domain:www.stanley1913.com)",
-      "Bash(npx ng serve)"
+      "Bash(npx ng serve)",
+      "Bash(npx ng build:*)",
+      "WebFetch(domain:www.amazon.es)",
+      "Bash(ls -la \"c:\\\\Users\\\\Leo\\\\Documents\\\\Angular Projects\\\\sales\\\\src\\\\app\"\" | grep -E \"^d \")",
+      "Bash(npx ng add:*)",
+      "WebFetch(domain:angular.dev)",
+      "Bash(npx sharp-cli:*)",
+      "Bash(del:*)"
     ]
   }
 }

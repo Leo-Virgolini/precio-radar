@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+section {
+  flex: 1;
+}
+
+.product-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.remove-favorite {
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: scale(1.15);
+  }
+}

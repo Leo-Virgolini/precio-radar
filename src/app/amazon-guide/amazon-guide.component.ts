@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
@@ -12,6 +13,7 @@ import { ChipModule } from 'primeng/chip';
 import { AvatarModule } from 'primeng/avatar';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
+import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 
 @Component({
   selector: 'app-amazon-guide',
@@ -27,12 +29,16 @@ import { PanelModule } from 'primeng/panel';
     ChipModule,
     AvatarModule,
     MessageModule,
-    PanelModule
+    PanelModule,
+    AnimateOnScrollModule
   ],
   templateUrl: './amazon-guide.component.html',
   styleUrl: './amazon-guide.component.scss'
 })
-export class AmazonGuideComponent {
+export class AmazonGuideComponent implements OnInit, OnDestroy {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private faqScriptElement: HTMLScriptElement | null = null;
 
   protected readonly currentDate = new Date().toLocaleDateString('es-AR');
 
@@ -51,12 +57,16 @@ export class AmazonGuideComponent {
     {
       number: 1,
       title: 'Crear tu cuenta en Amazon',
-      description: 'Regístrate en Amazon.com y configura tu dirección de envío en Argentina',
+      description: 'Regístrate en Amazon.com o Amazon.es y configura tu dirección de envío en Argentina',
       details: [
-        'Ve a Amazon.com y haz clic en "Account & Lists"',
-        'Selecciona "Create your Amazon account"',
+        'Ve a Amazon y haz clic en "Account & Lists" (USA) o "Cuenta y listas" (España)',
+        'Selecciona "Create your Amazon account" o "Crear cuenta"',
         'Completa el formulario con tus datos',
         'Configura tu dirección de envío en Argentina'
+      ],
+      links: [
+        { label: 'Amazon USA', url: 'https://www.amazon.com', icon: 'pi pi-external-link' },
+        { label: 'Amazon España', url: 'https://www.amazon.es', icon: 'pi pi-external-link' }
       ],
       icon: 'pi pi-user-plus',
       status: 'completed'
@@ -64,12 +74,12 @@ export class AmazonGuideComponent {
     {
       number: 2,
       title: 'Identificar productos elegibles',
-      description: 'Busca productos con envío disponible a Argentina',
+      description: 'Busca productos con envío disponible a Argentina. Las condiciones varían según la tienda.',
       details: [
-        'Busca productos que muestren "FREE Shipping" o "Envío GRATIS"',
-        'El envío gratis aplica en pedidos de $99 USD o más en productos seleccionados',
-        'Revisa los detalles de envío de cada producto',
-        'Confirma que el producto sea elegible para envío internacional a Argentina'
+        'Amazon USA: Envío gratis en pedidos de $99 USD o más en productos seleccionados',
+        'Amazon España: Envío pago (€21 por envío + €11 por kg con AmazonGlobal Express)',
+        'Amazon España solo envía libros, CDs, DVDs y videojuegos por envío Express (€20 + €9/kg)',
+        'Revisa los detalles de envío de cada producto antes de comprar'
       ],
       icon: 'pi pi-search',
       status: 'completed'
@@ -145,8 +155,8 @@ export class AmazonGuideComponent {
 
   protected readonly tips = [
     {
-      title: 'Aprovecha el envío gratis',
-      description: 'Combina productos que califiquen para envío gratis en pedidos superiores a $99 USD',
+      title: 'Aprovecha el envío gratis de Amazon USA',
+      description: 'Combina productos que califiquen para envío gratis en pedidos superiores a $99 USD. Amazon España no ofrece envío gratis a Argentina.',
       icon: 'pi pi-shopping-cart',
       color: 'success'
     },
@@ -193,7 +203,42 @@ export class AmazonGuideComponent {
     }
   ];
 
+  ngOnInit(): void {
+    const faqSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': this.faqItems.map(item => ({
+        '@type': 'Question',
+        'name': item.question,
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': item.answer
+        }
+      }))
+    };
+
+    this.faqScriptElement = this.document.createElement('script');
+    this.faqScriptElement.type = 'application/ld+json';
+    this.faqScriptElement.id = 'faq-jsonld';
+    this.faqScriptElement.textContent = JSON.stringify(faqSchema);
+    this.document.head.appendChild(this.faqScriptElement);
+  }
+
+  ngOnDestroy(): void {
+    if (this.faqScriptElement) {
+      this.faqScriptElement.remove();
+      this.faqScriptElement = null;
+    }
+  }
+
+  protected openLink(url: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  }
+
   protected scrollToSection(sectionId: string): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });

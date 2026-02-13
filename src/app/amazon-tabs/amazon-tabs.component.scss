@@ -1,3 +1,26 @@
+.logo-icon {
+  height: 2rem;
+  width: 2rem;
+}
+
+.flag-title {
+  width: 28px;
+  height: 21px;
+  vertical-align: middle;
+}
+
+@media (min-width: 768px) {
+  .logo-icon {
+    height: 3.5rem;
+    width: 3.5rem;
+  }
+
+  .flag-title {
+    width: 48px;
+    height: 36px;
+  }
+}
+
 :host ::ng-deep {
   // Override PrimeNG theme CSS variables to remove default borders
   .p-tabs {
@@ -6,13 +29,19 @@
     --p-tabs-active-bar-height: 0px;
     --p-tabs-active-bar-bottom: 0px;
     --p-tabs-tablist-border-width: 0;
+
+    // Unified background for tabs + content
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 1rem;
+    overflow: hidden;
   }
 
   .p-tablist {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    background: transparent;
+    border-radius: 0;
     padding: 4px;
-    overflow: visible;
+    overflow-x: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .p-tablist-content {
@@ -20,16 +49,19 @@
   }
 
   .p-tab {
-    border-radius: 6px;
+    border-radius: 1rem;
     padding: 0.75rem 1.5rem;
     font-weight: 600;
+    white-space: nowrap;
     transition: all 0.2s ease;
     color: rgba(255, 255, 255, 0.7);
     border: 2px solid transparent;
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.15);
+    &:hover:not([data-p-active='true']) {
+      background: rgba(255, 255, 255, 0.2);
       color: white;
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
     }
 
     &[data-p-active='true'] {
@@ -43,5 +75,17 @@
   .p-tabpanels {
     padding: 0;
     background: transparent;
+  }
+
+  .p-tabpanel {
+    padding: 0;
+  }
+
+  // Mobile: smaller tab padding
+  @media (max-width: 768px) {
+    .p-tab {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
   }
 }
