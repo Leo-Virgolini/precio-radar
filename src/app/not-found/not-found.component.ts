@@ -1,27 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-not-found',
   imports: [RouterLink, ButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="flex flex-column align-items-center justify-content-center text-center px-4" style="min-height: 65vh;">
       <!-- Animated radar illustration -->
-      <div class="not-found-radar mb-4">
+      <div class="not-found-radar mb-4 animate-stagger-1">
         <div class="radar-circle"></div>
         <div class="radar-circle radar-circle-2"></div>
         <div class="radar-sweep"></div>
         <span class="radar-icon">?</span>
       </div>
 
-      <h1 class="not-found-title mb-2">404</h1>
-      <h2 class="text-xl font-semibold mb-2" style="color: var(--p-text-color);">Página no encontrada</h2>
-      <p class="text-color-secondary mb-5" style="max-width: 28rem; line-height: 1.6;">
+      <h1 class="not-found-title mb-2 animate-stagger-2">404</h1>
+      <h2 class="text-xl font-semibold mb-2 animate-stagger-3" style="color: var(--p-text-color);">Página no encontrada</h2>
+      <p class="text-color-secondary mb-5 animate-stagger-4" style="max-width: 28rem; line-height: 1.6;">
         Nuestro radar no pudo detectar esta página. Es posible que haya sido movida o que la dirección sea incorrecta.
       </p>
 
-      <div class="flex flex-column sm:flex-row gap-3 align-items-center">
+      <div class="flex flex-column sm:flex-row gap-3 align-items-center animate-stagger-5">
         <p-button label="Volver al inicio" icon="pi pi-home" routerLink="/" />
         <p-button label="Guía de compra" icon="pi pi-book" routerLink="/guia-amazon" severity="secondary" [outlined]="true" />
       </div>

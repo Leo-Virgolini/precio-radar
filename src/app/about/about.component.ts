@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
@@ -9,6 +9,7 @@ import { AnimateOnScrollModule } from 'primeng/animateonscroll';
   selector: 'app-about',
   imports: [CardModule, DividerModule, ButtonModule, RouterModule, AnimateOnScrollModule],
   templateUrl: './about.component.html',
-  styleUrl: './about.component.scss'
+  styleUrl: './about.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AboutComponent {}

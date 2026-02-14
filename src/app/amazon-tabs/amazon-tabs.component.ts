@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 
 import { TagModule } from 'primeng/tag';
 import { TabsModule } from 'primeng/tabs';
@@ -8,6 +8,7 @@ import { ProductSearchComponent } from '../product-search/product-search.compone
   selector: 'app-amazon-tabs',
   templateUrl: './amazon-tabs.component.html',
   styleUrl: './amazon-tabs.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TagModule,
     TabsModule,

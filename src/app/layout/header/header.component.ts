@@ -1,5 +1,5 @@
 
-import { Component, signal, OnInit, inject, effect, afterNextRender, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, OnInit, inject, effect, afterNextRender, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -15,7 +15,8 @@ import { Router, RouterLink } from '@angular/router';
   selector: 'app-header',
   imports: [ButtonModule, MegaMenuModule, ReactiveFormsModule, InputTextModule, SelectModule, RouterLink, BadgeModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
 

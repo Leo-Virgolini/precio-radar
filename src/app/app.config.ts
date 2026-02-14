@@ -1,6 +1,6 @@
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideRouter, withViewTransitions } from '@angular/router';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 
 import { routes } from './app.routes';
 
@@ -14,8 +14,18 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideRouter(routes, (() => {
+      let firstNavigation = true;
+      return withViewTransitions({
+        onViewTransitionCreated: ({ transition }) => {
+          if (firstNavigation) {
+            firstNavigation = false;
+            transition.skipTransition();
+          }
+        }
+      });
+    })()),
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
 
     { provide: LOCALE_ID, useValue: 'es-AR' },
     providePrimeNG({

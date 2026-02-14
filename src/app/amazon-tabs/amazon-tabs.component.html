@@ -66,19 +66,19 @@
     <p-tabpanels>
       <p-tabpanel value="0">
         @if (activeTab() === '0') {
-          <app-product-search [amazonRegion]="'ALL'"></app-product-search>
+          <app-product-search [amazonRegion]="'ALL'" class="animate-fade-in"></app-product-search>
         }
       </p-tabpanel>
 
       <p-tabpanel value="1">
         @if (activeTab() === '1') {
-          <app-product-search [amazonRegion]="'US'"></app-product-search>
+          <app-product-search [amazonRegion]="'US'" class="animate-fade-in"></app-product-search>
         }
       </p-tabpanel>
 
       <p-tabpanel value="2">
         @if (activeTab() === '2') {
-          <app-product-search [amazonRegion]="'ES'"></app-product-search>
+          <app-product-search [amazonRegion]="'ES'" class="animate-fade-in"></app-product-search>
         }
       </p-tabpanel>
     </p-tabpanels>

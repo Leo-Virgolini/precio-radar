@@ -13,74 +13,17 @@ body {
     margin: 0;
 }
 
-/* Global Typography - Using PrimeFlex classes */
 * {
   font-family: var(--font-primary);
 }
 
-/* Headings - Using PrimeFlex font weight classes */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   line-height: 1.2;
 }
 
-/* Body Text - Using PrimeFlex font weight classes */
 body {
-  font-family: var(--font-primary);
   line-height: 1.6;
-  /* Use font-normal class */
-}
-
-p {
-  font-family: var(--font-primary);
-  line-height: 1.6;
-  /* Use font-normal class */
-}
-
-/* Buttons - Using PrimeFlex font weight classes */
-.p-button {
-  font-family: var(--font-primary);
-  /* Use font-medium class */
-}
-
-/* Input Fields - Using PrimeFlex font weight classes */
-.p-inputtext {
-  font-family: var(--font-primary);
-  /* Use font-normal class */
-}
-
-/* Cards - Using PrimeFlex font weight classes */
-.p-card .p-card-title {
-  font-family: var(--font-heading);
-  /* Use font-semibold class */
-}
-
-.p-card .p-card-subtitle {
-  font-family: var(--font-primary);
-  /* Use font-normal class */
-}
-
-.p-card .p-card-content {
-  font-family: var(--font-primary);
-  /* Use font-normal class */
-}
-
-/* Tags - Using PrimeFlex font weight classes */
-.p-tag {
-  font-family: var(--font-primary);
-  /* Use font-medium class */
-}
-
-/* Messages - Using PrimeFlex font weight classes */
-.p-message {
-  font-family: var(--font-primary);
-  /* Use font-normal class */
-}
-
-/* Select Dropdowns - Using PrimeFlex font weight classes */
-.p-select {
-  font-family: var(--font-primary);
-  /* Use font-normal class */
 }
 
 /* Main content stretches to push footer down */
@@ -135,9 +78,77 @@ main.flex-auto {
 
 /* ========== PrimeNG Component Overrides ========== */
 
-/* Tab panels - remove default white background */
-.p-tabpanel {
+/* Amazon Tabs - pill style on blue background */
+.p-tabs {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  border: none !important;
+}
+
+.p-tabs *:not(.p-tab[data-p-active='true']) {
+  border-color: transparent !important;
+}
+
+.p-tablist {
   background: transparent !important;
+  padding: 4px !important;
+  box-shadow: none !important;
+}
+
+.p-tablist::before,
+.p-tablist::after,
+.p-tablist-content::before,
+.p-tablist-content::after {
+  display: none !important;
+}
+
+.p-tab {
+  border-radius: 1rem !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  transition: all 0.2s ease !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid transparent !important;
+  background: transparent !important;
+}
+
+.p-tab:hover:not([data-p-active='true']) {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+.p-tab[data-p-active='true'] {
+  background: white !important;
+  color: #2563eb !important;
+  border-color: white !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.p-tabs > .p-tabpanels {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+.p-tabpanel {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.p-tabs-inkbar,
+.p-tablist-active-bar {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .p-tab {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
 }
 
 /* DataView paginator - remove top border-radius to connect with content */
@@ -206,6 +217,73 @@ main.flex-auto {
 .p-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ========== Animations ========== */
+
+/* View Transition API - Route transitions */
+::view-transition-old(root) {
+  animation: vt-fade-out 150ms ease-in;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 300ms ease-out;
+}
+
+@keyframes vt-fade-out {
+  from { transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { transform: translateY(0); }
+}
+
+/* Fade in up - for empty states, tab content */
+.animate-fade-in {
+  animation: fade-in-up 400ms ease-out both;
+}
+
+@keyframes fade-in-up {
+  from { transform: translateY(15px); }
+  to { transform: translateY(0); }
+}
+
+/* Product card enter - staggered grid entrance */
+.animate-card-enter {
+  animation: card-enter 350ms ease-out both;
+}
+
+@keyframes card-enter {
+  from { transform: translateY(20px) scale(0.97); }
+  to { transform: translateY(0) scale(1); }
+}
+
+/* Favorite card leave - slide out on removal */
+.animate-card-leave {
+  animation: card-leave 300ms ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes card-leave {
+  to { transform: translateX(-20px) scale(0.95); }
+}
+
+/* 404 staggered entrance */
+.animate-stagger-1 { animation: fade-in-up 500ms ease-out 0ms both; }
+.animate-stagger-2 { animation: fade-in-up 500ms ease-out 100ms both; }
+.animate-stagger-3 { animation: fade-in-up 500ms ease-out 200ms both; }
+.animate-stagger-4 { animation: fade-in-up 500ms ease-out 300ms both; }
+.animate-stagger-5 { animation: fade-in-up 500ms ease-out 400ms both; }
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ========== Dark Mode Overrides ========== */

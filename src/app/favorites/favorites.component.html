@@ -41,7 +41,7 @@
 
   <!-- Empty State -->
   @if (!isLoading() && products().length === 0) {
-    <div class="flex flex-column align-items-center justify-content-center py-8 px-4 bg-white-alpha-10 border-round-xl">
+    <div class="flex flex-column align-items-center justify-content-center py-8 px-4 bg-white-alpha-10 border-round-xl animate-fade-in">
       <i class="pi pi-heart text-6xl mb-4 text-blue-200"></i>
       <h3 class="text-xl font-semibold m-0 mb-2 text-white">No tenés productos guardados</h3>
       <p class="text-sm m-0 mb-4 text-center text-blue-100" style="max-width: 24rem;">
@@ -56,14 +56,16 @@
     <div class="bg-white-alpha-10 border-round-xl p-4 border-white-alpha-20">
       <div class="grid">
         @for (product of products(); track product.asin) {
-          <div class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
+          <div class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2 animate-card-enter"
+            [class.animate-card-leave]="removingAsins().has(product.asin)"
+            [style.animation-delay]="removingAsins().has(product.asin) ? '0ms' : ($index * 50) + 'ms'">
             <p-card class="h-full border-round-xl overflow-hidden">
               <ng-template #header>
                 <div class="relative overflow-hidden flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
                   <img [src]="getProductImage(product)" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
                     (error)="onImageError($event)" />
                   <!-- Remove from favorites -->
-                  <div class="absolute top-0 left-0 m-2 cursor-pointer remove-favorite" (click)="removeFavorite(product)">
+                  <div class="absolute top-0 left-0 m-2 cursor-pointer remove-favorite" role="button" aria-label="Quitar de favoritos" (click)="removeFavorite(product)">
                     <span class="relative inline-flex align-items-center justify-content-center">
                       <i class="pi pi-heart-fill" style="font-size: 2rem; color: #ef4444;"></i>
                       <i class="pi pi-trash absolute" style="font-size: 0.8rem; color: white; margin-top: -2px;"></i>

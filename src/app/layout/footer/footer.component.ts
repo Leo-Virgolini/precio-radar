@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
   imports: [RouterModule],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss'
+  styleUrl: './footer.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent {
   protected readonly currentYear = new Date().getFullYear();

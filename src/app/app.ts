@@ -1,14 +1,16 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit, DestroyRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter, map, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App implements OnInit {
   private readonly router = inject(Router);
@@ -16,6 +18,7 @@ export class App implements OnInit {
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
   private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly BASE_URL = 'https://precioradar.com';
   private readonly defaultTitle = 'PrecioRadar | Rastreá los mejores precios internacionales con envío a Argentina';
@@ -29,7 +32,8 @@ export class App implements OnInit {
         while (route.firstChild) route = route.firstChild;
         return route;
       }),
-      mergeMap(route => route.data)
+      mergeMap(route => route.data),
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(data => {
       const title = data['title'] || this.defaultTitle;
       const description = data['description'] || this.defaultDescription;

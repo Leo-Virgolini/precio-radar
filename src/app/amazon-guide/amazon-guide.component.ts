@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 import { CardModule } from 'primeng/card';
@@ -33,7 +33,8 @@ import { AnimateOnScrollModule } from 'primeng/animateonscroll';
     AnimateOnScrollModule
   ],
   templateUrl: './amazon-guide.component.html',
-  styleUrl: './amazon-guide.component.scss'
+  styleUrl: './amazon-guide.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AmazonGuideComponent implements OnInit, OnDestroy {
   private readonly document = inject(DOCUMENT);

@@ -8,9 +8,9 @@
             </a>
             <!-- Mobile only: Favorites + Dark Mode -->
             <div class="ml-auto flex align-items-center gap-1 md:hidden">
-                <p-button [text]="true" [rounded]="true" icon="pi pi-heart" routerLink="/favoritos"
+                <p-button [text]="true" [rounded]="true" icon="pi pi-heart" routerLink="/favoritos" aria-label="Favoritos"
                   [badge]="favoritesService.count() > 0 ? '' + favoritesService.count() : undefined" badgeSeverity="danger" />
-                <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" />
+                <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" [attr.aria-label]="isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'" />
             </div>
         </div>
     </ng-template>
@@ -41,9 +41,9 @@
                         <p-button type="submit" label="Buscar" icon="pi pi-search" [loading]="isLoading()" styleClass="w-full md:w-auto" class="flex-1 md:flex-none" />
                         <!-- Desktop only: Favorites + Dark Mode -->
                         <div class="hidden md:flex align-items-center gap-1">
-                            <p-button [text]="true" [rounded]="true" icon="pi pi-heart" routerLink="/favoritos"
+                            <p-button [text]="true" [rounded]="true" icon="pi pi-heart" routerLink="/favoritos" aria-label="Favoritos"
                               [badge]="favoritesService.count() > 0 ? '' + favoritesService.count() : undefined" badgeSeverity="danger" />
-                            <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" />
+                            <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" [attr.aria-label]="isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'" />
                         </div>
                     </div>
                 </div>

@@ -1,62 +1,53 @@
-import { Component, signal, inject, OnInit, Input, effect, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, OnInit, Input, effect, PLATFORM_ID, DestroyRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
-import { MegaMenuModule } from 'primeng/megamenu';
 import { DataViewModule } from 'primeng/dataview';
 import { SliderModule } from 'primeng/slider';
-import { ImageModule } from 'primeng/image';
-import { BadgeModule } from 'primeng/badge';
-import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
-import { AmazonApiService } from '../services/amazon-api.service';
-import { AmazonProduct, SearchResponse } from '../models/product.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { SearchService } from '../services/search.service';
-import { FavoritesService } from '../services/favorites.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { RatingModule } from 'primeng/rating';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DrawerModule } from 'primeng/drawer';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
-import { PopoverModule } from 'primeng/popover';
-import { FormsModule } from '@angular/forms';
+import { AmazonApiService } from '../services/amazon-api.service';
+import { AmazonProduct, SearchResponse } from '../models/product.model';
+import { SearchService } from '../services/search.service';
+import { FavoritesService } from '../services/favorites.service';
+import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImage, formatNumber, handleImageError } from '../shared/product.utils';
 
 @Component({
   selector: 'app-product-search',
   templateUrl: './product-search.component.html',
   styleUrl: './product-search.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    InputTextModule,
     ButtonModule,
     SelectModule,
     CardModule,
     MessageModule,
-    ImageModule,
     DividerModule,
     TagModule,
-    MegaMenuModule,
     DataViewModule,
     SelectButtonModule,
     SliderModule,
-    BadgeModule,
-    TooltipModule,
     DialogModule,
     SkeletonModule,
     RatingModule,
     InputNumberModule,
     DrawerModule,
-    ToggleSwitchModule,
-    PopoverModule
+    ToggleSwitchModule
   ]
 })
 export class ProductSearchComponent implements OnInit {
@@ -69,6 +60,7 @@ export class ProductSearchComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly searchService = inject(SearchService);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly favoritesService = inject(FavoritesService);
 
   // Reactive forms
@@ -191,7 +183,7 @@ export class ProductSearchComponent implements OnInit {
       ? this.amazonApiService.searchProducts(searchQuery, this.currentPage(), 10, this.amazonRegion, searchCategory || undefined)
       : this.amazonApiService.getTopSellingProducts(searchCategory, this.amazonRegion);
 
-    search$.subscribe({
+    search$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (results) => {
         this.originalProducts = results.products;
         this.searchResults.set(results);
@@ -208,6 +200,7 @@ export class ProductSearchComponent implements OnInit {
   private loadTopSellingProducts(): void {
     const selectedCategory = this.searchCategory || '';
     this.amazonApiService.getTopSellingProducts(selectedCategory, this.amazonRegion)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (results) => {
           this.originalProducts = results.products;
@@ -257,13 +250,8 @@ export class ProductSearchComponent implements OnInit {
     return this.favoritesService.isFavorite(asin);
   }
 
-  onImageError(event: any): void {
-    // Update the image source to show default image
-    const imgElement = event.target as HTMLImageElement;
-    if (imgElement) {
-      imgElement.src = 'sin_imagen.png';
-      imgElement.alt = 'Sin imagen';
-    }
+  onImageError(event: Event): void {
+    handleImageError(event);
   }
 
   protected trackByAsin(index: number, product: AmazonProduct): string {
@@ -271,7 +259,7 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected getDiscountPercentage(original: number, current: number): number {
-    return Math.round(((original - current) / original) * 100);
+    return getDiscountPercentage(original, current);
   }
 
   protected getAvailabilityClass(availability: string): string {
@@ -281,10 +269,7 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected formatNumber(num: number): string {
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'k';
-    }
-    return num.toString();
+    return formatNumber(num);
   }
 
   protected getPageNumbers(): number[] {
@@ -404,7 +389,7 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected getProductImage(product: AmazonProduct): string {
-    return product.image || 'sin_imagen.png';
+    return getProductImage(product);
   }
 
   protected getTotalPrice(product: AmazonProduct): number {
@@ -412,7 +397,7 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected getShippingPrice(product: AmazonProduct): number {
-    return product.shipping.price;
+    return getShippingPrice(product);
   }
 
   protected isFreeShipping(product: AmazonProduct): boolean {
@@ -429,7 +414,7 @@ export class ProductSearchComponent implements OnInit {
 
 
   protected formatPrice(price: number): string {
-    return price.toFixed(2);
+    return formatPrice(price);
   }
 
   protected getProductRegion(product: AmazonProduct): string {
@@ -438,12 +423,12 @@ export class ProductSearchComponent implements OnInit {
 
   protected getCurrencySymbol(product?: AmazonProduct): string {
     const region = product ? this.getProductRegion(product) : this.amazonRegion;
-    return region === 'ES' ? '€' : '$';
+    return getCurrencySymbol(region);
   }
 
   protected getCurrencyCode(product?: AmazonProduct): string {
     const region = product ? this.getProductRegion(product) : this.amazonRegion;
-    return region === 'ES' ? 'EUR' : 'USD';
+    return getCurrencyCode(region);
   }
 
   protected getFreeShippingThreshold(product?: AmazonProduct): string {
@@ -452,7 +437,7 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected getRegionLabel(product: AmazonProduct): string {
-    return product.region === 'ES' ? 'Amazon España' : 'Amazon USA';
+    return getRegionLabel(product);
   }
 
   private resetFilters(): void {
