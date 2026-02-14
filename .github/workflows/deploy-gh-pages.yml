@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Remove SSR options for static CSR build
+      - name: Configure for static build
+        run: |
+          node -e "
+            const fs = require('fs');
+            const cfg = JSON.parse(fs.readFileSync('angular.json', 'utf8'));
+            const opts = cfg.projects.sales.architect.build.options;
+            delete opts.server;
+            delete opts.outputMode;
+            delete opts.ssr;
+            fs.writeFileSync('angular.json', JSON.stringify(cfg, null, 2));
+          "
+
+      - run: npx ng build --configuration production
+
+      # SPA routing: copy index.html to 404.html
+      - name: Prepare for GitHub Pages
+        run: |
+          cp dist/sales/browser/index.html dist/sales/browser/404.html
+          echo "precioradar.com.ar" > dist/sales/browser/CNAME
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/sales/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
