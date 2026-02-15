@@ -18,11 +18,12 @@ import { RatingModule } from 'primeng/rating';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DrawerModule } from 'primeng/drawer';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { GalleriaModule } from 'primeng/galleria';
 import { AmazonApiService } from '../services/amazon-api.service';
 import { AmazonProduct, SearchResponse } from '../models/product.model';
 import { SearchService } from '../services/search.service';
 import { FavoritesService } from '../services/favorites.service';
-import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImage, formatNumber, handleImageError } from '../shared/product.utils';
+import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImages, formatNumber, handleImageError } from '../shared/product.utils';
 
 @Component({
   selector: 'app-product-search',
@@ -47,7 +48,8 @@ import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode,
     RatingModule,
     InputNumberModule,
     DrawerModule,
-    ToggleSwitchModule
+    ToggleSwitchModule,
+    GalleriaModule
   ]
 })
 export class ProductSearchComponent implements OnInit {
@@ -388,9 +390,14 @@ export class ProductSearchComponent implements OnInit {
     }
   }
 
-  protected getProductImage(product: AmazonProduct): string {
-    return getProductImage(product);
+  protected getProductImages(product: AmazonProduct): string[] {
+    return getProductImages(product);
   }
+
+  protected readonly galleriaResponsiveOptions = [
+    { breakpoint: '768px', numVisible: 3 },
+    { breakpoint: '560px', numVisible: 2 }
+  ];
 
   protected getTotalPrice(product: AmazonProduct): number {
     return product.price.current + product.shipping.price;

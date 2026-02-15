@@ -229,17 +229,22 @@
                     <div class="col-12 sm:col-6 lg:col-4 xl:col-3 p-1 md:p-2 animate-card-enter" [style.animation-delay]="($index * 50) + 'ms'">
                       <p-card class="h-full border-round-xl overflow-hidden cursor-pointer" (click)="openProductDetail(product)">
                         <ng-template #header>
-                          <div class="relative overflow-hidden flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
-                            <img [src]="getProductImage(product)" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
-                              (error)="onImageError($event)" />
-                            <div class="absolute top-0 left-0 m-2">
+                          <div class="relative product-card-image">
+                            <div class="product-detail-overlay">
+                              <span><i class="pi pi-eye"></i>Ver detalles</span>
+                            </div>
+                            <div class="flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
+                              <img [src]="product.images[0]" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
+                                (error)="onImageError($event)" />
+                            </div>
+                            <div class="absolute top-0 left-0 m-2" style="z-index: 1;">
                               <p-button [icon]="isFavorite(product.asin) ? 'pi pi-heart-fill' : 'pi pi-heart'" [rounded]="true"
                                 [severity]="isFavorite(product.asin) ? 'danger' : 'secondary'" size="small"
                                 [attr.aria-label]="isFavorite(product.asin) ? 'Quitar de favoritos' : 'Agregar a favoritos'"
                                 (onClick)="toggleFavorite(product); $event.stopPropagation()" />
                             </div>
                             @if (product.price.original) {
-                              <div class="absolute top-0 right-0 m-2">
+                              <div class="absolute top-0 right-0 m-2" style="z-index: 1;">
                                 <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" class="text-lg" />
                               </div>
                             }
@@ -341,21 +346,24 @@
                       <ng-template #content>
                         <div class="flex flex-column md:flex-row gap-4">
                           <!-- Product Image -->
-                          <div class="flex-shrink-0 md:w-18rem">
-                            <div class="relative overflow-hidden border-round flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
-                              <img [src]="getProductImage(product)" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
-                                (error)="onImageError($event)" />
-                              <div class="absolute top-0 left-0 m-2">
-                                <p-button [icon]="isFavorite(product.asin) ? 'pi pi-heart-fill' : 'pi pi-heart'" [rounded]="true"
-                                  [severity]="isFavorite(product.asin) ? 'danger' : 'secondary'" size="small"
-                                  (onClick)="toggleFavorite(product); $event.stopPropagation()" />
-                              </div>
-                              @if (product.price.original) {
-                                <div class="absolute top-0 right-0 m-2">
-                                  <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" class="text-lg" />
-                                </div>
-                              }
+                          <div class="flex-shrink-0 md:w-18rem relative product-card-image">
+                            <div class="product-detail-overlay">
+                              <span><i class="pi pi-eye"></i>Ver detalles</span>
                             </div>
+                            <div class="flex align-items-center justify-content-center product-image-bg border-round" style="height: 14rem;">
+                              <img [src]="product.images[0]" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
+                                (error)="onImageError($event)" />
+                            </div>
+                            <div class="absolute top-0 left-0 m-2" style="z-index: 1;">
+                              <p-button [icon]="isFavorite(product.asin) ? 'pi pi-heart-fill' : 'pi pi-heart'" [rounded]="true"
+                                [severity]="isFavorite(product.asin) ? 'danger' : 'secondary'" size="small"
+                                (onClick)="toggleFavorite(product); $event.stopPropagation()" />
+                            </div>
+                            @if (product.price.original) {
+                              <div class="absolute top-0 right-0 m-2" style="z-index: 1;">
+                                <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" class="text-lg" />
+                              </div>
+                            }
                           </div>
 
                           <!-- Product Details -->
@@ -604,10 +612,25 @@
     </ng-template>
 
     <div class="flex flex-column md:flex-row gap-4">
-      <!-- Product Image -->
-      <div class="flex-shrink-0 flex align-items-center justify-content-center product-image-bg border-round p-3" style="min-height: 18rem;">
-        <img [src]="getProductImage(product)" [alt]="product.title" style="max-width: 100%; max-height: 18rem; object-fit: contain;"
-          (error)="onImageError($event)" class="md:w-20rem" />
+      <!-- Product Image Gallery -->
+      <div class="flex-shrink-0 md:w-20rem">
+        <p-galleria [value]="getProductImages(product)" [numVisible]="4" [showThumbnails]="getProductImages(product).length > 1"
+          [showIndicators]="false" [showItemNavigators]="getProductImages(product).length > 1"
+          [showItemNavigatorsOnHover]="false" [responsiveOptions]="galleriaResponsiveOptions"
+          [containerStyle]="{ 'max-width': '100%' }">
+          <ng-template #item let-item>
+            <div class="flex align-items-center justify-content-center product-image-bg border-round p-3" style="min-height: 18rem;">
+              <img [src]="item" [alt]="product.title" style="max-width: 100%; max-height: 18rem; object-fit: contain;"
+                (error)="onImageError($event)" />
+            </div>
+          </ng-template>
+          <ng-template #thumbnail let-item>
+            <div class="flex align-items-center justify-content-center border-1 border-round surface-border surface-ground p-1" style="width: 4rem; height: 4rem;">
+              <img [src]="item" [alt]="product.title" style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                (error)="onImageError($event)" />
+            </div>
+          </ng-template>
+        </p-galleria>
       </div>
 
       <!-- Product Info -->

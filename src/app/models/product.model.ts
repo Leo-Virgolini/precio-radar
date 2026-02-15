@@ -11,7 +11,7 @@ export interface AmazonProduct {
     currency: string;
     destination: string;
   };
-  image: string;
+  images: string[];
   rating: number;
   reviewCount: number;
   availability: string;

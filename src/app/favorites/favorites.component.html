@@ -59,20 +59,22 @@
           <div class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2 animate-card-enter"
             [class.animate-card-leave]="removingAsins().has(product.asin)"
             [style.animation-delay]="removingAsins().has(product.asin) ? '0ms' : ($index * 50) + 'ms'">
-            <p-card class="h-full border-round-xl overflow-hidden">
+            <p-card class="h-full border-round-xl overflow-hidden cursor-pointer" (click)="openProductDetail(product)">
               <ng-template #header>
-                <div class="relative overflow-hidden flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
-                  <img [src]="getProductImage(product)" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
-                    (error)="onImageError($event)" />
-                  <!-- Remove from favorites -->
-                  <div class="absolute top-0 left-0 m-2 cursor-pointer remove-favorite" role="button" aria-label="Quitar de favoritos" (click)="removeFavorite(product)">
-                    <span class="relative inline-flex align-items-center justify-content-center">
-                      <i class="pi pi-heart-fill" style="font-size: 2rem; color: #ef4444;"></i>
-                      <i class="pi pi-trash absolute" style="font-size: 0.8rem; color: white; margin-top: -2px;"></i>
-                    </span>
+                <div class="relative product-card-image">
+                  <div class="product-detail-overlay">
+                    <span><i class="pi pi-eye"></i>Ver detalles</span>
+                  </div>
+                  <div class="flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
+                    <img [src]="product.images[0]" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
+                      (error)="onImageError($event)" />
+                  </div>
+                  <div class="absolute top-0 left-0 m-2" style="z-index: 1;">
+                    <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small"
+                      aria-label="Quitar de favoritos" (onClick)="removeFavorite(product); $event.stopPropagation()" />
                   </div>
                   @if (product.price.original) {
-                    <div class="absolute top-0 right-0 m-2">
+                    <div class="absolute top-0 right-0 m-2" style="z-index: 1;">
                       <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" class="text-lg" />
                     </div>
                   }
@@ -154,7 +156,7 @@
 
                     <!-- CTA Button -->
                     <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" class="w-full"
-                      styleClass="w-full" (onClick)="openAmazonProduct(product.url)" />
+                      styleClass="w-full" (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
                   </div>
                 </div>
               </ng-template>
@@ -172,3 +174,130 @@
     </div>
   }
 </section>
+
+<!-- Product Detail Dialog -->
+@if (selectedProduct(); as product) {
+  <p-dialog [(visible)]="showProductDialog" [modal]="true" [dismissableMask]="true" [draggable]="false"
+    [style]="{ width: '90vw', 'max-width': '50rem' }" [breakpoints]="{ '768px': '95vw' }">
+    <ng-template #header>
+      <div class="flex align-items-center gap-2">
+        <p-tag [value]="product.category" icon="pi pi-tag" severity="info" />
+        <span class="inline-flex align-items-center gap-1 px-2 py-1 border-round text-xs font-semibold"
+          [ngClass]="product.region === 'ES' ? 'bg-orange-100 text-orange-900' : 'bg-blue-100 text-blue-900'">
+          <img [src]="product.region === 'ES' ? 'https://flagcdn.com/16x12/es.png' : 'https://flagcdn.com/16x12/us.png'"
+            width="16" height="12" [alt]="product.region === 'ES' ? 'España' : 'USA'" />
+          {{ getRegionLabel(product) }}
+        </span>
+        @if (product.price.original) {
+          <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" />
+        }
+      </div>
+    </ng-template>
+
+    <div class="flex flex-column md:flex-row gap-4">
+      <!-- Product Image Gallery -->
+      <div class="flex-shrink-0 md:w-20rem">
+        <p-galleria [value]="getProductImages(product)" [numVisible]="4" [showThumbnails]="getProductImages(product).length > 1"
+          [showIndicators]="false" [showItemNavigators]="getProductImages(product).length > 1"
+          [showItemNavigatorsOnHover]="false" [responsiveOptions]="galleriaResponsiveOptions"
+          [containerStyle]="{ 'max-width': '100%' }">
+          <ng-template #item let-item>
+            <div class="flex align-items-center justify-content-center product-image-bg border-round p-3" style="min-height: 18rem;">
+              <img [src]="item" [alt]="product.title" style="max-width: 100%; max-height: 18rem; object-fit: contain;"
+                (error)="onImageError($event)" />
+            </div>
+          </ng-template>
+          <ng-template #thumbnail let-item>
+            <div class="flex align-items-center justify-content-center border-1 border-round surface-border surface-ground p-1" style="width: 4rem; height: 4rem;">
+              <img [src]="item" [alt]="product.title" style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                (error)="onImageError($event)" />
+            </div>
+          </ng-template>
+        </p-galleria>
+      </div>
+
+      <!-- Product Info -->
+      <div class="flex-1 flex flex-column gap-3">
+        <h3 class="text-xl font-bold m-0 line-height-3 text-body">
+          {{ product.title }}
+        </h3>
+
+        @if (product.rating > 0) {
+          <div class="flex align-items-center gap-2">
+            <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" />
+            <span class="text-sm text-muted">({{ formatNumber(product.reviewCount) }} reseñas)</span>
+          </div>
+        }
+
+        @if (product.description) {
+          <p class="text-sm m-0 line-height-3 text-muted">
+            {{ product.description }}
+          </p>
+        }
+
+        <p-divider />
+
+        <!-- Price Section -->
+        <div class="flex align-items-baseline gap-2 flex-wrap">
+          <span class="text-3xl font-bold price-green">
+            {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.current) }}
+          </span>
+          <span class="text-sm text-muted">{{ getCurrencyCode(product) }}</span>
+          @if (product.price.original) {
+            <span class="text-base line-through text-muted">
+              {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.original) }}
+            </span>
+            <span class="text-xs font-semibold savings-highlight">
+              <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.original - product.price.current) }}
+            </span>
+          }
+        </div>
+
+        <!-- Shipping -->
+        <div class="flex flex-column gap-1">
+          @if (getShippingPrice(product) === 0) {
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-truck price-green"></i>
+              <span class="price-green font-medium">Envío gratis a Argentina</span>
+            </div>
+          } @else {
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-truck shipping-info"></i>
+              <span class="shipping-info">
+                Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }} {{ getCurrencyCode(product) }}
+              </span>
+            </div>
+            @if (product.region !== 'ES') {
+              <div class="flex align-items-center gap-1">
+                <i class="pi pi-info-circle text-sm price-green"></i>
+                <span class="price-green text-sm">Envío gratis en pedidos $99+</span>
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Availability -->
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-check-circle price-green"></i>
+          <span class="text-sm text-body">{{ product.availability }}</span>
+        </div>
+
+        <!-- Destination -->
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-map-marker text-muted"></i>
+          <span class="text-sm text-muted">Envío a: {{ product.shipping.destination }}</span>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #footer>
+      <div class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 w-full">
+        <p class="text-xs m-0 text-muted">
+          <i class="pi pi-info-circle mr-1"></i>Precios y disponibilidad sujetos a cambios.
+        </p>
+        <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" size="large"
+          (onClick)="openAmazonProduct(product.url)" />
+      </div>
+    </ng-template>
+  </p-dialog>
+}

@@ -157,9 +157,73 @@ main.flex-auto {
   border-top-right-radius: 0 !important;
 }
 
+/* Galleria navigator arrows - always visible with contrast */
+.p-galleria-nav-button {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+  border-radius: 50% !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  margin: 0 0.5rem !important;
+  transition: background 0.2s ease !important;
+}
+
+.p-galleria-nav-button:hover {
+  background: rgba(0, 0, 0, 0.75) !important;
+  color: white !important;
+}
+
+.p-galleria-prev-icon,
+.p-galleria-next-icon {
+  color: white !important;
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+/* Hide thumbnail nav arrows - main arrows + clickable thumbnails suffice */
+.p-galleria-thumbnail-nav-button {
+  display: none !important;
+}
+
+/* All thumbnails same opacity - no active indicator */
+.p-galleria-thumbnail-item {
+  opacity: 1 !important;
+}
+
 /* Product image container */
 .product-image-bg {
   background: #f8f9fa;
+}
+
+/* "Ver detalles" overlay on product cards */
+.product-detail-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.product-card-image:hover .product-detail-overlay {
+  opacity: 1;
+}
+
+.product-detail-overlay span {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 /* Total price highlight */
@@ -196,7 +260,7 @@ main.flex-auto {
 }
 
 .filter-rating .p-rating-icon.p-rating-on-icon {
-  color: #facc15 !important;
+  color: #fff !important;
 }
 
 /* Slider - darker range on blue backgrounds */
@@ -207,6 +271,13 @@ main.flex-auto {
 .p-slider-handle {
   background: white !important;
   border-color: #0062ff !important;
+}
+
+/* Scroll to top button */
+p-scrolltop button {
+  background: #fff !important;
+  border: 1px solid #fff !important;
+  color: var(--p-surface-900) !important;
 }
 
 /* Card hover effect */
@@ -340,13 +411,6 @@ main.flex-auto {
   /* Footer - dark background */
   footer.bg-primary-700 {
     background: var(--p-surface-950) !important;
-  }
-
-  /* Scroll to top button */
-  p-scrolltop button {
-    background: #fff !important;
-    border-color: #fff !important;
-    color: var(--p-surface-900) !important;
   }
 
   /* Header buttons - visible on dark megamenu */

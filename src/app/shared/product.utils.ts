@@ -1,5 +1,7 @@
 import { AmazonProduct } from '../models/product.model';
 
+const FALLBACK_IMAGE = '/sin_imagen.png';
+
 export function getDiscountPercentage(original: number, current: number): number {
   return Math.round(((original - current) / original) * 100);
 }
@@ -24,8 +26,8 @@ export function getShippingPrice(product: AmazonProduct): number {
   return product.shipping.price;
 }
 
-export function getProductImage(product: AmazonProduct): string {
-  return product.image || '/sin_imagen.png';
+export function getProductImages(product: AmazonProduct): string[] {
+  return product.images.length ? product.images : [FALLBACK_IMAGE];
 }
 
 export function formatNumber(num: number): string {
@@ -38,7 +40,7 @@ export function formatNumber(num: number): string {
 export function handleImageError(event: Event): void {
   const imgElement = event.target as HTMLImageElement;
   if (imgElement) {
-    imgElement.src = '/sin_imagen.png';
+    imgElement.src = FALLBACK_IMAGE;
     imgElement.alt = 'Sin imagen';
   }
 }

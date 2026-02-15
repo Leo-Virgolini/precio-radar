@@ -9,10 +9,12 @@ import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
 import { RatingModule } from 'primeng/rating';
 import { SkeletonModule } from 'primeng/skeleton';
+import { DialogModule } from 'primeng/dialog';
+import { GalleriaModule } from 'primeng/galleria';
 import { FavoritesService } from '../services/favorites.service';
 import { AmazonApiService } from '../services/amazon-api.service';
 import { AmazonProduct } from '../models/product.model';
-import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImage, formatNumber, handleImageError } from '../shared/product.utils';
+import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImages, formatNumber, handleImageError } from '../shared/product.utils';
 
 @Component({
   selector: 'app-favorites',
@@ -28,7 +30,9 @@ import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode,
     TagModule,
     DividerModule,
     RatingModule,
-    SkeletonModule
+    SkeletonModule,
+    DialogModule,
+    GalleriaModule
   ]
 })
 export class FavoritesComponent implements OnInit {
@@ -41,6 +45,12 @@ export class FavoritesComponent implements OnInit {
   protected readonly products = signal<AmazonProduct[]>([]);
   protected readonly isLoading = signal(true);
   protected readonly removingAsins = signal<Set<string>>(new Set());
+  protected readonly selectedProduct = signal<AmazonProduct | null>(null);
+  protected showProductDialog = false;
+
+  protected readonly galleriaResponsiveOptions = [
+    { breakpoint: '768px', numVisible: 3 }
+  ];
 
   ngOnInit(): void {
     this.loadFavorites();
@@ -80,6 +90,11 @@ export class FavoritesComponent implements OnInit {
     this.products.set([]);
   }
 
+  protected openProductDetail(product: AmazonProduct): void {
+    this.selectedProduct.set(product);
+    this.showProductDialog = true;
+  }
+
   protected openAmazonProduct(url: string): void {
     if (isPlatformBrowser(this.platformId)) {
       window.open(url, '_blank');
@@ -88,10 +103,6 @@ export class FavoritesComponent implements OnInit {
 
   protected onImageError(event: Event): void {
     handleImageError(event);
-  }
-
-  protected getProductImage(product: AmazonProduct): string {
-    return getProductImage(product);
   }
 
   protected getDiscountPercentage(original: number, current: number): number {
@@ -120,5 +131,9 @@ export class FavoritesComponent implements OnInit {
 
   protected formatNumber(num: number): string {
     return formatNumber(num);
+  }
+
+  protected getProductImages(product: AmazonProduct): string[] {
+    return getProductImages(product);
   }
 }
