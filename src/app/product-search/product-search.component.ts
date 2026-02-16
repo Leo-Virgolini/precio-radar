@@ -1,12 +1,12 @@
-import { Component, ChangeDetectionStrategy, signal, inject, OnInit, Input, effect, PLATFORM_ID, DestroyRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, OnInit, Input, effect, PLATFORM_ID, DestroyRef, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { CardModule } from 'primeng/card';
-import { MessageModule } from 'primeng/message';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { DataViewModule } from 'primeng/dataview';
@@ -37,7 +37,6 @@ import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode,
     ButtonModule,
     SelectModule,
     CardModule,
-    MessageModule,
     DividerModule,
     TagModule,
     DataViewModule,
@@ -58,19 +57,23 @@ export class ProductSearchComponent implements OnInit {
   @Input() searchQuery: string = '';
   @Input() searchCategory: string = '';
 
+  @ViewChild('dataViewAnchor') private readonly dataViewAnchor!: ElementRef<HTMLElement>;
+
   private readonly amazonApiService = inject(AmazonApiService);
   private readonly formBuilder = inject(FormBuilder);
   private readonly searchService = inject(SearchService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly destroyRef = inject(DestroyRef);
   protected readonly favoritesService = inject(FavoritesService);
+  private readonly messageService = inject(MessageService);
 
   // Reactive forms
   protected filterForm!: FormGroup;
   protected layoutForm!: FormGroup;
 
   // Effect for listening to search service (version-based to avoid setTimeout)
-  private lastSearchVersion = 0;
+  // Initialize with current version to ignore searches triggered before this component existed
+  private lastSearchVersion = this.searchService.searchTrigger()?.version ?? 0;
   private readonly searchEffect = effect(() => {
     const searchData = this.searchService.searchTrigger();
     if (searchData && searchData.version > this.lastSearchVersion) {
@@ -86,7 +89,6 @@ export class ProductSearchComponent implements OnInit {
   // Signals for reactive state management
   protected readonly searchResults = signal<SearchResponse | null>(null);
   protected readonly isLoading = signal(false);
-  protected readonly errorMessage = signal('');
   protected readonly currentPage = signal(1);
 
   // Store original unfiltered results for price filter
@@ -101,7 +103,9 @@ export class ProductSearchComponent implements OnInit {
     { label: 'Deportes y aire libre', value: 'Deportes y aire libre', icon: 'pi pi-sun' },
     { label: 'Moda', value: 'Moda', icon: 'pi pi-user' },
     { label: 'Salud y cuidado personal', value: 'Salud y cuidado personal', icon: 'pi pi-heart' },
-    { label: 'Juguetes y juegos', value: 'Juguetes y juegos', icon: 'pi pi-gift' }
+    { label: 'Juguetes y juegos', value: 'Juguetes y juegos', icon: 'pi pi-gift' },
+    { label: 'Herramientas y mejoras del hogar', value: 'Herramientas y mejoras del hogar', icon: 'pi pi-wrench' },
+    { label: 'Belleza y cuidado personal', value: 'Belleza y cuidado personal', icon: 'pi pi-sparkles' }
   ];
 
   // DataView properties
@@ -147,7 +151,7 @@ export class ProductSearchComponent implements OnInit {
 
   private initializeForms(): void {
     this.filterForm = this.formBuilder.group({
-      selectedCategory: [''],
+      selectedCategory: [this.searchCategory || ''],
       priceRange: [[0, this.maxPriceLimit]],
       freeShippingOnly: [false],
       freeShippingThreshold: [false],
@@ -168,31 +172,31 @@ export class ProductSearchComponent implements OnInit {
 
     // Allow search by category alone (no query needed)
     if (!searchQuery && !searchCategory) {
-      this.errorMessage.set('Por favor, ingresa un término de búsqueda válido (mínimo 2 caracteres)');
+      this.messageService.add({ severity: 'warn', summary: 'Búsqueda inválida', detail: 'Ingresá un término de búsqueda (mínimo 2 caracteres)', life: 1500 });
       return;
     }
 
     if (searchQuery && searchQuery.length < 2) {
-      this.errorMessage.set('Por favor, ingresa un término de búsqueda válido (mínimo 2 caracteres)');
+      this.messageService.add({ severity: 'warn', summary: 'Búsqueda inválida', detail: 'Ingresá un término de búsqueda (mínimo 2 caracteres)', life: 1500 });
       return;
     }
 
     this.isLoading.set(true);
-    this.errorMessage.set('');
 
-    // If only category, use getTopSellingProducts; otherwise search with query (and optional category filter)
+    // Category filtering is handled client-side by applyFilters, so don't pass category to API
     const search$ = searchQuery
-      ? this.amazonApiService.searchProducts(searchQuery, this.currentPage(), 10, this.amazonRegion, searchCategory || undefined)
-      : this.amazonApiService.getTopSellingProducts(searchCategory, this.amazonRegion);
+      ? this.amazonApiService.searchProducts(searchQuery, this.currentPage(), 10, this.amazonRegion)
+      : this.amazonApiService.getTopSellingProducts('', this.amazonRegion);
 
     search$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (results) => {
         this.originalProducts = results.products;
         this.searchResults.set(results);
         this.isLoading.set(false);
+        this.applyFilters();
       },
       error: (error) => {
-        this.errorMessage.set('Error al buscar productos. Por favor, intenta nuevamente.');
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al buscar productos. Por favor, intenta nuevamente.', life: 1500 });
         this.isLoading.set(false);
         console.error('Search error:', error);
       }
@@ -200,37 +204,21 @@ export class ProductSearchComponent implements OnInit {
   }
 
   private loadTopSellingProducts(): void {
-    const selectedCategory = this.searchCategory || '';
-    this.amazonApiService.getTopSellingProducts(selectedCategory, this.amazonRegion)
+    this.amazonApiService.getTopSellingProducts('', this.amazonRegion)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (results) => {
           this.originalProducts = results.products;
           this.searchResults.set(results);
           this.isLoading.set(false);
+          this.applyFilters();
         },
         error: (error) => {
-          this.errorMessage.set('Error al cargar los productos más vendidos');
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los productos más vendidos', life: 1500 });
           this.isLoading.set(false);
           console.error('Error loading top products:', error);
         }
       });
-  }
-
-  protected sortByPrice(): void {
-    const results = this.searchResults();
-    if (results) {
-      const sortedProducts = [...results.products].sort((a, b) => a.price.current - b.price.current);
-      this.searchResults.set({ ...results, products: sortedProducts });
-    }
-  }
-
-  protected sortByRating(): void {
-    const results = this.searchResults();
-    if (results) {
-      const sortedProducts = [...results.products].sort((a, b) => b.rating - a.rating);
-      this.searchResults.set({ ...results, products: sortedProducts });
-    }
   }
 
   protected openProductDetail(product: AmazonProduct): void {
@@ -245,53 +233,40 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected toggleFavorite(product: AmazonProduct): void {
+    const wasFavorite = this.favoritesService.isFavorite(product.asin);
     this.favoritesService.toggleFavorite(product.asin, product.region);
+    this.messageService.add({
+      severity: wasFavorite ? 'info' : 'success',
+      summary: wasFavorite ? 'Eliminado de favoritos' : 'Agregado a favoritos',
+      detail: product.title.substring(0, 60) + (product.title.length > 60 ? '...' : ''),
+      life: 1500
+    });
   }
 
   protected isFavorite(asin: string): boolean {
     return this.favoritesService.isFavorite(asin);
   }
 
-  onImageError(event: Event): void {
+  protected onImageError(event: Event): void {
     handleImageError(event);
-  }
-
-  protected trackByAsin(index: number, product: AmazonProduct): string {
-    return product.asin;
   }
 
   protected getDiscountPercentage(original: number, current: number): number {
     return getDiscountPercentage(original, current);
   }
 
-  protected getAvailabilityClass(availability: string): string {
-    if (availability.toLowerCase().includes('stock')) return 'bg-green-100 text-green-800';
-    if (availability.toLowerCase().includes('poco')) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-red-100 text-red-800';
-  }
-
   protected formatNumber(num: number): string {
     return formatNumber(num);
   }
 
-  protected getPageNumbers(): number[] {
-    const totalPages = this.searchResults()?.totalPages || 1;
-    const current = this.currentPage();
-    const pages: number[] = [];
-
-    const start = Math.max(1, current - 2);
-    const end = Math.min(totalPages, current + 2);
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    return pages;
+  protected onPageChange(): void {
+    this.scrollToDataView();
   }
 
-  protected goToPage(page: number): void {
-    this.currentPage.set(page);
-    this.onSearch(this.searchQuery, this.searchCategory);
+  private scrollToDataView(): void {
+    if (isPlatformBrowser(this.platformId) && this.dataViewAnchor) {
+      this.dataViewAnchor.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   // DataView methods
@@ -408,15 +383,11 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected isFreeShipping(product: AmazonProduct): boolean {
-    const region = this.getProductRegion(product);
-    if (region === 'ES') return false; // Amazon España no ofrece envío gratis a Argentina
-    return product.shipping.price === 0 || product.price.current >= 99;
+    return product.shipping.price === 0;
   }
 
   protected isFreeShippingByThreshold(product: AmazonProduct): boolean {
-    const region = this.getProductRegion(product);
-    if (region === 'ES') return false;
-    return product.shipping.price > 0 && product.price.current >= 99;
+    return !!product.shipping.freeAbove99;
   }
 
 
@@ -436,11 +407,6 @@ export class ProductSearchComponent implements OnInit {
   protected getCurrencyCode(product?: AmazonProduct): string {
     const region = product ? this.getProductRegion(product) : this.amazonRegion;
     return getCurrencyCode(region);
-  }
-
-  protected getFreeShippingThreshold(product?: AmazonProduct): string {
-    const region = product ? this.getProductRegion(product) : this.amazonRegion;
-    return region === 'ES' ? '' : '$99+';
   }
 
   protected getRegionLabel(product: AmazonProduct): string {
@@ -479,6 +445,7 @@ export class ProductSearchComponent implements OnInit {
   public performSearch(query: string, category: string = ''): void {
     this.searchQuery = query;
     this.searchCategory = category;
+    this.filterForm?.patchValue({ selectedCategory: category });
     this.onSearch(query, category);
   }
 

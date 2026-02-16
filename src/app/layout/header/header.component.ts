@@ -7,13 +7,14 @@ import { MegaMenuModule } from 'primeng/megamenu';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { BadgeModule } from 'primeng/badge';
+import { InputGroupModule } from 'primeng/inputgroup';
 import { SearchService } from '../../services/search.service';
 import { FavoritesService } from '../../services/favorites.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [ButtonModule, MegaMenuModule, ReactiveFormsModule, InputTextModule, SelectModule, RouterLink, BadgeModule],
+  imports: [ButtonModule, MegaMenuModule, ReactiveFormsModule, InputTextModule, SelectModule, RouterLink, BadgeModule, InputGroupModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -51,7 +52,9 @@ export class HeaderComponent implements OnInit {
     { label: 'Deportes y aire libre', value: 'Deportes y aire libre', icon: 'pi pi-sun' },
     { label: 'Moda', value: 'Moda', icon: 'pi pi-user' },
     { label: 'Salud y cuidado personal', value: 'Salud y cuidado personal', icon: 'pi pi-heart' },
-    { label: 'Juguetes y juegos', value: 'Juguetes y juegos', icon: 'pi pi-gift' }
+    { label: 'Juguetes y juegos', value: 'Juguetes y juegos', icon: 'pi pi-gift' },
+    { label: 'Herramientas y mejoras del hogar', value: 'Herramientas y mejoras del hogar', icon: 'pi pi-wrench' },
+    { label: 'Belleza y cuidado personal', value: 'Belleza y cuidado personal', icon: 'pi pi-sparkles' }
   ];
 
   // MegaMenu data
@@ -82,26 +85,6 @@ export class HeaderComponent implements OnInit {
           }
         ]
       ]
-    },
-    {
-      label: 'Electrónicos',
-      icon: 'pi pi-mobile',
-      command: () => this.searchByCategory('Electrónicos')
-    },
-    {
-      label: 'Hogar y cocina',
-      icon: 'pi pi-home',
-      command: () => this.searchByCategory('Hogar y cocina')
-    },
-    {
-      label: 'Deportes y aire libre',
-      icon: 'pi pi-sun',
-      command: () => this.searchByCategory('Deportes y aire libre')
-    },
-    {
-      label: 'Libros y medios',
-      icon: 'pi pi-book',
-      command: () => this.searchByCategory('Libros y medios')
     }
   ];
 
@@ -152,11 +135,6 @@ export class HeaderComponent implements OnInit {
       htmlElement.classList.remove('my-app-dark');
       localStorage.setItem('theme', 'light');
     }
-  }
-
-  private searchByCategory(category: string): void {
-    this.searchForm.reset({ searchQuery: '', selectedCategory: category });
-    this.navigateAndSearch('', category);
   }
 
   protected onGoHome(): void {

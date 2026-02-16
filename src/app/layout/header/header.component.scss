@@ -9,17 +9,42 @@
   }
 }
 
-// Make megamenu wrap properly at all sizes
 :host ::ng-deep {
+  // Megamenu layout
   .p-megamenu {
     flex-wrap: wrap;
   }
 
-  // End section: always fill available width (same line or wrapped)
   .p-megamenu-end {
     flex: 1 0 auto;
   }
 
+  // === InputGroup search bar ===
+  .search-input-group {
+    // Category select - compact, left side
+    .search-category-select {
+      width: 13rem;
+      flex: none;
+
+      .p-select {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+    }
+
+    // Input stretches to fill
+    .p-inputtext {
+      flex: 1;
+      min-width: 0;
+    }
+
+    // Search button - wider
+    > p-button .p-button {
+      padding-inline: 1.7rem !important;
+    }
+  }
+
+  // Mobile layout
   @media (max-width: 768px) {
     .p-megamenu-start {
       flex: 1;
@@ -32,21 +57,6 @@
 
     .p-megamenu-end form {
       width: 100%;
-    }
-
-    .p-megamenu-end form > div {
-      width: 100%;
-    }
-
-    .p-megamenu-end .p-inputtext,
-    .p-megamenu-end p-select,
-    .p-megamenu-end .p-select {
-      width: 100%;
-    }
-
-    // Match select height to input
-    .p-megamenu-end .p-select {
-      height: 2.5rem;
     }
   }
 }

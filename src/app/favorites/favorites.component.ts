@@ -3,6 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MessageService } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -41,15 +42,17 @@ export class FavoritesComponent implements OnInit {
   private readonly amazonApiService = inject(AmazonApiService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly messageService = inject(MessageService);
 
   protected readonly products = signal<AmazonProduct[]>([]);
   protected readonly isLoading = signal(true);
   protected readonly removingAsins = signal<Set<string>>(new Set());
   protected readonly selectedProduct = signal<AmazonProduct | null>(null);
-  protected showProductDialog = false;
+  protected readonly showProductDialog = signal(false);
 
   protected readonly galleriaResponsiveOptions = [
-    { breakpoint: '768px', numVisible: 3 }
+    { breakpoint: '768px', numVisible: 3 },
+    { breakpoint: '560px', numVisible: 2 }
   ];
 
   ngOnInit(): void {
@@ -82,17 +85,30 @@ export class FavoritesComponent implements OnInit {
         next.delete(product.asin);
         return next;
       });
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Eliminado de favoritos',
+        detail: product.title.substring(0, 60) + (product.title.length > 60 ? '...' : ''),
+        life: 1500
+      });
     }, 300);
   }
 
   protected clearAll(): void {
+    const count = this.products().length;
     this.favoritesService.clearAll();
     this.products.set([]);
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Favoritos eliminados',
+      detail: `Se eliminaron ${count} productos de tus favoritos`,
+      life: 1500
+    });
   }
 
   protected openProductDetail(product: AmazonProduct): void {
     this.selectedProduct.set(product);
-    this.showProductDialog = true;
+    this.showProductDialog.set(true);
   }
 
   protected openAmazonProduct(url: string): void {

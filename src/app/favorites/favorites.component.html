@@ -145,7 +145,7 @@
                           <i class="pi pi-truck text-xs shipping-info"></i>
                           <span class="shipping-info">Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }}</span>
                         </div>
-                        @if (product.region !== 'ES') {
+                        @if (product.shipping.freeAbove99) {
                           <div class="flex align-items-center gap-1">
                             <i class="pi pi-info-circle text-xs price-green"></i>
                             <span class="price-green text-xs">Envío gratis en pedidos $99+</span>
@@ -177,7 +177,7 @@
 
 <!-- Product Detail Dialog -->
 @if (selectedProduct(); as product) {
-  <p-dialog [(visible)]="showProductDialog" [modal]="true" [dismissableMask]="true" [draggable]="false"
+  <p-dialog [visible]="showProductDialog()" (visibleChange)="showProductDialog.set($event)" [modal]="true" [dismissableMask]="true" [draggable]="false"
     [style]="{ width: '90vw', 'max-width': '50rem' }" [breakpoints]="{ '768px': '95vw' }">
     <ng-template #header>
       <div class="flex align-items-center gap-2">
@@ -191,6 +191,8 @@
         @if (product.price.original) {
           <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" />
         }
+        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small"
+          aria-label="Quitar de favoritos" (onClick)="removeFavorite(product); showProductDialog.set(false)" />
       </div>
     </ng-template>
 
@@ -267,7 +269,7 @@
                 Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }} {{ getCurrencyCode(product) }}
               </span>
             </div>
-            @if (product.region !== 'ES') {
+            @if (product.shipping.freeAbove99) {
               <div class="flex align-items-center gap-1">
                 <i class="pi pi-info-circle text-sm price-green"></i>
                 <span class="price-green text-sm">Envío gratis en pedidos $99+</span>

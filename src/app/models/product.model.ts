@@ -10,6 +10,7 @@ export interface AmazonProduct {
     price: number;
     currency: string;
     destination: string;
+    freeAbove99?: boolean;
   };
   images: string[];
   rating: number;

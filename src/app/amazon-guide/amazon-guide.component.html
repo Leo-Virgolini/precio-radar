@@ -52,7 +52,7 @@
         </section>
 
         <!-- Introduction -->
-        <section id="introduccion" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
+        <section id="introduccion" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -70,15 +70,15 @@
                         Este beneficio facilita el acceso a miles de productos internacionales. Aquí te explicamos cómo aprovechar esta opción y ahorrar en tus compras.
                     </p>
 
-                    <p-message severity="info"
-                        text="💡 Pro Tip: Amazon cobra los impuestos de importación por adelantado, por lo que no necesitas pagar nada al recibir el paquete. Si cobra de más, devuelve el excedente automáticamente."
-                        class="mt-4"></p-message>
+                    <p-message severity="info" class="mt-4">
+                        💡 Pro Tip: Amazon cobra los impuestos de importación por adelantado, por lo que no necesitas pagar nada al recibir el paquete. Si cobra de más, devuelve el excedente automáticamente.
+                    </p-message>
                 </div>
             </p-card>
         </section>
 
         <!-- Step by Step -->
-        <section id="paso-a-paso" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
+        <section id="paso-a-paso" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -140,7 +140,7 @@
         </section>
 
         <!-- Restrictions -->
-        <section id="restricciones" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
+        <section id="restricciones" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -168,12 +168,14 @@
                     }
                 </div>
 
-                <p-message severity="info" text="Si compras productos tecnológicos que no requieren corriente (Régimen C), los envíos son ilimitados." class="mt-4"></p-message>
+                <p-message severity="info" class="mt-4">
+                    Si compras productos tecnológicos que no requieren corriente (Régimen C), los envíos son ilimitados.
+                </p-message>
             </p-card>
         </section>
 
         <!-- Taxes and Fees -->
-        <section id="impuestos" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
+        <section id="impuestos" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -199,14 +201,14 @@
                     </li>
                 </ul>
 
-                <p-message severity="success"
-                    text="Ejemplo práctico: Imagínate que por un producto de $100 USD, los impuestos deberían ser $10 USD. Si Amazon te cobra $15 USD, el excedente de $5 USD será reembolsado automáticamente."
-                    class="mt-4"></p-message>
+                <p-message severity="success" class="mt-4">
+                    Ejemplo práctico: Imagínate que por un producto de $100 USD, los impuestos deberían ser $10 USD. Si Amazon te cobra $15 USD, el excedente de $5 USD será reembolsado automáticamente.
+                </p-message>
             </p-card>
         </section>
 
         <!-- Tips -->
-        <section id="consejos" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
+        <section id="consejos" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -233,7 +235,7 @@
         </section>
 
         <!-- FAQ -->
-        <section id="faq" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
+        <section id="faq" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -260,7 +262,7 @@
         </section>
 
         <!-- Conclusion -->
-        <section id="conclusion" class="mb-8" pAnimateOnScroll enterClass="fadeinup">
+        <section id="conclusion" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -275,9 +277,9 @@
                         en productos elegibles, y acceder a miles de productos internacionales sin complicaciones.
                     </p>
 
-                    <p-message severity="info"
-                        text="Recuerda: Puedes obtener envío internacional gratis en pedidos de $99 USD o más en productos seleccionados. Busca el mensaje 'Envío GRATIS' en los productos elegibles."
-                        class="mb-4"></p-message>
+                    <p-message severity="info" class="mb-4">
+                        Recuerda: Puedes obtener envío internacional gratis en pedidos de $99 USD o más en productos seleccionados. Busca el mensaje 'Envío GRATIS' en los productos elegibles.
+                    </p-message>
 
                     <div class="text-center mt-4">
                         <p-button label="Buscar Productos" icon="pi pi-shopping-bag" severity="success" size="large" [raised]="true" routerLink="/" class="mr-3">

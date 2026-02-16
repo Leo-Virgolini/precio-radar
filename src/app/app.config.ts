@@ -1,4 +1,5 @@
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { provideRouter, withViewTransitions } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     })()),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
 
+    MessageService,
     { provide: LOCALE_ID, useValue: 'es-AR' },
     providePrimeNG({
       theme: {

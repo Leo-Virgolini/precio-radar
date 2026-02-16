@@ -13,7 +13,6 @@ import { ChipModule } from 'primeng/chip';
 import { AvatarModule } from 'primeng/avatar';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
-import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 
 @Component({
   selector: 'app-amazon-guide',
@@ -29,8 +28,7 @@ import { AnimateOnScrollModule } from 'primeng/animateonscroll';
     ChipModule,
     AvatarModule,
     MessageModule,
-    PanelModule,
-    AnimateOnScrollModule
+    PanelModule
   ],
   templateUrl: './amazon-guide.component.html',
   styleUrl: './amazon-guide.component.scss',

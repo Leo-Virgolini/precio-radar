@@ -12,7 +12,6 @@ export interface SearchData {
 export class SearchService {
 
   private searchVersion = 0;
-  private clearVersion = 0;
 
   private readonly _searchTrigger = signal<SearchData | null>(null);
   private readonly _clearTrigger = signal(0);
