@@ -20,7 +20,7 @@ export class App implements OnInit {
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly BASE_URL = 'https://precioradar.com';
+  private readonly BASE_URL = 'https://precioradar.com.ar';
   private readonly defaultTitle = 'PrecioRadar | Rastreá los mejores precios internacionales con envío a Argentina';
   private readonly defaultDescription = 'PrecioRadar: Tu radar de precios internacionales con envío a Argentina. Compará ofertas de las principales tiendas online del mundo y ahorrá en tus compras.';
 
@@ -136,7 +136,7 @@ export class App implements OnInit {
         'mainEntityOfPage': { '@type': 'WebPage', '@id': this.BASE_URL + '/guia-de-compra' },
         'inLanguage': 'es',
         'datePublished': '2025-01-15',
-        'dateModified': '2026-02-13'
+        'dateModified': new Date().toISOString().split('T')[0]
       });
     } else if (path === '/sobre-nosotros') {
       schemas.push({

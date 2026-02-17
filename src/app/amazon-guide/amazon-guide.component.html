@@ -214,13 +214,13 @@
                 <h2 class="text-primary-800 font-semibold mb-3 text-lg">Envíos superiores a USD 400 (hasta USD 3.000)</h2>
 
                 <p class="text-primary-700 mb-4">
-                    Si el envío supera los USD 400, se aplica un <strong>50% de arancel sobre el excedente</strong>, además de:
+                    Si el envío supera los USD 400, se aplican los siguientes costos:
                 </p>
 
                 <ul class="list-none p-0 m-0 mb-4">
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-exclamation-circle text-orange-500"></i>
-                        <span class="text-primary-600">50% de arancel sobre el monto que exceda los USD 400</span>
+                        <span class="text-primary-600"><strong>50% de arancel</strong> sobre el monto que exceda los USD 400</span>
                     </li>
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-exclamation-circle text-orange-500"></i>
@@ -274,7 +274,13 @@
 
         <!-- Excepciones -->
         <section id="excepciones" class="mb-8">
-            <p-panel header="Excepciones para Pequeños Envíos" [toggleable]="true" [collapsed]="true">
+            <p-panel [toggleable]="true" [collapsed]="true">
+                <ng-template #header>
+                    <div class="flex align-items-center gap-2">
+                        <i class="pi pi-exclamation-triangle"></i>
+                        <span class="font-semibold">Excepciones para Pequeños Envíos</span>
+                    </div>
+                </ng-template>
                 <p class="text-primary-500 text-sm mb-3">
                     Según ARCA, los pequeños envíos están exceptuados de ciertas intervenciones:
                 </p>

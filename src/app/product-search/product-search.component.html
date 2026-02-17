@@ -9,7 +9,7 @@
     <!-- Mobile skeleton: compact list rows -->
     <div class="flex flex-column gap-2 md:hidden">
       @for (item of skeletonItems; track $index) {
-      <div class="bg-white-alpha-10 border-round-xl p-2 flex gap-3 align-items-center">
+      <div class="surface-ground border-round-xl p-2 flex gap-3 align-items-center">
         <p-skeleton width="5rem" height="5rem" borderRadius="0.5rem" />
         <div class="flex-1">
           <p-skeleton width="90%" height="0.8rem" class="mb-2" />
@@ -25,7 +25,7 @@
       <div class="grid">
         @for (item of skeletonItems; track $index) {
         <div class="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
-          <div class="bg-white-alpha-10 border-round-xl p-3">
+          <div class="surface-ground border-round-xl p-3">
             <p-skeleton width="100%" height="14rem" class="mb-3" />
             <p-skeleton width="60%" height="1rem" class="mb-2" />
             <p-skeleton width="100%" height="1rem" class="mb-2" />
@@ -48,14 +48,14 @@
       <div class="flex flex-column gap-3 mb-3">
         <!-- Title row -->
         <div class="flex flex-column md:flex-row align-items-start md:align-items-center gap-1 md:gap-3">
-          <h2 class="text-lg md:text-2xl font-semibold text-white m-0">
+          <h2 class="text-lg md:text-2xl font-semibold text-color m-0">
             @if (searchQuery) {
             Resultados de "{{ searchQuery }}"
             } @else {
             Resultados de búsqueda
             }
           </h2>
-          <span class="text-sm font-normal text-blue-100">
+          <span class="text-sm font-normal text-color-secondary">
             ({{ searchResults()?.totalResults || 0 }} productos)
           </span>
         </div>
@@ -66,7 +66,7 @@
             <p-button label="Filtros" icon="pi pi-filter" severity="secondary" (onClick)="showFilterDrawer.set(true)" />
           </div>
           <div class="flex align-items-center gap-2 flex-1 md:flex-none">
-            <label class="text-white font-medium text-sm md:text-base white-space-nowrap"><i class="pi pi-sort-alt mr-1"></i>Ordenar:</label>
+            <label class="text-color font-medium text-sm md:text-base white-space-nowrap"><i class="pi pi-sort-alt mr-1"></i>Ordenar:</label>
             <p-select [options]="sortOptions" formControlName="selectedSort" optionLabel="label" optionValue="value" (onChange)="onSortChange($event.value)" placeholder="Ordenar por"
               class="flex-1 md:w-19rem">
               <ng-template #selectedItem let-option>
@@ -90,13 +90,13 @@
     <div class="grid">
       <!-- Filters Sidebar (desktop only) -->
       <div class="hidden md:block md:col-2">
-        <form [formGroup]="filterForm" class="bg-white-alpha-10 border-round-xl p-4 border-white-alpha-20">
-          <h4 class="text-white font-semibold mt-0"><i class="pi pi-filter mr-2"></i>Filtros</h4>
+        <form [formGroup]="filterForm" class="surface-card border-round-xl p-4 border-1 surface-border">
+          <h4 class="text-color font-semibold mt-0"><i class="pi pi-filter mr-2"></i>Filtros</h4>
 
           <!-- Region Filter (only in ALL tab) -->
           @if (amazonRegion === 'ALL') {
           <div class="mb-4">
-            <label class="text-white font-medium mb-2 block"><i class="pi pi-globe mr-1 text-sm"></i>Región</label>
+            <label class="text-color font-medium mb-2 block"><i class="pi pi-globe mr-1 text-sm"></i>Región</label>
             <p-select [options]="regionOptions" formControlName="regionFilter" optionLabel="label" optionValue="value" placeholder="Todas las regiones" (onChange)="applyFilters()"
               class="w-full">
               <ng-template #selectedItem let-option>
@@ -125,8 +125,8 @@
 
           <!-- Price Range Filter -->
           <div class="mb-4">
-            <label class="text-white font-medium mb-2 block"><i class="pi pi-dollar mr-1 text-sm"></i>Rango de Precios
-              <span class="text-xs text-blue-200 font-normal">
+            <label class="text-color font-medium mb-2 block"><i class="pi pi-dollar mr-1 text-sm"></i>Rango de Precios
+              <span class="text-xs text-color-secondary font-normal">
                 @if (amazonRegion === 'ALL') { (USD / EUR) }
                 @else if (amazonRegion === 'ES') { (EUR) }
                 @else { (USD) }
@@ -137,7 +137,7 @@
             <div class="flex align-items-center gap-2">
               <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[0] || 0" (onInput)="onPriceInputChange(0, $event.value)" [min]="0" [max]="10000"
                 [ngModelOptions]="{standalone: true}" placeholder="Min" size="small" inputStyleClass="w-full text-sm" class="flex-1" />
-              <span class="text-white text-sm">-</span>
+              <span class="text-color text-sm">-</span>
               <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[1] || 10000" (onInput)="onPriceInputChange(1, $event.value)" [min]="0" [max]="10000"
                 [ngModelOptions]="{standalone: true}" placeholder="Max" size="small" inputStyleClass="w-full text-sm" class="flex-1" />
             </div>
@@ -145,7 +145,7 @@
 
           <!-- Category Filter -->
           <div class="mb-4">
-            <label class="text-white font-medium mb-2 block"><i class="pi pi-th-large mr-1 text-sm"></i>Categoría</label>
+            <label class="text-color font-medium mb-2 block"><i class="pi pi-th-large mr-1 text-sm"></i>Categoría</label>
             <p-select [options]="categories" formControlName="selectedCategory" optionLabel="label" optionValue="value" placeholder="Todas las categorías" (onChange)="applyFilters()"
               class="w-full">
               <ng-template #selectedItem let-option>
@@ -166,7 +166,7 @@
           <!-- Free Shipping Filter -->
           <div class="mb-4">
             <div class="flex align-items-center justify-content-between">
-              <label class="text-sm text-white"><i class="pi pi-truck mr-1 text-xs"></i>Envío gratis a Argentina</label>
+              <label class="text-sm text-color"><i class="pi pi-truck mr-1 text-xs"></i>Envío gratis a Argentina</label>
               <p-toggleswitch formControlName="freeShippingOnly" (onChange)="applyFilters()" />
             </div>
           </div>
@@ -174,7 +174,7 @@
           <!-- Free Shipping $99+ Filter -->
           <div class="mb-4">
             <div class="flex align-items-center justify-content-between">
-              <label class="text-sm text-white"><i class="pi pi-dollar mr-1 text-xs"></i>Envío gratis $99+</label>
+              <label class="text-sm text-color"><i class="pi pi-dollar mr-1 text-xs"></i>Envío gratis $99+</label>
               <p-toggleswitch formControlName="freeShippingThreshold" (onChange)="applyFilters()" />
             </div>
           </div>
@@ -182,18 +182,18 @@
           <!-- Discount Filter -->
           <div class="mb-4">
             <div class="flex align-items-center justify-content-between">
-              <label class="text-sm text-white"><i class="pi pi-percentage mr-1 text-xs"></i>Solo con descuento</label>
+              <label class="text-sm text-color"><i class="pi pi-percentage mr-1 text-xs"></i>Solo con descuento</label>
               <p-toggleswitch formControlName="discountOnly" (onChange)="applyFilters()" />
             </div>
           </div>
 
           <!-- Rating Filter -->
           <div class="mb-4">
-            <label class="text-white font-medium mb-2 block"><i class="pi pi-star-fill mr-1 text-sm"></i>Calificación mínima</label>
+            <label class="text-color font-medium mb-2 block"><i class="pi pi-star-fill mr-1 text-sm"></i>Calificación mínima</label>
             <div class="flex align-items-center gap-2">
               <p-rating formControlName="minRating" [stars]="5" (onRate)="applyFilters()" class="filter-rating" />
               @if (filterForm.get('minRating')?.value > 0) {
-              <i class="pi pi-times-circle text-sm cursor-pointer text-blue-200 hover:text-white" (click)="filterForm.patchValue({minRating: 0}); applyFilters()"></i>
+              <i class="pi pi-times-circle text-sm cursor-pointer text-color-secondary hover:text-color" (click)="filterForm.patchValue({minRating: 0}); applyFilters()"></i>
               }
             </div>
           </div>
@@ -205,13 +205,12 @@
 
       <!-- DataView Content -->
       <div class="col-12 md:col-10 lg:col-10">
-        <div class="bg-white-alpha-10 border-round-xl p-2 md:p-4 border-white-alpha-20">
           @if (!searchResults()?.products?.length) {
           <!-- Empty State -->
           <div class="flex flex-column align-items-center justify-content-center py-8 px-4 animate-fade-in">
-            <i class="pi pi-search text-6xl mb-4 text-blue-200"></i>
-            <h3 class="text-xl font-semibold m-0 mb-2 text-white">No se encontraron productos</h3>
-            <p class="text-sm m-0 mb-4 text-center text-blue-100" style="max-width: 24rem;">
+            <i class="pi pi-search text-6xl mb-4 text-color-secondary"></i>
+            <h3 class="text-xl font-semibold m-0 mb-2 text-color">No se encontraron productos</h3>
+            <p class="text-sm m-0 mb-4 text-center text-color-secondary" style="max-width: 24rem;">
               No hay productos que coincidan con tu búsqueda. Probá con otros términos o limpiá los filtros.
             </p>
             <p-button label="Limpiar filtros" icon="pi pi-filter-slash" severity="secondary" (onClick)="clearFilters()" />
@@ -249,8 +248,8 @@
                         <div class="product-detail-overlay">
                           <span><i class="pi pi-eye"></i>Ver detalles</span>
                         </div>
-                        <div class="flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
-                          <img [src]="product.images[0]" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;" (error)="onImageError($event)" />
+                        <div class="flex align-items-center justify-content-center product-image-bg grid-card-image">
+                          <img [src]="product.images[0]" [alt]="product.title" class="grid-card-img" (error)="onImageError($event)" />
                         </div>
                         <div class="absolute top-0 left-0 m-2" style="z-index: 1;">
                           <p-button [icon]="isFavorite(product.asin) ? 'pi pi-heart-fill' : 'pi pi-heart'" [rounded]="true" [severity]="isFavorite(product.asin) ? 'danger' : 'secondary'"
@@ -266,7 +265,7 @@
                     </ng-template>
 
                     <ng-template #content>
-                      <div class="flex flex-column" style="min-height: 14rem;">
+                      <div class="flex flex-column" class="grid-card-content">
                         <!-- Category and Region -->
                         <div class="mb-2 flex align-items-center gap-2 flex-wrap">
                           <p-tag [value]="product.category" icon="pi pi-tag" severity="info" />
@@ -341,7 +340,7 @@
                           </div>
 
                           <!-- CTA Button -->
-                          <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" class="w-full" styleClass="w-full"
+                          <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" styleClass="w-full"
                             (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
                         </div>
                       </div>
@@ -366,7 +365,7 @@
                           <span><i class="pi pi-eye"></i>Ver detalles</span>
                         </div>
                         <div class="flex align-items-center justify-content-center product-image-bg border-round h-full">
-                          <img [src]="product.images[0]" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;" (error)="onImageError($event)" />
+                          <img [src]="product.images[0]" [alt]="product.title" class="grid-card-img" (error)="onImageError($event)" />
                         </div>
                         <div class="absolute top-0 left-0 m-1 md:m-2 hidden md:block" style="z-index: 1;">
                           <p-button [icon]="isFavorite(product.asin) ? 'pi pi-heart-fill' : 'pi pi-heart'" [rounded]="true" [severity]="isFavorite(product.asin) ? 'danger' : 'secondary'"
@@ -460,7 +459,6 @@
           </p-dataView>
           }
 
-        </div>
       </div>
     </div>
 
@@ -470,9 +468,9 @@
   <!-- Empty State -->
   @if (!searchResults() && !isLoading()) {
   <div class="text-center py-8 animate-fade-in">
-    <i class="pi pi-search text-6xl text-blue-200 mb-4"></i>
-    <h3 class="text-lg md:text-xl font-semibold text-white mb-2">No hay productos para mostrar</h3>
-    <p class="text-base md:text-lg font-normal text-blue-100">Realiza una búsqueda para encontrar productos increíbles</p>
+    <i class="pi pi-search text-6xl text-color-secondary mb-4"></i>
+    <h3 class="text-lg md:text-xl font-semibold text-color mb-2">No hay productos para mostrar</h3>
+    <p class="text-base md:text-lg font-normal text-color-secondary">Realiza una búsqueda para encontrar productos increíbles</p>
   </div>
   }
 </div>

@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /favoritos
 
-Sitemap: https://precioradar.com/sitemap.xml
+Sitemap: https://precioradar.com.ar/sitemap.xml

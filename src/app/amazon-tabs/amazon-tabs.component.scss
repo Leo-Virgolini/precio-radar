@@ -3,6 +3,10 @@
   color: white;
 }
 
+:host-context(.my-app-dark) .hero-gradient {
+  background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 50%, #2563eb 100%);
+}
+
 .logo-icon {
   height: 2rem;
   width: 2rem;
@@ -12,10 +16,6 @@
   width: 28px;
   height: 21px;
   vertical-align: middle;
-}
-
-:host ::ng-deep .p-tab .p-badge-secondary {
-  color: var(--p-primary-color);
 }
 
 :host ::ng-deep .p-chip {
@@ -29,6 +29,16 @@
     color: white;
     font-size: 0.75rem;
   }
+}
+
+.info-footer {
+  background: var(--p-primary-100);
+  color: var(--p-primary-700);
+}
+
+:host-context(.my-app-dark) .info-footer {
+  background: var(--p-surface-800);
+  color: var(--p-surface-200);
 }
 
 @media (min-width: 768px) {
