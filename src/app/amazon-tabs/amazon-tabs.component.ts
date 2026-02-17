@@ -3,6 +3,7 @@ import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/cor
 import { TagModule } from 'primeng/tag';
 import { TabsModule } from 'primeng/tabs';
 import { BadgeModule } from 'primeng/badge';
+import { ChipModule } from 'primeng/chip';
 import { ProductSearchComponent } from '../product-search/product-search.component';
 import { AmazonApiService } from '../services/amazon-api.service';
 
@@ -15,6 +16,7 @@ import { AmazonApiService } from '../services/amazon-api.service';
     TagModule,
     TabsModule,
     BadgeModule,
+    ChipModule,
     ProductSearchComponent
 ]
 })

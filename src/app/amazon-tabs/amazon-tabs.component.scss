@@ -18,6 +18,19 @@
   color: var(--p-primary-color);
 }
 
+:host ::ng-deep .p-chip {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.75rem;
+
+  .p-chip-icon {
+    color: white;
+    font-size: 0.75rem;
+  }
+}
+
 @media (min-width: 768px) {
   .logo-icon {
     height: 3.5rem;
