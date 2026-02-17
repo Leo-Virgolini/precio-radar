@@ -1,6 +1,6 @@
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { provideRouter, withViewTransitions } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 
 import { routes } from './app.routes';
@@ -15,17 +15,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, (() => {
-      let firstNavigation = true;
-      return withViewTransitions({
-        onViewTransitionCreated: ({ transition }) => {
-          if (firstNavigation) {
-            firstNavigation = false;
-            transition.skipTransition();
-          }
-        }
-      });
-    })()),
+    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
 
     MessageService,

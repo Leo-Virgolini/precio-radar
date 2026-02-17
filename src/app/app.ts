@@ -121,7 +121,7 @@ export class App implements OnInit {
           }
         }
       );
-    } else if (path === '/guia-amazon') {
+    } else if (path === '/guia-de-compra') {
       schemas.push({
         '@context': 'https://schema.org',
         '@type': 'Article',
@@ -133,7 +133,7 @@ export class App implements OnInit {
           'name': 'PrecioRadar',
           'logo': { '@type': 'ImageObject', 'url': this.BASE_URL + '/og-image.png' }
         },
-        'mainEntityOfPage': { '@type': 'WebPage', '@id': this.BASE_URL + '/guia-amazon' },
+        'mainEntityOfPage': { '@type': 'WebPage', '@id': this.BASE_URL + '/guia-de-compra' },
         'inLanguage': 'es',
         'datePublished': '2025-01-15',
         'dateModified': '2026-02-13'

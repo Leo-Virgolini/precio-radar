@@ -1,8 +1,10 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
 
 import { TagModule } from 'primeng/tag';
 import { TabsModule } from 'primeng/tabs';
+import { BadgeModule } from 'primeng/badge';
 import { ProductSearchComponent } from '../product-search/product-search.component';
+import { AmazonApiService } from '../services/amazon-api.service';
 
 @Component({
   selector: 'app-amazon-tabs',
@@ -12,10 +14,13 @@ import { ProductSearchComponent } from '../product-search/product-search.compone
   imports: [
     TagModule,
     TabsModule,
+    BadgeModule,
     ProductSearchComponent
 ]
 })
 export class AmazonTabsComponent {
+
+  private readonly amazonApi = inject(AmazonApiService);
 
   protected readonly activeTab = signal('0');
 
@@ -39,5 +44,9 @@ export class AmazonTabsComponent {
       description: 'Productos de Amazon España con envío a Argentina'
     }
   ];
+
+  getCount(region: string): number {
+    return this.amazonApi.getProductCount(region);
+  }
 
 }

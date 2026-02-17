@@ -168,9 +168,12 @@
                     }
                 </div>
 
-                <p-message severity="info" class="mt-4">
-                    Si compras productos tecnológicos que no requieren corriente (Régimen C), los envíos son ilimitados.
-                </p-message>
+                <div class="flex align-items-center gap-2 mt-4">
+                    <i class="pi pi-external-link text-primary text-sm"></i>
+                    <a href="https://www.afip.gob.ar/envios-internacionales/courier/importacion/pequenios-envios.asp" target="_blank" rel="noopener noreferrer" class="text-primary text-sm">
+                        Fuente: ARCA - Pequeños Envíos
+                    </a>
+                </div>
             </p-card>
         </section>
 
@@ -180,11 +183,66 @@
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
                         <i class="pi pi-calculator text-primary"></i>
-                        <span>Impuestos y Tarifas</span>
+                        <span>Impuestos, Tarifas y Franquicia</span>
                     </div>
                 </ng-template>
 
-                <h2 class="text-primary-800 font-semibold mb-3 text-lg">¿Cómo funcionan los impuestos?</h2>
+                <h2 class="text-primary-800 font-semibold mb-3 text-lg">Envíos de hasta USD 400</h2>
+
+                <p class="text-primary-700 mb-4">
+                    Los envíos con valor FOB de hasta <strong>USD 400</strong> están exentos del derecho de importación (arancel).
+                    Solo se paga:
+                </p>
+
+                <ul class="list-none p-0 m-0 mb-4">
+                    <li class="flex align-items-center gap-2 mb-2">
+                        <i class="pi pi-check text-green-600"></i>
+                        <span class="text-primary-600">IVA (21%)</span>
+                    </li>
+                    <li class="flex align-items-center gap-2 mb-2">
+                        <i class="pi pi-check text-green-600"></i>
+                        <span class="text-primary-600">Tasa de estadística (si corresponde)</span>
+                    </li>
+                    <li class="flex align-items-center gap-2 mb-2">
+                        <i class="pi pi-check text-green-600"></i>
+                        <span class="text-primary-600">Gastos del courier</span>
+                    </li>
+                </ul>
+
+                <p-divider />
+
+                <h2 class="text-primary-800 font-semibold mb-3 text-lg">Envíos superiores a USD 400 (hasta USD 3.000)</h2>
+
+                <p class="text-primary-700 mb-4">
+                    Si el envío supera los USD 400, se aplica un <strong>50% de arancel sobre el excedente</strong>, además de:
+                </p>
+
+                <ul class="list-none p-0 m-0 mb-4">
+                    <li class="flex align-items-center gap-2 mb-2">
+                        <i class="pi pi-exclamation-circle text-orange-500"></i>
+                        <span class="text-primary-600">50% de arancel sobre el monto que exceda los USD 400</span>
+                    </li>
+                    <li class="flex align-items-center gap-2 mb-2">
+                        <i class="pi pi-exclamation-circle text-orange-500"></i>
+                        <span class="text-primary-600">IVA (21%)</span>
+                    </li>
+                    <li class="flex align-items-center gap-2 mb-2">
+                        <i class="pi pi-exclamation-circle text-orange-500"></i>
+                        <span class="text-primary-600">Otros tributos si aplican</span>
+                    </li>
+                    <li class="flex align-items-center gap-2 mb-2">
+                        <i class="pi pi-exclamation-circle text-orange-500"></i>
+                        <span class="text-primary-600">Gastos del courier</span>
+                    </li>
+                </ul>
+
+                <p-message severity="warn" class="mb-4">
+                    Ejemplo: Si comprás un producto de USD 1.000, el excedente es USD 600 (1.000 - 400). Se aplica 50% sobre USD 600 = USD 300 de arancel, más IVA sobre el total, más costos del courier.
+                </p-message>
+
+                <p-divider />
+
+                <h2 class="text-primary-800 font-semibold mb-3 text-lg">¿Cómo funcionan los impuestos en Amazon?</h2>
 
                 <p class="text-primary-700 mb-4">
                     Amazon cobra los impuestos de importación por adelantado. Esto significa que:
@@ -202,9 +260,51 @@
                 </ul>
 
                 <p-message severity="success" class="mt-4">
-                    Ejemplo práctico: Imagínate que por un producto de $100 USD, los impuestos deberían ser $10 USD. Si Amazon te cobra $15 USD, el excedente de $5 USD será reembolsado automáticamente.
+                    Ejemplo: Por un producto de USD 300, al estar dentro de la franquicia de USD 400, no pagás arancel. Solo aplica IVA (21%) y costos del courier. Si Amazon cobra de más, el excedente se reembolsa automáticamente.
                 </p-message>
+
+                <div class="flex align-items-center gap-2 mt-4">
+                    <i class="pi pi-external-link text-primary text-sm"></i>
+                    <a href="https://www.afip.gob.ar/envios-internacionales/courier/importacion/pequenios-envios.asp" target="_blank" rel="noopener noreferrer" class="text-primary text-sm">
+                        Fuente: ARCA - Pequeños Envíos
+                    </a>
+                </div>
             </p-card>
+        </section>
+
+        <!-- Excepciones -->
+        <section id="excepciones" class="mb-8">
+            <p-panel header="Excepciones para Pequeños Envíos" [toggleable]="true" [collapsed]="true">
+                <p class="text-primary-500 text-sm mb-3">
+                    Según ARCA, los pequeños envíos están exceptuados de ciertas intervenciones:
+                </p>
+                <ul class="list-none p-0 m-0">
+                    @for (exception of exceptions; track exception.title) {
+                        <li class="mb-2">
+                            <div class="flex align-items-start gap-2">
+                                <i class="pi pi-check text-green-600 text-sm mt-1"></i>
+                                <div>
+                                    <span class="text-primary-700 text-sm font-medium">{{ exception.title }}:</span>
+                                    <span class="text-primary-500 text-sm"> {{ exception.description }}</span>
+                                    @if (exception.details) {
+                                        <ul class="list-none p-0 mt-1 pl-3">
+                                            @for (detail of exception.details; track $index) {
+                                                <li class="text-primary-400 text-xs mb-1">— {{ detail }}</li>
+                                            }
+                                        </ul>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <div class="flex align-items-center gap-2 mt-3">
+                    <i class="pi pi-external-link text-primary text-xs"></i>
+                    <a href="https://www.afip.gob.ar/envios-internacionales/courier/importacion/pequenios-envios.asp" target="_blank" rel="noopener noreferrer" class="text-primary text-xs">
+                        Fuente: ARCA - Pequeños Envíos
+                    </a>
+                </div>
+            </p-panel>
         </section>
 
         <!-- Tips -->
@@ -248,11 +348,9 @@
                     @for (item of faqItems; track item.question) {
                         <div class="faq-item mb-3">
                             <p-panel [header]="item.question" [toggleable]="true" class="mb-3">
-                                <div class="flex align-items-start gap-3">
-                                    <p-avatar icon="pi pi-question-circle" size="normal" styleClass="bg-primary text-white"></p-avatar>
-                                    <div class="flex-1">
-                                        <p class="text-primary-700 line-height-3 mb-0">{{ item.answer }}</p>
-                                    </div>
+                                <div class="flex align-items-center gap-3">
+                                    <i class="pi pi-comment text-primary text-2xl flex-shrink-0"></i>
+                                    <p class="text-primary-700 line-height-3 mb-0">{{ item.answer }}</p>
                                 </div>
                             </p-panel>
                         </div>

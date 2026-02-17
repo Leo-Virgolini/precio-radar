@@ -15,8 +15,10 @@
     flex-wrap: wrap;
   }
 
-  .p-megamenu-end {
-    flex: 1 0 auto;
+  // Start section takes available space for search bar
+  .p-megamenu-start {
+    flex: 1 1 0%;
+    min-width: 0;
   }
 
   // === InputGroup search bar ===
@@ -46,8 +48,8 @@
 
   // Mobile layout
   @media (max-width: 768px) {
-    .p-megamenu-start {
-      flex: 1;
+    .p-megamenu-button {
+      flex-shrink: 0;
     }
 
     .p-megamenu-end {
@@ -57,6 +59,13 @@
 
     .p-megamenu-end form {
       width: 100%;
+    }
+
+    // Truncate long category text in mobile select
+    .mobile-category-select .p-select-label {
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
     }
   }
 }

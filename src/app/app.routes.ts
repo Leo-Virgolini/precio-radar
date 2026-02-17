@@ -16,7 +16,7 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'guia-amazon',
+        path: 'guia-de-compra',
         loadComponent: () => import('./amazon-guide/amazon-guide.component').then(m => m.AmazonGuideComponent),
         data: {
           title: 'Guía Definitiva: Cómo Comprar en Amazon desde Argentina (2026) | PrecioRadar',

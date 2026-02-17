@@ -146,8 +146,13 @@ main.flex-auto {
 
 @media (max-width: 768px) {
   .p-tab {
-    padding: 0.5rem 1rem !important;
-    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .p-tablist-content {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
   }
 }
 
@@ -155,6 +160,34 @@ main.flex-auto {
 .p-dataview-paginator-bottom {
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
+}
+
+/* Paginator - compact on mobile */
+@media (max-width: 768px) {
+  .p-paginator {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 0.25rem !important;
+    padding: 0.5rem !important;
+  }
+
+  .p-paginator-page,
+  .p-paginator-first,
+  .p-paginator-prev,
+  .p-paginator-next,
+  .p-paginator-last {
+    min-width: 2rem !important;
+    height: 2rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .p-paginator-current {
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0 0 !important;
+    order: 99 !important;
+  }
 }
 
 /* Galleria navigator arrows - always visible with contrast */
@@ -282,24 +315,6 @@ p-scrolltop button {
 
 /* ========== Animations ========== */
 
-/* View Transition API - Route transitions */
-::view-transition-old(root) {
-  animation: vt-fade-out 150ms ease-in;
-}
-
-::view-transition-new(root) {
-  animation: vt-fade-in 300ms ease-out;
-}
-
-@keyframes vt-fade-out {
-  from { transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-8px); }
-}
-
-@keyframes vt-fade-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { transform: translateY(0); }
-}
 
 /* Fade in up - for empty states, tab content */
 .animate-fade-in {

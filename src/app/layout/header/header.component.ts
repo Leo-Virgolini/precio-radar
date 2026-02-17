@@ -83,6 +83,15 @@ export class HeaderComponent implements OnInit {
               { label: 'Preguntas Frecuentes', icon: 'pi pi-question-circle', command: () => this.navigateToGuide('faq') }
             ]
           }
+        ],
+        [
+          {
+            label: 'PrecioRadar',
+            items: [
+              { label: 'Sobre Nosotros', icon: 'pi pi-users', routerLink: '/sobre-nosotros' },
+              { label: 'Política de Privacidad', icon: 'pi pi-shield', routerLink: '/privacidad' }
+            ]
+          }
         ]
       ]
     }
@@ -155,7 +164,7 @@ export class HeaderComponent implements OnInit {
   }
 
   private navigateToGuide(fragment: string): void {
-    this.router.navigate(['/guia-amazon']).then(() => {
+    this.router.navigate(['/guia-de-compra']).then(() => {
       if (!isPlatformBrowser(this.platformId)) return;
       setTimeout(() => {
         const element = this.document.getElementById(fragment);

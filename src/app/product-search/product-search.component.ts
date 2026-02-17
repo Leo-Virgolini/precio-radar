@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, inject, OnInit, Input, effect, PLATFORM_ID, DestroyRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed, inject, OnInit, Input, effect, untracked, PLATFORM_ID, DestroyRef, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -78,11 +78,7 @@ export class ProductSearchComponent implements OnInit {
     const searchData = this.searchService.searchTrigger();
     if (searchData && searchData.version > this.lastSearchVersion) {
       this.lastSearchVersion = searchData.version;
-      if (searchData.query || searchData.category) {
-        this.performSearch(searchData.query, searchData.category);
-      } else {
-        this.resetFilters();
-      }
+      untracked(() => this.performSearch(searchData.query, searchData.category));
     }
   });
 
@@ -133,6 +129,8 @@ export class ProductSearchComponent implements OnInit {
   ];
 
   protected readonly selectedLayout = signal<'grid' | 'list'>('grid');
+  protected readonly isMobile = signal(isPlatformBrowser(this.platformId) && window.innerWidth < 768);
+  protected readonly effectiveLayout = computed(() => this.isMobile() ? 'list' : this.selectedLayout());
 
   // Product detail dialog
   protected readonly selectedProduct = signal<AmazonProduct | null>(null);
@@ -147,6 +145,15 @@ export class ProductSearchComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForms();
     this.loadTopSellingProducts();
+    this.setupMobileDetection();
+  }
+
+  private setupMobileDetection(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const checkMobile = () => this.isMobile.set(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    this.destroyRef.onDestroy(() => window.removeEventListener('resize', checkMobile));
   }
 
   private initializeForms(): void {
@@ -166,15 +173,8 @@ export class ProductSearchComponent implements OnInit {
     });
   }
 
-  protected onSearch(query?: string, category?: string): void {
+  protected onSearch(query?: string): void {
     const searchQuery = query || this.searchQuery;
-    const searchCategory = category || this.searchCategory;
-
-    // Allow search by category alone (no query needed)
-    if (!searchQuery && !searchCategory) {
-      this.messageService.add({ severity: 'warn', summary: 'Búsqueda inválida', detail: 'Ingresá un término de búsqueda (mínimo 2 caracteres)', life: 1500 });
-      return;
-    }
 
     if (searchQuery && searchQuery.length < 2) {
       this.messageService.add({ severity: 'warn', summary: 'Búsqueda inválida', detail: 'Ingresá un término de búsqueda (mínimo 2 caracteres)', life: 1500 });
@@ -446,7 +446,7 @@ export class ProductSearchComponent implements OnInit {
     this.searchQuery = query;
     this.searchCategory = category;
     this.filterForm?.patchValue({ selectedCategory: category });
-    this.onSearch(query, category);
+    this.onSearch(query);
   }
 
 }

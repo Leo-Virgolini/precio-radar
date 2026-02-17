@@ -3,22 +3,12 @@
 <p-megamenu [model]="megaMenuItems" class="border-noround border-white-alpha-20 shadow-2">
     <ng-template #start>
         <div class="flex align-items-center gap-2 w-full">
-            <a routerLink="/" (click)="onGoHome()" class="no-underline cursor-pointer">
+            <a routerLink="/" (click)="onGoHome()" class="no-underline cursor-pointer flex-shrink-0">
                 <img src="logo.svg" alt="PrecioRadar" class="header-logo" />
             </a>
-            <!-- Mobile only: Favorites + Dark Mode -->
-            <div class="ml-auto flex align-items-center gap-1 md:hidden">
-                <p-button [text]="true" [rounded]="true" icon="pi pi-heart" routerLink="/favoritos" aria-label="Favoritos"
-                  [badge]="favoritesService.count() > 0 ? '' + favoritesService.count() : undefined" badgeSeverity="danger" />
-                <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" [attr.aria-label]="isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'" />
-            </div>
-        </div>
-    </ng-template>
-    <ng-template #end>
-        <div class="flex align-items-center gap-2 w-full">
-            <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="flex-1">
-                <!-- Desktop: InputGroup -->
-                <p-inputgroup class="hidden md:flex search-input-group">
+            <!-- Desktop: Search bar -->
+            <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="hidden md:flex flex-1">
+                <p-inputgroup class="search-input-group w-full">
                     <p-select formControlName="selectedCategory" [options]="categories" placeholder="Categoría" optionLabel="label" optionValue="value" class="search-category-select">
                         <ng-template #selectedItem let-option>
                             <div class="flex align-items-center gap-1">
@@ -36,11 +26,23 @@
                     <input type="text" pInputText formControlName="searchQuery" placeholder="Buscar productos..." />
                     <p-button type="submit" icon="pi pi-search" [loading]="isLoading()" />
                 </p-inputgroup>
-                <!-- Mobile: Stacked -->
-                <div class="flex flex-column gap-2 md:hidden">
+            </form>
+            <!-- Mobile only: Favorites + Dark Mode -->
+            <div class="ml-auto flex align-items-center gap-1 md:hidden">
+                <p-button [text]="true" [rounded]="true" [icon]="favoritesService.count() > 0 ? 'pi pi-heart-fill' : 'pi pi-heart'" routerLink="/favoritos" aria-label="Favoritos"
+                  [badge]="favoritesService.count() > 0 ? '' + favoritesService.count() : undefined" badgeSeverity="danger" />
+                <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" [attr.aria-label]="isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'" />
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #end>
+        <div class="flex align-items-center gap-2 w-full">
+            <!-- Mobile: Stacked search -->
+            <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="flex-1 md:hidden">
+                <div class="flex flex-column gap-2">
                     <input type="text" pInputText formControlName="searchQuery" placeholder="Buscar productos..." class="w-full" />
-                    <div class="flex gap-2">
-                        <p-select formControlName="selectedCategory" [options]="categories" placeholder="Categoría" optionLabel="label" optionValue="value" class="flex-1">
+                    <div class="flex align-items-center gap-2">
+                        <p-select formControlName="selectedCategory" [options]="categories" placeholder="Categoría" optionLabel="label" optionValue="value" class="flex-1 min-w-0 mobile-category-select">
                             <ng-template #selectedItem let-option>
                                 <div class="flex align-items-center gap-2">
                                     <i [class]="option.icon"></i>
@@ -54,13 +56,13 @@
                                 </div>
                             </ng-template>
                         </p-select>
-                        <p-button type="submit" label="Buscar" icon="pi pi-search" [loading]="isLoading()" />
+                        <p-button type="submit" icon="pi pi-search" label="Buscar" [loading]="isLoading()" class="flex-shrink-0" />
                     </div>
                 </div>
             </form>
             <!-- Desktop only: Favorites + Dark Mode -->
             <div class="hidden md:flex align-items-center gap-1">
-                <p-button [text]="true" [rounded]="true" icon="pi pi-heart" routerLink="/favoritos" aria-label="Favoritos"
+                <p-button [text]="true" [rounded]="true" [icon]="favoritesService.count() > 0 ? 'pi pi-heart-fill' : 'pi pi-heart'" routerLink="/favoritos" aria-label="Favoritos"
                   [badge]="favoritesService.count() > 0 ? '' + favoritesService.count() : undefined" badgeSeverity="danger" />
                 <p-button [text]="true" [rounded]="true" [icon]="isDark() ? 'pi pi-moon' : 'pi pi-sun'" (click)="toggleDarkMode()" [attr.aria-label]="isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'" />
             </div>

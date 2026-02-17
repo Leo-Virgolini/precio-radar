@@ -45,7 +45,8 @@ export class AmazonGuideComponent implements OnInit, OnDestroy {
     { id: 'introduccion', label: 'Introducción' },
     { id: 'paso-a-paso', label: 'Paso a Paso para Comprar' },
     { id: 'restricciones', label: 'Restricciones y Consideraciones' },
-    { id: 'impuestos', label: 'Impuestos y Tarifas' },
+    { id: 'impuestos', label: 'Impuestos, Tarifas y Franquicia' },
+    { id: 'excepciones', label: 'Excepciones para Pequeños Envíos' },
     { id: 'consejos', label: 'Consejos para Ahorrar' },
     { id: 'ofertas', label: 'Ofertas Exclusivas' },
     { id: 'faq', label: 'Preguntas Frecuentes' },
@@ -132,23 +133,33 @@ export class AmazonGuideComponent implements OnInit, OnDestroy {
   protected readonly restrictions = [
     {
       title: 'Unidades máximas',
-      value: 'No más de 3 unidades iguales por envío',
+      value: 'Hasta 3 unidades de la misma especie por envío',
       icon: 'pi pi-box'
     },
     {
       title: 'Valor máximo',
-      value: 'Hasta $3,000 USD por envío (sin impuestos)',
+      value: 'Hasta USD 3.000 por envío',
       icon: 'pi pi-dollar'
     },
     {
       title: 'Peso máximo',
-      value: '50 kg por paquete',
+      value: '50 kg por paquete, independientemente del peso total del envío',
       icon: 'pi pi-box'
     },
     {
       title: 'Cantidad anual',
-      value: 'Hasta 5 envíos anuales bajo el Régimen P',
+      value: '5 envíos por año calendario por persona',
       icon: 'pi pi-calendar'
+    },
+    {
+      title: 'Sin fin comercial',
+      value: 'Los envíos no pueden tener fin comercial, solo uso personal',
+      icon: 'pi pi-ban'
+    },
+    {
+      title: 'Consulta de cupo',
+      value: 'Podés consultar tu cupo ingresando con Clave Fiscal (nivel 2+) al módulo "Envíos Postales Internacionales" de ARCA',
+      icon: 'pi pi-id-card'
     }
   ];
 
@@ -179,6 +190,43 @@ export class AmazonGuideComponent implements OnInit, OnDestroy {
     }
   ];
 
+  protected readonly exceptions = [
+    {
+      title: 'Alimentos (INAL)',
+      description: 'Exceptuados de la previa intervención del Instituto Nacional de Alimentos (INAL).',
+      icon: 'pi pi-check',
+      details: null
+    },
+    {
+      title: 'Restricciones económicas',
+      description: 'Exceptuados de restricciones y prohibiciones de carácter económico, y del Régimen de Identificación de Mercaderías (SIDIP).',
+      icon: 'pi pi-check',
+      details: null
+    },
+    {
+      title: 'Productos cosméticos y domisanitarios (ANMAT)',
+      description: 'Exceptuados de la previa intervención de ANMAT para ciertos productos de uso personal:',
+      icon: 'pi pi-check',
+      details: [
+        'Productos cosméticos (Disposición N°8067/24)',
+        'Productos domisanitarios de libre venta (Resolución N°709/98)',
+        'Productos de higiene oral (pastas dentales, enjuagues bucales)',
+        'Productos higiénicos descartables (pañales, toallitas femeninas, protectores diarios)',
+        'Productos higiénicos de uso intravaginal (tampones, copa menstrual)'
+      ]
+    },
+    {
+      title: 'Productos médicos (ANMAT)',
+      description: 'Productos médicos de uso sin prescripción, comprados por personas físicas para uso personal, están exceptuados de intervención de ANMAT.',
+      icon: 'pi pi-check',
+      details: [
+        'Solo aplica para uso personal, no comercial',
+        'Quedan excluidos los medicamentos',
+        'Consultar productos alcanzados en la web de ANMAT'
+      ]
+    }
+  ];
+
   protected readonly faqItems = [
     {
       question: '¿Qué pasa si Amazon cobra más impuestos de los necesarios?',
@@ -199,6 +247,18 @@ export class AmazonGuideComponent implements OnInit, OnDestroy {
     {
       question: '¿Qué productos no se pueden enviar a Argentina?',
       answer: 'Algunos productos como líquidos, productos químicos, alimentos perecederos y ciertos electrónicos pueden tener restricciones.'
+    },
+    {
+      question: '¿Qué es la franquicia de USD 400?',
+      answer: 'Los envíos con valor FOB de hasta USD 400 están exentos del arancel de importación. Solo se paga IVA (21%) y gastos del courier. Si el valor supera los USD 400, se aplica un 50% de arancel sobre el excedente, más IVA y costos del courier.'
+    },
+    {
+      question: '¿Cuántas veces puedo recibir un pequeño envío por año?',
+      answer: 'El régimen de Pequeños Envíos permite hasta 5 envíos por año calendario por persona. Podés consultar tu cupo ingresando con Clave Fiscal (nivel 2 mínimo) al módulo "Courier – Envíos Personales Consignatarios" en la web de ARCA.'
+    },
+    {
+      question: '¿Necesito intervención de ANMAT para cosméticos o productos de higiene?',
+      answer: 'No. Los pequeños envíos están exceptuados de la intervención de ANMAT para productos cosméticos, domisanitarios de libre venta, productos de higiene oral, productos higiénicos descartables y productos médicos de uso sin prescripción (para uso personal).'
     }
   ];
 

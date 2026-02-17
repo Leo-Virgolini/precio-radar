@@ -19,7 +19,7 @@ export class AmazonApiService {
   private readonly mockProducts: AmazonProduct[] = [
     {
       asin: 'B0DR9S2DQR',
-      title: 'STANLEY Quencher ProTour Flip Straw Tumbler with Leakproof Lid | Built-In Straw & Handle | Cupholder Compatible for Travel | Insulated Stainless Steel Cup | BPA-Free',
+      title: 'STANLEY Quencher ProTour - Vaso de paja con tapa a prueba de fugas, popote y asa integrados, compatible con portavasos para viajes, vaso de acero inoxidable aislado sin BPA',
       price: { current: 45.00, currency: 'USD' },
       shipping: { price: 24.23, currency: 'USD', destination: 'Argentina', freeAbove99: true },
       images: ['https://m.media-amazon.com/images/I/614QBr7-g+L._AC_SL1500_.jpg'],
@@ -33,7 +33,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B0CYVVMKHC',
-      title: 'STANLEY IceFlow Flip Straw 2.0 Water Bottle 36 OZ | Built-In Straw with Larger Opening | Lightweight & Leak-Resistant | Insulated Stainless Steel | BPA-Free | Ash',
+      title: 'STANLEY IceFlow - Botella de agua con pajilla abatible 2.0 de 36 onzas, popote integrado con apertura más grande, ligera y resistente a fugas, acero inoxidable aislado, sin BPA, color ceniza',
       price: { current: 39.56, original: 45.00, currency: 'USD' },
       shipping: { price: 24.18, currency: 'USD', destination: 'Argentina', freeAbove99: true },
       images: ['https://m.media-amazon.com/images/I/51I4kaZlEoL._AC_SL1500_.jpg'],
@@ -47,7 +47,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B0FCBM6C3C',
-      title: '[Compatible with Netflix & TOF Real-time Focus] Mini Projector with WiFi and Bluetooth, XuanPad Silver Smart Projector 4K Support, Dolby Audio & Keystone, 210° Rotatable Stand for Home',
+      title: 'Mini Proyector Compatible con Netflix y Enfoque en Tiempo Real TOF con WiFi y Bluetooth, Proyector Inteligente XuanPad con Soporte 4K, Audio Dolby y Keystone, Soporte Giratoria de 210° para el Hogar',
       price: { current: 199.99, original: 289.99, currency: 'USD' },
       shipping: { price: 0, currency: 'USD', destination: 'Argentina' },
       images: ['https://m.media-amazon.com/images/I/81db1C0gnOL._AC_SL1500_.jpg'],
@@ -61,7 +61,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B0FWBHDFWK',
-      title: 'Blackview DCM6 Triple Laptop Screen Extender, 14" 1080P FHD IPS Portable External Screen, Two Cable USB C Travel for 13-17" Laptop, Plug & Play Compatible with Windows/Mac/Chrome OS and Mobile Devices',
+      title: 'Blackview DCM6 - Extensor de pantalla triple para laptop, pantalla externa portátil 1080P FHD IPS de 14 pulgadas, dos cables USB C de viaje para laptop de 13 a 17 pulgadas, compatible con Windows/Mac',
       price: { current: 249.99, original: 399.99, currency: 'USD' },
       shipping: { price: 0, currency: 'USD', destination: 'Argentina' },
       images: ['https://m.media-amazon.com/images/I/715PcjJJMNL._AC_SL1500_.jpg'],
@@ -75,7 +75,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B0DTBN55K9',
-      title: 'Lenovo Legion Go S - 2025 - Mobile Gaming Console - AMD Radeon graphics - 8" PureSight IPS Display - 120Hz - AMD Ryzen Z2 Go - 16GB Memory - 512GB Storage - Glacier White - Free PC Game Pass',
+      title: 'Lenovo Legion Go S - 2025 - Consola de juegos móvil - Gráficos AMD Radeon - Pantalla IPS PureSight de 8" - 120Hz - AMD Ryzen™ Z2 Go - Memoria de 16GB - Almacenamiento de 512GB - Blanco glaciar - PC',
       price: { current: 689.41, currency: 'USD' },
       shipping: { price: 0, currency: 'USD', destination: 'Argentina' },
       images: ['https://m.media-amazon.com/images/I/71axrw7z6WL._AC_SL1500_.jpg'],
@@ -89,7 +89,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B0F5KTGDS9',
-      title: 'acer Nitro V Gaming Laptop | Intel Core i5-13420H Processor | NVIDIA GeForce RTX 4050 Laptop GPU | 15.6" FHD IPS 165Hz Display | 8GB DDR5 | 512GB Gen 4 SSD | Wi-Fi 6 | Backlit KB | ANV15-52-586Z',
+      title: 'Acer - Laptop Nitro V para juegos, procesador Intel Core i5-13420H, GPU NVIDIA GeForce RTX 4050, FHD IPS, 15.6 pulgadas, 165 Hz, 8 GB DDR5, SSD 512 GB Gen 4, Wi-Fi 6, KB retroiluminado, ANV15-52-586Z',
       price: { current: 649.99, original: 749.99, currency: 'USD' },
       shipping: { price: 0, currency: 'USD', destination: 'Argentina' },
       images: ['https://m.media-amazon.com/images/I/71gXelI8upL._AC_SL1500_.jpg'],
@@ -103,7 +103,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B0FDLX4F6T',
-      title: 'GIGABYTE AERO X16, Copilot+ PC - 165Hz 2560x1600 WQXGA - Manufactured by NVIDIA GeForce RTX 5070 - AMD Ryzen AI 9 HX 370-1TB SSD with 32GB DDR5 RAM - Windows 11 Home - Space Gray - 2WHA3USC64AH',
+      title: 'GIGABYTE AERO X16, Copilot+ PC - 165Hz 2560x1600 WQXGA - Fabricado por NVIDIA GeForce RTX 5070 - AMD Ryzen AI 9 HX 370-1TB SSD con 32GB DDR5 RAM - Windows 11 Home - Gris espacial - 2WHA3USC64AH',
       price: { current: 1688.07, currency: 'USD' },
       shipping: { price: 0, currency: 'USD', destination: 'Argentina' },
       images: ['https://m.media-amazon.com/images/I/61Dup4mtSKL._AC_SL1500_.jpg'],
@@ -117,7 +117,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B0DSW7R4VN',
-      title: 'WOLFBOX MF50 Compressed Air Duster-110000RPM Super Power Electric Air Duster, 3-Gear Adjustable Mini Blower with Fast Charging, Dust Blower for Computer, Keyboard, House, Outdoor and Car',
+      title: 'WOLFBOX MF50 Plumero de aire comprimido - Soplador eléctrico de aire de 110000RPM Super Power, soplador mini ajustable de 3 velocidades con carga rápida, soplador de polvo para computadora, teclado',
       price: { current: 31.99, original: 39.99, currency: 'USD' },
       shipping: { price: 21.34, currency: 'USD', destination: 'Argentina', freeAbove99: true },
       images: ['https://m.media-amazon.com/images/I/713BEhBxXWL._AC_SL1500_.jpg'],
@@ -131,7 +131,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B08SGM6F79',
-      title: 'STREBITO Electronics Precision Screwdriver Sets 142-Piece with 120 Bits Magnetic Repair Tool Kit for iPhone, MacBook, Computer, Laptop, PC, Tablet, PS4, Xbox, Nintendo, Game Console',
+      title: 'STREBITO - Juego de destornilladores de precisión de 142 piezas con kit de herramientas de reparación magnética de 120 puntas para iPhone, MacBook, computadora, laptop, PC, tableta, PS4, Xbox, Nintendo, consola de juegos',
       price: { current: 27.99, original: 37.99, currency: 'USD' },
       shipping: { price: 23.24, currency: 'USD', destination: 'Argentina', freeAbove99: true },
       images: ['https://m.media-amazon.com/images/I/81HGJ-wOEzL._AC_SL1500_.jpg'],
@@ -145,7 +145,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B07T6FNLQV',
-      title: 'LC-dolida Sleep Headphones, 3D Sleep Mask Bluetooth Wireless Music Eye Mask, Sleeping Headphones for Side Sleepers Sleep Mask with Bluetooth Headphones Ultra-Thin Stereo Speakers Perfect for Sleeping',
+      title: 'LC-dolida - Auriculares para dormir, Máscara de ojos 3D con Bluetooth, música inalámbrica, máscara para dormir con auriculares Bluetooth, altavoces estéreo ultrafinos perfectos para dormir; ideal para',
       price: { current: 29.99, original: 39.99, currency: 'USD' },
       shipping: { price: 21.66, currency: 'USD', destination: 'Argentina' },
       images: ['https://m.media-amazon.com/images/I/71GGksIzY-L._AC_SL1500_.jpg'],
@@ -159,7 +159,7 @@ export class AmazonApiService {
     },
     {
       asin: 'B0BVM4WKJK',
-      title: 'BAMBOO COOL Men\'s Ultra ComfortSoft Underwear, Moisture Wicking & Breathable No Ride Up Boxer Briefs with Fly, Multipack',
+      title: 'BAMBOO COOL Calzoncillos tipo bóxer ultra ComfortSoft para hombre, absorben la humedad y son transpirables, no se suben con bragueta, paquete múltiple',
       price: { current: 48.52, original: 60.66, currency: 'USD' },
       shipping: { price: 23.38, currency: 'USD', destination: 'Argentina' },
       images: ['https://m.media-amazon.com/images/I/61ISlxsowlL._AC_SX679_.jpg'],
@@ -422,6 +422,20 @@ export class AmazonApiService {
       url: 'https://www.amazon.com/dp/B083SH697H?tag=' + this.affiliateTag,
       description: 'Marco de fotos digital FRAMEO WiFi, pantalla táctil IPS 10.1", 32GB, rotación automática, comparte momentos al instante.',
       region: 'US'
+    },
+    {
+      asin: 'B07C2Z21X5',
+      title: 'Canon EOS Rebel T7 Cámara DSLR con lente de 18-55mm | Wi-Fi integrado | Sensor CMOS de 24.1 MP | Procesador de imagen DIGIC 4+ y videos Full HD',
+      price: { current: 579.00, currency: 'USD' },
+      shipping: { price: 0, currency: 'USD', destination: 'Argentina' },
+      images: ['https://m.media-amazon.com/images/I/714hINuPoBL._AC_SX466_.jpg'],
+      rating: 4.6,
+      reviewCount: 8349,
+      availability: 'En stock',
+      category: 'Electrónicos',
+      url: 'https://www.amazon.com/dp/B07C2Z21X5?tag=' + this.affiliateTag,
+      description: 'Cámara DSLR Canon EOS Rebel T7 con lente 18-55mm, Wi-Fi integrado, sensor CMOS 24.1 MP, procesador DIGIC 4+ y grabación Full HD.',
+      region: 'US'
     }
   ];
 
@@ -568,6 +582,10 @@ export class AmazonApiService {
       region: 'ES'
     }
   ];
+
+  getProductCount(region: string): number {
+    return this.getProductsByRegion(region).length;
+  }
 
   private getProductsByRegion(region: string): AmazonProduct[] {
     if (region === 'ALL') {

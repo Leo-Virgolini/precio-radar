@@ -24,7 +24,7 @@ import { ButtonModule } from 'primeng/button';
 
       <div class="flex flex-column sm:flex-row gap-3 align-items-center animate-stagger-5">
         <p-button label="Volver al inicio" icon="pi pi-home" routerLink="/" />
-        <p-button label="Guía de compra" icon="pi pi-book" routerLink="/guia-amazon" severity="secondary" [outlined]="true" />
+        <p-button label="Guía de compra" icon="pi pi-book" routerLink="/guia-de-compra" severity="secondary" [outlined]="true" />
       </div>
     </section>
   `,
