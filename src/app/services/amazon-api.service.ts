@@ -12,8 +12,8 @@ export class AmazonApiService {
   private readonly baseUrl = 'https://api.rainforestapi.com/request';
   private readonly apiKey = 'YOUR_API_KEY';
 
-  // TODO: Reemplazar con tu tag real de Amazon Associates una vez aprobado
-  private readonly affiliateTag = 'TU-TAG-AQUI';
+  private readonly affiliateTagUS = 'precioradar-20';
+  private readonly affiliateTagES = 'precioradar-21';
 
   // Productos reales
   private readonly mockProducts: AmazonProduct[] = [
@@ -27,7 +27,7 @@ export class AmazonApiService {
       reviewCount: 12453,
       availability: 'En stock',
       category: 'Hogar y cocina',
-      url: 'https://www.amazon.com/dp/B0DR9S2DQR?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0DR9S2DQR?tag=' + this.affiliateTagUS,
       description: 'Vaso térmico Stanley con tapa a prueba de derrames, pajilla integrada y asa. Acero inoxidable aislado, libre de BPA.',
       region: 'US'
     },
@@ -41,7 +41,7 @@ export class AmazonApiService {
       reviewCount: 8921,
       availability: 'En stock',
       category: 'Deportes y aire libre',
-      url: 'https://www.amazon.com/dp/B0CYVVMKHC?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0CYVVMKHC?tag=' + this.affiliateTagUS,
       description: 'Botella de agua Stanley IceFlow con pajilla integrada, liviana y resistente a derrames. Acero inoxidable aislado.',
       region: 'US'
     },
@@ -55,7 +55,7 @@ export class AmazonApiService {
       reviewCount: 3567,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B0FCBM6C3C?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0FCBM6C3C?tag=' + this.affiliateTagUS,
       description: 'Mini proyector XuanPad compatible con Netflix, WiFi y Bluetooth, soporte 4K, Dolby Audio y soporte rotable 210°.',
       region: 'US'
     },
@@ -69,7 +69,7 @@ export class AmazonApiService {
       reviewCount: 1234,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B0FWBHDFWK?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0FWBHDFWK?tag=' + this.affiliateTagUS,
       description: 'Extensor de pantalla triple Blackview para laptops 13-17", 14" FHD IPS, conexión USB-C, compatible con Windows/Mac/Chrome OS.',
       region: 'US'
     },
@@ -83,7 +83,7 @@ export class AmazonApiService {
       reviewCount: 2891,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B0DTBN55K9?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0DTBN55K9?tag=' + this.affiliateTagUS,
       description: 'Consola portátil gaming Lenovo Legion Go S 2025 con pantalla 8" 120Hz, AMD Ryzen Z2 Go, 16GB RAM y 512GB SSD.',
       region: 'US'
     },
@@ -97,7 +97,7 @@ export class AmazonApiService {
       reviewCount: 5678,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B0F5KTGDS9?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0F5KTGDS9?tag=' + this.affiliateTagUS,
       description: 'Laptop gaming Acer Nitro V con Intel Core i5, RTX 4050, pantalla 15.6" FHD 165Hz, 8GB DDR5 y 512GB SSD.',
       region: 'US'
     },
@@ -111,7 +111,7 @@ export class AmazonApiService {
       reviewCount: 456,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B0FDLX4F6T?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0FDLX4F6T?tag=' + this.affiliateTagUS,
       description: 'Laptop GIGABYTE AERO X16 Copilot+ con RTX 5070, AMD Ryzen AI 9 HX 370, 32GB DDR5, 1TB SSD y pantalla WQXGA 165Hz.',
       region: 'US'
     },
@@ -125,7 +125,7 @@ export class AmazonApiService {
       reviewCount: 15234,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B0DSW7R4VN?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0DSW7R4VN?tag=' + this.affiliateTagUS,
       description: 'Soplador de aire comprimido eléctrico WOLFBOX 110000RPM, 3 velocidades, carga rápida. Para computadoras, teclados y más.',
       region: 'US'
     },
@@ -139,7 +139,7 @@ export class AmazonApiService {
       reviewCount: 42567,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B08SGM6F79?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B08SGM6F79?tag=' + this.affiliateTagUS,
       description: 'Kit de destornilladores de precisión STREBITO 142 piezas con 120 puntas magnéticas para reparación de electrónicos.',
       region: 'US'
     },
@@ -153,7 +153,7 @@ export class AmazonApiService {
       reviewCount: 28901,
       availability: 'En stock',
       category: 'Salud y cuidado personal',
-      url: 'https://www.amazon.com/dp/B07T6FNLQV?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B07T6FNLQV?tag=' + this.affiliateTagUS,
       description: 'Antifaz para dormir con auriculares Bluetooth integrados, altavoces ultra delgados, ideal para dormir de costado.',
       region: 'US'
     },
@@ -167,7 +167,7 @@ export class AmazonApiService {
       reviewCount: 9876,
       availability: 'En stock',
       category: 'Moda',
-      url: 'https://www.amazon.com/dp/B0BVM4WKJK?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0BVM4WKJK?tag=' + this.affiliateTagUS,
       description: 'Boxers de bambú BAMBOO COOL para hombre, transpirables, absorción de humedad, multipack.',
       region: 'US'
     },
@@ -181,7 +181,7 @@ export class AmazonApiService {
       reviewCount: 79502,
       availability: 'En stock',
       category: 'Hogar y cocina',
-      url: 'https://www.amazon.com/dp/B07FPQZG6V?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B07FPQZG6V?tag=' + this.affiliateTagUS,
       description: 'Tapete de baño Gorilla Grip de felpilla gruesa con reverso de caucho antideslizante, secado rápido, microfibra suave.',
       region: 'US'
     },
@@ -195,7 +195,7 @@ export class AmazonApiService {
       reviewCount: 49986,
       availability: 'En stock',
       category: 'Herramientas y mejoras del hogar',
-      url: 'https://www.amazon.com/dp/B0BDF8CVBN?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0BDF8CVBN?tag=' + this.affiliateTagUS,
       description: 'Luces LED bajo gabinete con sensor de movimiento, recargables, 5 niveles de brillo, magnéticas para armarios.',
       region: 'US'
     },
@@ -209,7 +209,7 @@ export class AmazonApiService {
       reviewCount: 53871,
       availability: 'En stock',
       category: 'Hogar y cocina',
-      url: 'https://www.amazon.com/dp/B07VX6GH88?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B07VX6GH88?tag=' + this.affiliateTagUS,
       description: 'Tapete de baño Yimobra de espuma viscoelástica, antideslizante, lavable a máquina, secado rápido.',
       region: 'US'
     },
@@ -223,7 +223,7 @@ export class AmazonApiService {
       reviewCount: 27086,
       availability: 'En stock',
       category: 'Herramientas y mejoras del hogar',
-      url: 'https://www.amazon.com/dp/B083FBRJPM?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B083FBRJPM?tag=' + this.affiliateTagUS,
       description: 'Herramienta Saker para medir y duplicar contornos, ajustable y precisa, para carpintería y construcción.',
       region: 'US'
     },
@@ -237,7 +237,7 @@ export class AmazonApiService {
       reviewCount: 137371,
       availability: 'En stock',
       category: 'Hogar y cocina',
-      url: 'https://www.amazon.com/dp/B09GTRVJQM?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B09GTRVJQM?tag=' + this.affiliateTagUS,
       description: 'Purificador de aire LEVOIT con filtro 3 en 1, verificado por AHAM, portátil para humo, alérgenos y olores.',
       region: 'US'
     },
@@ -251,7 +251,7 @@ export class AmazonApiService {
       reviewCount: 15755,
       availability: 'En stock',
       category: 'Hogar y cocina',
-      url: 'https://www.amazon.com/dp/B0BZZDPPRX?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0BZZDPPRX?tag=' + this.affiliateTagUS,
       description: 'Escobilla de ducha de acero inoxidable con 2 ganchos adhesivos, para vidrio de ducha, espejos y ventanas.',
       region: 'US'
     },
@@ -265,7 +265,7 @@ export class AmazonApiService {
       reviewCount: 38400,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B085TFF7M1?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B085TFF7M1?tag=' + this.affiliateTagUS,
       description: 'Cámara web Logitech C920x HD Pro, Full HD 1080p, corrección de luz automática, compatible con Teams, Meet y Zoom.',
       region: 'US'
     },
@@ -279,7 +279,7 @@ export class AmazonApiService {
       reviewCount: 76003,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B015NBTAOW?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B015NBTAOW?tag=' + this.affiliateTagUS,
       description: 'Mouse inalámbrico TeckNet Pro ergonómico, 2.4 GHz, 6 botones, batería de 24 meses, 5 niveles de DPI.',
       region: 'US'
     },
@@ -293,7 +293,7 @@ export class AmazonApiService {
       reviewCount: 5030,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B0947BJ67M?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0947BJ67M?tag=' + this.affiliateTagUS,
       description: 'Laptop HP 14 con Intel Celeron N4020, 4GB RAM, 64GB almacenamiento, pantalla HD 14", Windows 11 y Microsoft 365.',
       region: 'US'
     },
@@ -307,7 +307,7 @@ export class AmazonApiService {
       reviewCount: 36101,
       availability: 'En stock',
       category: 'Herramientas y mejoras del hogar',
-      url: 'https://www.amazon.com/dp/B09V366BDY?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B09V366BDY?tag=' + this.affiliateTagUS,
       description: 'Tira de luces LED RGB de 100 pies con sincronización de música, control por app y control remoto.',
       region: 'US'
     },
@@ -321,7 +321,7 @@ export class AmazonApiService {
       reviewCount: 128023,
       availability: 'En stock',
       category: 'Hogar y cocina',
-      url: 'https://www.amazon.com/dp/B01CS31R94?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B01CS31R94?tag=' + this.affiliateTagUS,
       description: 'Cortinas opacas NICETOWN con aislamiento térmico, ojales sólidos, 2 paneles, ideales para dormitorio.',
       region: 'US'
     },
@@ -335,7 +335,7 @@ export class AmazonApiService {
       reviewCount: 21411,
       availability: 'En stock',
       category: 'Belleza y cuidado personal',
-      url: 'https://www.amazon.com/dp/B09F2J4SX1?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B09F2J4SX1?tag=' + this.affiliateTagUS,
       description: 'Espejo de maquillaje HUONUL con luces LED, triple aumento, control táctil, plegable y portátil.',
       region: 'US'
     },
@@ -349,7 +349,7 @@ export class AmazonApiService {
       reviewCount: 10114,
       availability: 'En stock',
       category: 'Herramientas y mejoras del hogar',
-      url: 'https://www.amazon.com/dp/B099WTN2TR?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B099WTN2TR?tag=' + this.affiliateTagUS,
       description: 'Lámpara de pie Govee RGBIC con Alexa, 1000 lúmenes, sincronización de música, 16 millones de colores.',
       region: 'US'
     },
@@ -363,7 +363,7 @@ export class AmazonApiService {
       reviewCount: 8782,
       availability: 'En stock',
       category: 'Herramientas y mejoras del hogar',
-      url: 'https://www.amazon.com/dp/B0B4518KC2?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0B4518KC2?tag=' + this.affiliateTagUS,
       description: 'Proyector de luz aurora y estrellas con 33 efectos, control remoto, ruidos blancos y altavoz Bluetooth.',
       region: 'US'
     },
@@ -377,7 +377,7 @@ export class AmazonApiService {
       reviewCount: 27358,
       availability: 'En stock',
       category: 'Hogar y cocina',
-      url: 'https://www.amazon.com/dp/B0881QG5WK?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0881QG5WK?tag=' + this.affiliateTagUS,
       description: 'Cortinas blackout ChrisDowa con ojales, aislamiento térmico, 2 paneles gris oscuro, 42 x 63 pulgadas.',
       region: 'US'
     },
@@ -391,7 +391,7 @@ export class AmazonApiService {
       reviewCount: 56420,
       availability: 'En stock',
       category: 'Herramientas y mejoras del hogar',
-      url: 'https://www.amazon.com/dp/B0DMNDCNNJ?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B0DMNDCNNJ?tag=' + this.affiliateTagUS,
       description: 'Kit de 59 destornilladores de precisión JOREST con Torx T5/T6/T8, para reparación de electrónicos y dispositivos.',
       region: 'US'
     },
@@ -405,7 +405,7 @@ export class AmazonApiService {
       reviewCount: 132124,
       availability: 'En stock',
       category: 'Salud y cuidado personal',
-      url: 'https://www.amazon.com/dp/B072YVWBXH?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B072YVWBXH?tag=' + this.affiliateTagUS,
       description: 'Cepillo eléctrico AquaSonic Black Series con 8 cabezales, motor ultrasónico 40.000 VPM, carga inalámbrica.',
       region: 'US'
     },
@@ -419,7 +419,7 @@ export class AmazonApiService {
       reviewCount: 11316,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B083SH697H?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B083SH697H?tag=' + this.affiliateTagUS,
       description: 'Marco de fotos digital FRAMEO WiFi, pantalla táctil IPS 10.1", 32GB, rotación automática, comparte momentos al instante.',
       region: 'US'
     },
@@ -433,8 +433,36 @@ export class AmazonApiService {
       reviewCount: 8349,
       availability: 'En stock',
       category: 'Electrónicos',
-      url: 'https://www.amazon.com/dp/B07C2Z21X5?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.com/dp/B07C2Z21X5?tag=' + this.affiliateTagUS,
       description: 'Cámara DSLR Canon EOS Rebel T7 con lente 18-55mm, Wi-Fi integrado, sensor CMOS 24.1 MP, procesador DIGIC 4+ y grabación Full HD.',
+      region: 'US'
+    },
+    {
+      asin: 'B00JM5GW10',
+      title: 'Play Doh - Compuesto para modelado, paquete de 10 colores surtidos, no tóxico, latas de 2 onzas, regalos para relleno de calcetines navideños, premios y recuerdos de fiesta, juguetes preescolares',
+      price: { current: 7.99, currency: 'USD' },
+      shipping: { price: 23.02, currency: 'USD', destination: 'Argentina', freeAbove99: true },
+      images: ['https://m.media-amazon.com/images/I/71LqxbA1WCL._AC_SL1500_.jpg'],
+      rating: 4.8,
+      reviewCount: 67128,
+      availability: 'En stock',
+      category: 'Juguetes y Juegos',
+      url: 'https://www.amazon.com/dp/B00JM5GW10?tag=' + this.affiliateTagUS,
+      description: 'Play-Doh paquete de 10 colores surtidos, compuesto para modelado no tóxico, latas de 2 onzas.',
+      region: 'US'
+    },
+    {
+      asin: 'B087N9N6HH',
+      title: 'Play Doh - Paquete a granel de 42 latas de 1 onza de compuesto para modelado, regalos para relleno de calcetines navideños, premios y recuerdos de fiesta, manualidades y artes para niños, juguetes',
+      price: { current: 16.99, currency: 'USD' },
+      shipping: { price: 27.04, currency: 'USD', destination: 'Argentina', freeAbove99: true },
+      images: ['https://m.media-amazon.com/images/I/81QQOmhZwOL._AC_SL1500_.jpg'],
+      rating: 4.9,
+      reviewCount: 16502,
+      availability: 'En stock',
+      category: 'Juguetes y Juegos',
+      url: 'https://www.amazon.com/dp/B087N9N6HH?tag=' + this.affiliateTagUS,
+      description: 'Play-Doh paquete a granel de 42 latas de 1 onza, compuesto para modelado no tóxico, manualidades para niños.',
       region: 'US'
     }
   ];
@@ -451,7 +479,7 @@ export class AmazonApiService {
       reviewCount: 6789,
       availability: 'En stock - Envío internacional disponible',
       category: 'Electrónicos',
-      url: 'https://www.amazon.es/dp/B0DGHWMFQ3?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B0DGHWMFQ3?tag=' + this.affiliateTagES,
       description: 'Samsung Galaxy S24 FE 5G con pantalla Dynamic AMOLED 2X de 6.7", cámara de 50MP, 128GB y batería de 4700mAh.',
       region: 'ES'
     },
@@ -465,7 +493,7 @@ export class AmazonApiService {
       reviewCount: 34567,
       availability: 'En stock - Envío internacional disponible',
       category: 'Electrónicos',
-      url: 'https://www.amazon.es/dp/B0D1XC876S?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B0D1XC876S?tag=' + this.affiliateTagES,
       description: 'iPad 10ª generación con chip A14 Bionic, pantalla Liquid Retina 10.9", 64GB Wi-Fi, Touch ID.',
       region: 'ES'
     },
@@ -479,7 +507,7 @@ export class AmazonApiService {
       reviewCount: 18234,
       availability: 'En stock - Envío internacional disponible',
       category: 'Electrónicos',
-      url: 'https://www.amazon.es/dp/B0CHX3QBCH?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B0CHX3QBCH?tag=' + this.affiliateTagES,
       description: 'Auriculares inalámbricos JBL Tune 520BT con JBL Pure Bass, Bluetooth 5.3 y 57 horas de batería.',
       region: 'ES'
     },
@@ -493,7 +521,7 @@ export class AmazonApiService {
       reviewCount: 11234,
       availability: 'En stock - Envío internacional disponible',
       category: 'Electrónicos',
-      url: 'https://www.amazon.es/dp/B0BN72D63F?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B0BN72D63F?tag=' + this.affiliateTagES,
       description: 'Ratón gaming Logitech G502 X PLUS inalámbrico con sensor HERO 25K, LIGHTSPEED, RGB y botones óptico-mecánicos.',
       region: 'ES'
     },
@@ -507,7 +535,7 @@ export class AmazonApiService {
       reviewCount: 89012,
       availability: 'En stock - Envío internacional disponible',
       category: 'Electrónicos',
-      url: 'https://www.amazon.es/dp/B09V3KXJPB?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B09V3KXJPB?tag=' + this.affiliateTagES,
       description: 'Kindle Paperwhite con pantalla de 6.8", luz cálida ajustable, 16GB de almacenamiento.',
       region: 'ES'
     },
@@ -521,7 +549,7 @@ export class AmazonApiService {
       reviewCount: 3456,
       availability: 'En stock - Envío internacional disponible',
       category: 'Hogar y cocina',
-      url: 'https://www.amazon.es/dp/B0DFDJQH5V?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B0DFDJQH5V?tag=' + this.affiliateTagES,
       description: 'Robot aspirador Cecotec Conga 8290 con tecnología láser, 10000 Pa de succión, compatible con Alexa y Google Home.',
       region: 'ES'
     },
@@ -535,7 +563,7 @@ export class AmazonApiService {
       reviewCount: 21345,
       availability: 'En stock - Envío internacional disponible',
       category: 'Deportes y aire libre',
-      url: 'https://www.amazon.es/dp/B08C4KWM9T?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B08C4KWM9T?tag=' + this.affiliateTagES,
       description: 'Reloj GPS Garmin Instinct 2 Solar con carga solar, más de 24 días de batería y frecuencia cardíaca.',
       region: 'ES'
     },
@@ -549,7 +577,7 @@ export class AmazonApiService {
       reviewCount: 7890,
       availability: 'En stock - Envío internacional disponible',
       category: 'Electrónicos',
-      url: 'https://www.amazon.es/dp/B0BSHF7WHY?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B0BSHF7WHY?tag=' + this.affiliateTagES,
       description: 'Reloj inteligente Xiaomi Redmi Watch 4 con pantalla AMOLED 1.97", GPS, 150+ modos de deporte y resistencia al agua 5ATM.',
       region: 'ES'
     },
@@ -563,7 +591,7 @@ export class AmazonApiService {
       reviewCount: 5432,
       availability: 'En stock - Envío internacional disponible',
       category: 'Juguetes y juegos',
-      url: 'https://www.amazon.es/dp/B0C5GGN97C?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B0C5GGN97C?tag=' + this.affiliateTagES,
       description: 'LEGO Technic McLaren F1 2024, maqueta de coche de carreras con motor V6, set de construcción.',
       region: 'ES'
     },
@@ -577,7 +605,7 @@ export class AmazonApiService {
       reviewCount: 14567,
       availability: 'En stock - Envío internacional disponible',
       category: 'Salud y cuidado personal',
-      url: 'https://www.amazon.es/dp/B0CXLM3F4R?tag=' + this.affiliateTag,
+      url: 'https://www.amazon.es/dp/B0CXLM3F4R?tag=' + this.affiliateTagES,
       description: 'Protector solar facial Isdin Fusion Water SPF 50, fase acuosa para uso diario, 50ml.',
       region: 'ES'
     }

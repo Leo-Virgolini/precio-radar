@@ -61,8 +61,8 @@
         </div>
         <!-- Sort + Filter row -->
         <div class="flex align-items-center gap-2 md:justify-content-end">
-          <!-- Mobile Filter Button -->
-          <div class="block md:hidden">
+          <!-- Mobile/Tablet Filter Button -->
+          <div class="block lg:hidden">
             <p-button label="Filtros" icon="pi pi-filter" severity="secondary" (onClick)="showFilterDrawer.set(true)" />
           </div>
           <div class="flex align-items-center gap-2 flex-1 md:flex-none">
@@ -89,7 +89,7 @@
 
     <div class="grid">
       <!-- Filters Sidebar (desktop only) -->
-      <div class="hidden md:block md:col-2">
+      <div class="hidden lg:block lg:col-2">
         <form [formGroup]="filterForm" class="surface-card border-round-xl p-4 border-1 surface-border">
           <h4 class="text-color font-semibold mt-0"><i class="pi pi-filter mr-2"></i>Filtros</h4>
 
@@ -204,7 +204,7 @@
       </div>
 
       <!-- DataView Content -->
-      <div class="col-12 md:col-10 lg:col-10">
+      <div class="col-12 lg:col-10">
           @if (!searchResults()?.products?.length) {
           <!-- Empty State -->
           <div class="flex flex-column align-items-center justify-content-center py-8 px-4 animate-fade-in">

@@ -31,6 +31,102 @@
   }
 }
 
+.prime-banner {
+  background: linear-gradient(135deg, #ff9900 0%, #ffad33 100%);
+  color: #111;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255, 153, 0, 0.4);
+  }
+}
+
+.prime-cta {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+}
+
+:host-context(.my-app-dark) .prime-banner {
+  background: linear-gradient(135deg, #b36b00 0%, #cc8400 100%);
+  color: #fff;
+}
+
+.music-banner {
+  background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(107, 33, 168, 0.4);
+  }
+}
+
+.music-cta {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+}
+
+:host-context(.my-app-dark) .music-banner {
+  background: linear-gradient(135deg, #4c1d95 0%, #6b21a8 100%);
+}
+
+.audible-banner {
+  background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%);
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(194, 65, 12, 0.4);
+  }
+}
+
+.audible-cta {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+}
+
+:host-context(.my-app-dark) .audible-banner {
+  background: linear-gradient(135deg, #9a3412 0%, #c2410c 100%);
+}
+
+.kindle-banner {
+  background: linear-gradient(135deg, #1a8a8a 0%, #2bb5b5 100%);
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(26, 138, 138, 0.4);
+  }
+}
+
+.kindle-cta {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+}
+
+:host-context(.my-app-dark) .kindle-banner {
+  background: linear-gradient(135deg, #0f5e5e 0%, #1a8a8a 100%);
+}
+
+:host ::ng-deep .promo-carousel {
+  .p-carousel-prev,
+  .p-carousel-next {
+    color: var(--p-text-color-secondary);
+  }
+
+  .p-carousel-indicator-list {
+    padding: 0.5rem 0 0;
+  }
+}
+
 .info-footer {
   background: var(--p-primary-100);
   color: var(--p-primary-700);
