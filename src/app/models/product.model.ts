@@ -1,24 +1,20 @@
 export interface AmazonProduct {
   asin: string;
   title: string;
-  price: {
-    current: number;
-    original?: number;
-    currency: string;
-  };
-  shipping: {
-    price: number;
-    currency: string;
-    destination: string;
-    freeAbove99?: boolean;
-  };
-  images: string[];
+  currentPrice: number;
+  originalPrice: number | null;
+  currency: string;
+  shippingPrice: number;
+  freeShippingOver99: boolean;
+  importCharges: number;
+  shipsToArgentina: boolean;
+  imageUrls: string[];
   rating: number;
-  reviewCount: number;
-  availability: string;
+  ratingCount: string;
+  inStock: boolean;
   category: string;
   url: string;
-  description?: string;
+  aboutItem: string[];
   region: 'US' | 'ES';
 }
 

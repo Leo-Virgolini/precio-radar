@@ -10,6 +10,7 @@ import { BadgeModule } from 'primeng/badge';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { SearchService } from '../../services/search.service';
 import { FavoritesService } from '../../services/favorites.service';
+import { AmazonApiService } from '../../services/amazon-api.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   protected readonly favoritesService = inject(FavoritesService);
+  private readonly amazonApiService = inject(AmazonApiService);
 
   isDark = signal<boolean>(false);
   isLoading = signal<boolean>(false);
@@ -43,19 +45,8 @@ export class HeaderComponent implements OnInit {
     }
   });
 
-  // Categories for search
-  protected readonly categories = [
-    { label: 'Todas las categorías', value: '', icon: 'pi pi-th-large' },
-    { label: 'Electrónicos', value: 'Electrónicos', icon: 'pi pi-mobile' },
-    { label: 'Libros y medios', value: 'Libros y medios', icon: 'pi pi-book' },
-    { label: 'Hogar y cocina', value: 'Hogar y cocina', icon: 'pi pi-home' },
-    { label: 'Deportes y aire libre', value: 'Deportes y aire libre', icon: 'pi pi-sun' },
-    { label: 'Moda', value: 'Moda', icon: 'pi pi-user' },
-    { label: 'Salud y cuidado personal', value: 'Salud y cuidado personal', icon: 'pi pi-heart' },
-    { label: 'Juguetes y juegos', value: 'Juguetes y juegos', icon: 'pi pi-gift' },
-    { label: 'Herramientas y mejoras del hogar', value: 'Herramientas y mejoras del hogar', icon: 'pi pi-wrench' },
-    { label: 'Belleza y cuidado personal', value: 'Belleza y cuidado personal', icon: 'pi pi-sparkles' }
-  ];
+  // Categories from loaded products
+  protected readonly categories = this.amazonApiService.categoryOptions;
 
   // MegaMenu data
   protected readonly megaMenuItems = [

@@ -56,7 +56,8 @@ export class AmazonTabsComponent {
       icon: 'pi pi-box',
       url: 'https://www.amazon.es/pruebaprime?tag=precioradar-21',
       bannerClass: 'prime-banner',
-      ctaClass: 'prime-cta'
+      ctaClass: 'prime-cta',
+      region: 'ES' as const
     },
     {
       title: 'Amazon Music Unlimited: 30 días gratis',
@@ -64,7 +65,8 @@ export class AmazonTabsComponent {
       icon: 'pi pi-headphones',
       url: 'https://www.amazon.es/gp/dmusic/promotions/AmazonMusicUnlimited?tag=precioradar-21',
       bannerClass: 'music-banner',
-      ctaClass: 'music-cta'
+      ctaClass: 'music-cta',
+      region: 'ES' as const
     },
     {
       title: 'Audible: audiolibros gratis 30 días',
@@ -72,7 +74,8 @@ export class AmazonTabsComponent {
       icon: 'pi pi-microphone',
       url: 'https://www.amazon.es/hz/audible/mlp/mdp/discovery?actionCode=AMSTM1450129210001&tag=precioradar-21',
       bannerClass: 'audible-banner',
-      ctaClass: 'audible-cta'
+      ctaClass: 'audible-cta',
+      region: 'ES' as const
     },
     {
       title: 'Kindle Unlimited: leé gratis 30 días',
@@ -80,7 +83,8 @@ export class AmazonTabsComponent {
       icon: 'pi pi-book',
       url: 'https://www.amazon.es/kindle-dbs/hz/signup?tag=precioradar-21',
       bannerClass: 'kindle-banner',
-      ctaClass: 'kindle-cta'
+      ctaClass: 'kindle-cta',
+      region: 'ES' as const
     }
   ];
 

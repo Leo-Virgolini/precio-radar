@@ -305,9 +305,20 @@ main.flex-auto {
 
 /* Scroll to top button */
 p-scrolltop button {
+  background: var(--p-primary-color) !important;
+  border: 1px solid var(--p-primary-color) !important;
+  color: #fff !important;
+}
+
+.my-app-dark p-scrolltop button {
   background: #fff !important;
   border: 1px solid #fff !important;
   color: var(--p-surface-900) !important;
+}
+
+/* Dialog - hide footer when empty */
+.p-dialog-footer:empty {
+  display: none !important;
 }
 
 /* Card hover effect */

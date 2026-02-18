@@ -66,16 +66,16 @@
                     <span><i class="pi pi-eye"></i>Ver detalles</span>
                   </div>
                   <div class="flex align-items-center justify-content-center product-image-bg" style="height: 14rem;">
-                    <img [src]="product.images[0]" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
+                    <img [src]="product.imageUrls[0]" [alt]="product.title" style="max-width: 90%; max-height: 90%; object-fit: contain;"
                       (error)="onImageError($event)" />
                   </div>
                   <div class="absolute top-0 left-0 m-2" style="z-index: 1;">
                     <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small"
                       aria-label="Quitar de favoritos" (onClick)="removeFavorite(product); $event.stopPropagation()" />
                   </div>
-                  @if (product.price.original) {
+                  @if (product.originalPrice && product.originalPrice > product.currentPrice) {
                     <div class="absolute top-0 right-0 m-2" style="z-index: 1;">
-                      <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" class="text-lg" />
+                      <p-tag [value]="'-' + getDiscountPercentage(product.originalPrice, product.currentPrice) + '%'" severity="success" class="text-lg" />
                     </div>
                   }
                 </div>
@@ -103,15 +103,18 @@
                   @if (product.rating > 0) {
                     <div class="flex align-items-center gap-2 mt-1">
                       <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" />
-                      <span class="text-xs text-muted">({{ formatNumber(product.reviewCount) }})</span>
+                      <span class="text-xs font-semibold text-body">{{ product.rating }}</span>
+                      <span class="text-xs text-muted">({{ formatNumber(product.ratingCount) }})</span>
                     </div>
                   }
 
-                  <!-- Description -->
-                  @if (product.description) {
-                    <p class="text-sm m-0 mt-1 line-height-3 overflow-hidden text-muted" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                      {{ product.description }}
-                    </p>
+                  <!-- Features -->
+                  @if (product.aboutItem.length) {
+                    <ul class="text-sm m-0 mt-1 pl-3 line-height-3 text-muted list-none" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                      @for (feature of product.aboutItem; track feature) {
+                      <li class="mb-1">{{ feature }}</li>
+                      }
+                    </ul>
                   }
 
                   <!-- Price block pushed to bottom -->
@@ -120,15 +123,15 @@
                     <!-- Current price -->
                     <div class="flex align-items-baseline gap-2 flex-wrap">
                       <span class="text-2xl font-bold price-green">
-                        {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.current) }}
+                        {{ getCurrencySymbol(product) }}{{ formatPrice(product.currentPrice) }}
                       </span>
                       <span class="text-xs text-muted">{{ getCurrencyCode(product) }}</span>
-                      @if (product.price.original) {
+                      @if (product.originalPrice && product.originalPrice > product.currentPrice) {
                         <span class="text-sm line-through text-muted">
-                          {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.original) }}
+                          {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice) }}
                         </span>
                         <span class="text-xs font-semibold savings-highlight">
-                          <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.original - product.price.current) }}
+                          <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - product.currentPrice) }}
                         </span>
                       }
                     </div>
@@ -145,7 +148,7 @@
                           <i class="pi pi-truck text-xs shipping-info"></i>
                           <span class="shipping-info">Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }}</span>
                         </div>
-                        @if (product.shipping.freeAbove99) {
+                        @if (product.freeShippingOver99) {
                           <div class="flex align-items-center gap-1">
                             <i class="pi pi-info-circle text-xs price-green"></i>
                             <span class="price-green text-xs">Envío gratis en pedidos $99+</span>
@@ -188,20 +191,21 @@
             width="16" height="12" [alt]="product.region === 'ES' ? 'España' : 'USA'" />
           {{ getRegionLabel(product) }}
         </span>
-        @if (product.price.original) {
-          <p-tag [value]="'-' + getDiscountPercentage(product.price.original, product.price.current) + '%'" severity="success" />
+        @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+          <p-tag [value]="'-' + getDiscountPercentage(product.originalPrice, product.currentPrice) + '%'" severity="success" />
         }
         <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small"
           aria-label="Quitar de favoritos" (onClick)="removeFavorite(product); showProductDialog.set(false)" />
       </div>
     </ng-template>
 
-    <div class="flex flex-column md:flex-row gap-4">
-      <!-- Product Image Gallery -->
-      <div class="flex-shrink-0 md:w-20rem">
+    <div class="flex flex-column md:flex-row gap-3 md:gap-4">
+      <!-- Left column: Image + Price + Button -->
+      <div class="flex-shrink-0 md:w-20rem flex flex-column gap-3">
         <p-galleria [value]="getProductImages(product)" [numVisible]="4" [showThumbnails]="getProductImages(product).length > 1"
           [showIndicators]="false" [showItemNavigators]="getProductImages(product).length > 1"
           [showItemNavigatorsOnHover]="false" [responsiveOptions]="galleriaResponsiveOptions"
+          [activeIndex]="activeImageIndex()" (activeIndexChange)="activeImageIndex.set($event)"
           [containerStyle]="{ 'max-width': '100%' }">
           <ng-template #item let-item>
             <div class="flex align-items-center justify-content-center product-image-bg border-round p-3" style="min-height: 18rem;">
@@ -216,90 +220,114 @@
             </div>
           </ng-template>
         </p-galleria>
+
+        <!-- Buy Box -->
+        <div class="buy-box surface-ground border-1 surface-border border-round-lg p-3 flex flex-column gap-2">
+          <!-- Price -->
+          <div class="flex align-items-baseline gap-2 flex-wrap">
+            <span class="text-2xl font-bold price-green">
+              {{ getCurrencySymbol(product) }}{{ formatPrice(product.currentPrice) }}
+            </span>
+            <span class="text-xs text-muted">{{ getCurrencyCode(product) }}</span>
+          </div>
+          @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+          <div class="flex align-items-center gap-2 flex-wrap">
+            <span class="text-sm line-through text-muted">
+              {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice) }}
+            </span>
+            <span class="text-xs font-semibold savings-highlight">
+              <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - product.currentPrice) }}
+            </span>
+          </div>
+          }
+
+          <p-divider class="my-0" />
+
+          <!-- Shipping -->
+          @if (getShippingPrice(product) === 0) {
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-truck price-green text-sm"></i>
+            <span class="price-green font-medium text-sm">Envío gratis a Argentina</span>
+          </div>
+          } @else {
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-truck shipping-info text-sm"></i>
+            <span class="shipping-info text-sm">
+              Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }} {{ getCurrencyCode(product) }}
+            </span>
+          </div>
+          @if (product.freeShippingOver99) {
+          <div class="flex align-items-center gap-1">
+            <i class="pi pi-info-circle text-xs price-green"></i>
+            <span class="price-green text-xs">Envío gratis en pedidos $99+</span>
+          </div>
+          }
+          }
+
+          <!-- Import Charges -->
+          @if (product.importCharges > 0) {
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-globe shipping-info text-sm"></i>
+            <span class="shipping-info text-sm">
+              Importación: {{ getCurrencySymbol(product) }}{{ formatPrice(product.importCharges) }} {{ getCurrencyCode(product) }}
+            </span>
+          </div>
+          }
+
+          <p-divider class="my-0" />
+
+          <!-- Availability + Destination -->
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-check-circle price-green text-sm"></i>
+            <span class="text-sm text-body">{{ product.inStock ? 'En stock' : 'Sin stock' }}</span>
+          </div>
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-map-marker text-muted text-sm"></i>
+            <span class="text-sm text-muted">Envío a: Argentina</span>
+          </div>
+
+          <!-- CTA Button -->
+          <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" styleClass="w-full" (onClick)="openAmazonProduct(product.url)" />
+          <p class="text-xs m-0 text-muted text-center">
+            <i class="pi pi-info-circle mr-1"></i>Precios sujetos a cambios.
+          </p>
+        </div>
       </div>
 
-      <!-- Product Info -->
+      <!-- Right column: Title + Rating + Features -->
       <div class="flex-1 flex flex-column gap-3">
-        <h3 class="text-xl font-bold m-0 line-height-3 text-body">
+        <h3 class="text-sm md:text-base font-bold m-0 line-height-3 text-body">
           {{ product.title }}
         </h3>
 
         @if (product.rating > 0) {
-          <div class="flex align-items-center gap-2">
-            <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" />
-            <span class="text-sm text-muted">({{ formatNumber(product.reviewCount) }} reseñas)</span>
-          </div>
-        }
-
-        @if (product.description) {
-          <p class="text-sm m-0 line-height-3 text-muted">
-            {{ product.description }}
-          </p>
-        }
-
-        <p-divider />
-
-        <!-- Price Section -->
-        <div class="flex align-items-baseline gap-2 flex-wrap">
-          <span class="text-3xl font-bold price-green">
-            {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.current) }}
-          </span>
-          <span class="text-sm text-muted">{{ getCurrencyCode(product) }}</span>
-          @if (product.price.original) {
-            <span class="text-base line-through text-muted">
-              {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.original) }}
-            </span>
-            <span class="text-xs font-semibold savings-highlight">
-              <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.price.original - product.price.current) }}
-            </span>
-          }
+        <div class="flex align-items-center gap-2">
+          <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" />
+          <span class="text-sm font-semibold text-body">{{ product.rating }}</span>
+          <span class="text-sm text-muted">({{ formatNumber(product.ratingCount) }} reseñas)</span>
         </div>
+        }
 
-        <!-- Shipping -->
-        <div class="flex flex-column gap-1">
-          @if (getShippingPrice(product) === 0) {
-            <div class="flex align-items-center gap-2">
-              <i class="pi pi-truck price-green"></i>
-              <span class="price-green font-medium">Envío gratis a Argentina</span>
-            </div>
-          } @else {
-            <div class="flex align-items-center gap-2">
-              <i class="pi pi-truck shipping-info"></i>
-              <span class="shipping-info">
-                Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }} {{ getCurrencyCode(product) }}
-              </span>
-            </div>
-            @if (product.shipping.freeAbove99) {
-              <div class="flex align-items-center gap-1">
-                <i class="pi pi-info-circle text-sm price-green"></i>
-                <span class="price-green text-sm">Envío gratis en pedidos $99+</span>
-              </div>
+        @if (product.aboutItem.length) {
+        <div #dialogFeatures class="overflow-hidden" [style.max-height]="showAllFeatures() ? 'none' : '24rem'">
+          <ul class="text-sm m-0 pl-0 line-height-3 text-muted list-none">
+            @for (feature of product.aboutItem; track feature) {
+            <li class="mb-2 flex align-items-start gap-2">
+              <i class="pi pi-check-circle text-xs mt-1 price-green"></i>
+              <span>{{ feature }}</span>
+            </li>
             }
-          }
+          </ul>
         </div>
-
-        <!-- Availability -->
-        <div class="flex align-items-center gap-2">
-          <i class="pi pi-check-circle price-green"></i>
-          <span class="text-sm text-body">{{ product.availability }}</span>
-        </div>
-
-        <!-- Destination -->
-        <div class="flex align-items-center gap-2">
-          <i class="pi pi-map-marker text-muted"></i>
-          <span class="text-sm text-muted">Envío a: {{ product.shipping.destination }}</span>
-        </div>
+        @if (featuresOverflow() || showAllFeatures()) {
+        <a class="text-xs cursor-pointer text-primary font-medium" (click)="showAllFeatures.set(!showAllFeatures())">
+          <i class="pi" [ngClass]="showAllFeatures() ? 'pi-chevron-up' : 'pi-chevron-down'" style="font-size: 0.65rem;"></i>
+          {{ showAllFeatures() ? 'Ver menos' : 'Ver más' }}
+        </a>
+        }
+        }
       </div>
     </div>
 
-    <ng-template #footer>
-      <div class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 w-full">
-        <p class="text-xs m-0 text-muted">
-          <i class="pi pi-info-circle mr-1"></i>Precios y disponibilidad sujetos a cambios.
-        </p>
-        <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" size="large"
-          (onClick)="openAmazonProduct(product.url)" />
-      </div>
-    </ng-template>
   </p-dialog>
 }

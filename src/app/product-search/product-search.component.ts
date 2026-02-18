@@ -91,18 +91,7 @@ export class ProductSearchComponent implements OnInit {
   private originalProducts: AmazonProduct[] = [];
 
   // Component data
-  protected readonly categories = [
-    { label: 'Todas las categorías', value: '', icon: 'pi pi-th-large' },
-    { label: 'Electrónicos', value: 'Electrónicos', icon: 'pi pi-mobile' },
-    { label: 'Libros y medios', value: 'Libros y medios', icon: 'pi pi-book' },
-    { label: 'Hogar y cocina', value: 'Hogar y cocina', icon: 'pi pi-home' },
-    { label: 'Deportes y aire libre', value: 'Deportes y aire libre', icon: 'pi pi-sun' },
-    { label: 'Moda', value: 'Moda', icon: 'pi pi-user' },
-    { label: 'Salud y cuidado personal', value: 'Salud y cuidado personal', icon: 'pi pi-heart' },
-    { label: 'Juguetes y juegos', value: 'Juguetes y juegos', icon: 'pi pi-gift' },
-    { label: 'Herramientas y mejoras del hogar', value: 'Herramientas y mejoras del hogar', icon: 'pi pi-wrench' },
-    { label: 'Belleza y cuidado personal', value: 'Belleza y cuidado personal', icon: 'pi pi-sparkles' }
-  ];
+  protected readonly categories = this.amazonApiService.categoryOptions;
 
   // DataView properties
   protected readonly layoutOptions = [
@@ -135,6 +124,10 @@ export class ProductSearchComponent implements OnInit {
   // Product detail dialog
   protected readonly selectedProduct = signal<AmazonProduct | null>(null);
   protected readonly showProductDialog = signal(false);
+  protected readonly showAllFeatures = signal(false);
+  protected readonly featuresOverflow = signal(false);
+  protected readonly activeImageIndex = signal(0);
+  @ViewChild('dialogFeatures') private dialogFeaturesEl?: ElementRef<HTMLElement>;
 
   // Filter drawer for mobile
   protected readonly showFilterDrawer = signal(false);
@@ -223,7 +216,18 @@ export class ProductSearchComponent implements OnInit {
 
   protected openProductDetail(product: AmazonProduct): void {
     this.selectedProduct.set(product);
+    this.showAllFeatures.set(false);
+    this.featuresOverflow.set(false);
+    this.activeImageIndex.set(0);
     this.showProductDialog.set(true);
+    setTimeout(() => this.checkFeaturesOverflow());
+  }
+
+  private checkFeaturesOverflow(): void {
+    const el = this.dialogFeaturesEl?.nativeElement;
+    if (el) {
+      this.featuresOverflow.set(el.scrollHeight > el.clientHeight + 1);
+    }
   }
 
   protected openAmazonProduct(url: string): void {
@@ -255,7 +259,7 @@ export class ProductSearchComponent implements OnInit {
     return getDiscountPercentage(original, current);
   }
 
-  protected formatNumber(num: number): string {
+  protected formatNumber(num: string): string {
     return formatNumber(num);
   }
 
@@ -288,16 +292,16 @@ export class ProductSearchComponent implements OnInit {
 
     switch (sort) {
       case 'price-asc':
-        sortedProducts.sort((a, b) => a.price.current - b.price.current);
+        sortedProducts.sort((a, b) => a.currentPrice - b.currentPrice);
         break;
       case 'price-desc':
-        sortedProducts.sort((a, b) => b.price.current - a.price.current);
+        sortedProducts.sort((a, b) => b.currentPrice - a.currentPrice);
         break;
       case 'bestsellers':
         sortedProducts.sort((a, b) => b.rating - a.rating);
         break;
       case 'rating-desc':
-        sortedProducts.sort((a, b) => b.rating - a.rating || b.reviewCount - a.reviewCount);
+        sortedProducts.sort((a, b) => b.rating - a.rating || parseFloat(b.ratingCount.replace(/,/g, '')) - parseFloat(a.ratingCount.replace(/,/g, '')));
         break;
       case 'total-asc':
         sortedProducts.sort((a, b) => this.getTotalPrice(a) - this.getTotalPrice(b));
@@ -307,8 +311,8 @@ export class ProductSearchComponent implements OnInit {
         break;
       case 'discount-desc':
         sortedProducts.sort((a, b) => {
-          const discountA = a.price.original ? ((a.price.original - a.price.current) / a.price.original) * 100 : 0;
-          const discountB = b.price.original ? ((b.price.original - b.price.current) / b.price.original) * 100 : 0;
+          const discountA = a.originalPrice ? ((a.originalPrice - a.currentPrice) / a.originalPrice) * 100 : 0;
+          const discountB = b.originalPrice ? ((b.originalPrice - b.currentPrice) / b.originalPrice) * 100 : 0;
           return discountB - discountA;
         });
         break;
@@ -342,10 +346,10 @@ export class ProductSearchComponent implements OnInit {
     const regionFilter = this.filterForm.get('regionFilter')?.value || '';
 
     const filteredProducts = this.originalProducts.filter((product: AmazonProduct) => {
-      if (product.price.current < minPrice || product.price.current > maxPrice) return false;
+      if (product.currentPrice < minPrice || product.currentPrice > maxPrice) return false;
       if (freeShippingOnly && !this.isFreeShipping(product)) return false;
       if (freeShippingThreshold && !this.isFreeShippingByThreshold(product)) return false;
-      if (discountOnly && !product.price.original) return false;
+      if (discountOnly && !product.originalPrice) return false;
       if (minRating > 0 && product.rating < minRating) return false;
       if (selectedCategory && product.category !== selectedCategory) return false;
       if (regionFilter && product.region !== regionFilter) return false;
@@ -375,7 +379,7 @@ export class ProductSearchComponent implements OnInit {
   ];
 
   protected getTotalPrice(product: AmazonProduct): number {
-    return product.price.current + product.shipping.price;
+    return product.currentPrice + product.shippingPrice;
   }
 
   protected getShippingPrice(product: AmazonProduct): number {
@@ -383,11 +387,11 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected isFreeShipping(product: AmazonProduct): boolean {
-    return product.shipping.price === 0;
+    return product.shippingPrice === 0;
   }
 
   protected isFreeShippingByThreshold(product: AmazonProduct): boolean {
-    return !!product.shipping.freeAbove99;
+    return product.freeShippingOver99;
   }
 
 
@@ -400,13 +404,11 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected getCurrencySymbol(product?: AmazonProduct): string {
-    const region = product ? this.getProductRegion(product) : this.amazonRegion;
-    return getCurrencySymbol(region);
+    return getCurrencySymbol(product?.currency ?? (this.amazonRegion === 'ES' ? 'EUR' : 'USD'));
   }
 
   protected getCurrencyCode(product?: AmazonProduct): string {
-    const region = product ? this.getProductRegion(product) : this.amazonRegion;
-    return getCurrencyCode(region);
+    return getCurrencyCode(product?.currency ?? (this.amazonRegion === 'ES' ? 'EUR' : 'USD'));
   }
 
   protected getRegionLabel(product: AmazonProduct): string {

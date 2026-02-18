@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, inject, OnInit, PLATFORM_ID, DestroyRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, OnInit, PLATFORM_ID, DestroyRef, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -49,6 +49,10 @@ export class FavoritesComponent implements OnInit {
   protected readonly removingAsins = signal<Set<string>>(new Set());
   protected readonly selectedProduct = signal<AmazonProduct | null>(null);
   protected readonly showProductDialog = signal(false);
+  protected readonly showAllFeatures = signal(false);
+  protected readonly featuresOverflow = signal(false);
+  protected readonly activeImageIndex = signal(0);
+  @ViewChild('dialogFeatures') private dialogFeaturesEl?: ElementRef<HTMLElement>;
 
   protected readonly galleriaResponsiveOptions = [
     { breakpoint: '768px', numVisible: 3 },
@@ -108,7 +112,18 @@ export class FavoritesComponent implements OnInit {
 
   protected openProductDetail(product: AmazonProduct): void {
     this.selectedProduct.set(product);
+    this.showAllFeatures.set(false);
+    this.featuresOverflow.set(false);
+    this.activeImageIndex.set(0);
     this.showProductDialog.set(true);
+    setTimeout(() => this.checkFeaturesOverflow());
+  }
+
+  private checkFeaturesOverflow(): void {
+    const el = this.dialogFeaturesEl?.nativeElement;
+    if (el) {
+      this.featuresOverflow.set(el.scrollHeight > el.clientHeight + 1);
+    }
   }
 
   protected openAmazonProduct(url: string): void {
@@ -130,11 +145,11 @@ export class FavoritesComponent implements OnInit {
   }
 
   protected getCurrencySymbol(product: AmazonProduct): string {
-    return getCurrencySymbol(product.region);
+    return getCurrencySymbol(product.currency);
   }
 
   protected getCurrencyCode(product: AmazonProduct): string {
-    return getCurrencyCode(product.region);
+    return getCurrencyCode(product.currency);
   }
 
   protected getRegionLabel(product: AmazonProduct): string {
@@ -145,7 +160,7 @@ export class FavoritesComponent implements OnInit {
     return getShippingPrice(product);
   }
 
-  protected formatNumber(num: number): string {
+  protected formatNumber(num: string): string {
     return formatNumber(num);
   }
 

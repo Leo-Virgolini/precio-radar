@@ -6,16 +6,16 @@ export function getDiscountPercentage(original: number, current: number): number
   return Math.round(((original - current) / original) * 100);
 }
 
-export function formatPrice(price: number): string {
-  return price.toFixed(2);
+export function formatPrice(price: number | null): string {
+  return (price ?? 0).toFixed(2);
 }
 
-export function getCurrencySymbol(region: string): string {
-  return region === 'ES' ? '\u20AC' : '$';
+export function getCurrencySymbol(currency: string): string {
+  return currency === 'EUR' ? '\u20AC' : '$';
 }
 
-export function getCurrencyCode(region: string): string {
-  return region === 'ES' ? 'EUR' : 'USD';
+export function getCurrencyCode(currency: string): string {
+  return currency === 'EUR' ? 'EUR' : 'USD';
 }
 
 export function getRegionLabel(product: AmazonProduct): string {
@@ -23,18 +23,15 @@ export function getRegionLabel(product: AmazonProduct): string {
 }
 
 export function getShippingPrice(product: AmazonProduct): number {
-  return product.shipping.price;
+  return product.shippingPrice;
 }
 
 export function getProductImages(product: AmazonProduct): string[] {
-  return product.images.length ? product.images : [FALLBACK_IMAGE];
+  return product.imageUrls.length ? product.imageUrls : [FALLBACK_IMAGE];
 }
 
-export function formatNumber(num: number): string {
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'k';
-  }
-  return num.toString();
+export function formatNumber(num: string): string {
+  return num;
 }
 
 export function handleImageError(event: Event): void {
