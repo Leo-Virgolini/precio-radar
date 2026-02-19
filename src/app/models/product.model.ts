@@ -10,7 +10,7 @@ export interface AmazonProduct {
   shipsToArgentina: boolean;
   imageUrls: string[];
   rating: number;
-  ratingCount: string;
+  ratingCount: number;
   inStock: boolean;
   category: string;
   url: string;

@@ -301,7 +301,7 @@ export class ProductSearchComponent implements OnInit {
         sortedProducts.sort((a, b) => b.rating - a.rating);
         break;
       case 'rating-desc':
-        sortedProducts.sort((a, b) => b.rating - a.rating || parseFloat(b.ratingCount.replace(/,/g, '')) - parseFloat(a.ratingCount.replace(/,/g, '')));
+        sortedProducts.sort((a, b) => b.rating - a.rating || b.ratingCount - a.ratingCount);
         break;
       case 'total-asc':
         sortedProducts.sort((a, b) => this.getTotalPrice(a) - this.getTotalPrice(b));

@@ -1,6 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, map, tap } from 'rxjs';
+import { Observable, of, map, tap, forkJoin } from 'rxjs';
 import { AmazonProduct, SearchResponse } from '../models/product.model';
 
 interface RawProduct {
@@ -14,8 +14,8 @@ interface RawProduct {
   importCharges: number;
   inStock: boolean;
   originalPrice: number | null;
-  rating: string;
-  ratingCount: string;
+  rating: number;
+  ratingCount: number;
   region: 'US' | 'ES';
   shippingPrice: number;
   shipsToArgentina: boolean;
@@ -65,8 +65,11 @@ export class AmazonApiService {
     if (this.loaded) {
       return of(this.products());
     }
-    return this.http.get<RawProduct[]>('products.json').pipe(
-      map(raw => raw.filter(p => p.shipsToArgentina).map(p => this.mapProduct(p))),
+    return forkJoin([
+      this.http.get<RawProduct[]>('products-us.json'),
+      this.http.get<RawProduct[]>('products-es.json')
+    ]).pipe(
+      map(([us, es]) => [...us, ...es].filter(p => p.shipsToArgentina).map(p => this.mapProduct(p))),
       tap(products => {
         this.products.set(products);
         this.loaded = true;
@@ -90,7 +93,7 @@ export class AmazonApiService {
       importCharges: raw.importCharges,
       shipsToArgentina: raw.shipsToArgentina,
       imageUrls: raw.imageUrls,
-      rating: parseFloat(raw.rating) || 0,
+      rating: raw.rating,
       ratingCount: raw.ratingCount,
       inStock: raw.inStock,
       category: raw.category,

@@ -289,7 +289,7 @@
                         <div class="flex align-items-center gap-2 mt-1">
                           <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" />
                           <span class="text-xs font-semibold text-body">{{ product.rating }}</span>
-                          <span class="text-xs text-muted">({{ formatNumber(product.ratingCount) }})</span>
+                          <span class="text-xs text-muted">({{ product.ratingCount.toLocaleString() }})</span>
                         </div>
                         }
 
@@ -404,7 +404,7 @@
                         <div class="flex align-items-center gap-1 md:gap-2">
                           <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" />
                           <span class="text-xs font-semibold text-body">{{ product.rating }}</span>
-                          <span class="text-xs text-muted">({{ formatNumber(product.ratingCount) }})</span>
+                          <span class="text-xs text-muted">({{ product.ratingCount.toLocaleString() }})</span>
                         </div>
                         }
 
@@ -723,7 +723,7 @@
       <div class="flex align-items-center gap-2">
         <p-rating [ngModel]="product.rating" [readonly]="true" [stars]="5" />
         <span class="text-xs md:text-sm font-semibold text-body">{{ product.rating }}</span>
-        <span class="text-xs md:text-sm text-muted">({{ formatNumber(product.ratingCount) }} reseñas)</span>
+        <span class="text-xs md:text-sm text-muted">({{ product.ratingCount.toLocaleString() }} reseñas)</span>
       </div>
       }
 
