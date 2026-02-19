@@ -139,8 +139,8 @@ main.flex-auto {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
 
   .p-badge {
-    background: rgba(255, 255, 255, 0.2) !important;
-    color: white !important;
+    background: white !important;
+    color: var(--p-primary-color) !important;
   }
 }
 
