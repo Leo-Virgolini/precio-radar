@@ -14,6 +14,7 @@ export interface AmazonProduct {
   inStock: boolean;
   category: string;
   url: string;
+  addToCartUrl: string;
   aboutItem: string[];
   region: 'US' | 'ES';
 }

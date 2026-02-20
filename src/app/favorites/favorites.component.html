@@ -74,9 +74,9 @@
                       aria-label="Quitar de favoritos" (onClick)="removeFavorite(product); $event.stopPropagation()" />
                   </div>
                   @if (product.originalPrice && product.originalPrice > product.currentPrice) {
-                    <div class="absolute top-0 right-0 m-2" style="z-index: 1;">
-                      <p-tag [value]="'-' + getDiscountPercentage(product.originalPrice, product.currentPrice) + '%'" severity="success" class="text-lg" />
-                    </div>
+                    <span class="discount-badge discount-badge-lg">
+                      -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+                    </span>
                   }
                 </div>
               </ng-template>
@@ -157,9 +157,13 @@
                       }
                     </div>
 
-                    <!-- CTA Button -->
-                    <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" class="w-full"
-                      styleClass="w-full" (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-column gap-2">
+                      <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn"
+                        styleClass="w-full" (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
+                      <p-button label="Agregar al carrito" icon="pi pi-shopping-cart" [outlined]="true" severity="warn"
+                        styleClass="w-full" (onClick)="openAmazonProduct(product.addToCartUrl); $event.stopPropagation()" />
+                    </div>
                   </div>
                 </div>
               </ng-template>
@@ -192,7 +196,9 @@
           {{ getRegionLabel(product) }}
         </span>
         @if (product.originalPrice && product.originalPrice > product.currentPrice) {
-          <p-tag [value]="'-' + getDiscountPercentage(product.originalPrice, product.currentPrice) + '%'" severity="success" />
+          <span class="discount-badge discount-badge-sm">
+            -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+          </span>
         }
         <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small"
           aria-label="Quitar de favoritos" (onClick)="removeFavorite(product); showProductDialog.set(false)" />
@@ -209,8 +215,7 @@
           [containerStyle]="{ 'max-width': '100%' }">
           <ng-template #item let-item>
             <div class="flex align-items-center justify-content-center product-image-bg border-round p-3" style="min-height: 18rem;">
-              <img [src]="item" [alt]="product.title" style="max-width: 100%; max-height: 18rem; object-fit: contain;"
-                (error)="onImageError($event)" />
+              <p-image [src]="item" [alt]="product.title" imageClass="fav-dialog-image" [preview]="true" (onImageError)="onImageError($event)" />
             </div>
           </ng-template>
           <ng-template #thumbnail let-item>
@@ -286,8 +291,9 @@
             <span class="text-sm text-muted">Envío a: Argentina</span>
           </div>
 
-          <!-- CTA Button -->
+          <!-- CTA Buttons -->
           <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" styleClass="w-full" (onClick)="openAmazonProduct(product.url)" />
+          <p-button label="Agregar al carrito" icon="pi pi-shopping-cart" [outlined]="true" severity="warn" styleClass="w-full" (onClick)="openAmazonProduct(product.addToCartUrl)" />
           <p class="text-xs m-0 text-muted text-center">
             <i class="pi pi-info-circle mr-1"></i>Precios sujetos a cambios.
           </p>

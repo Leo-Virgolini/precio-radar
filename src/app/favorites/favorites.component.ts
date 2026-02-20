@@ -12,6 +12,7 @@ import { RatingModule } from 'primeng/rating';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DialogModule } from 'primeng/dialog';
 import { GalleriaModule } from 'primeng/galleria';
+import { ImageModule } from 'primeng/image';
 import { FavoritesService } from '../services/favorites.service';
 import { AmazonApiService } from '../services/amazon-api.service';
 import { AmazonProduct } from '../models/product.model';
@@ -33,7 +34,8 @@ import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode,
     RatingModule,
     SkeletonModule,
     DialogModule,
-    GalleriaModule
+    GalleriaModule,
+    ImageModule
   ]
 })
 export class FavoritesComponent implements OnInit {

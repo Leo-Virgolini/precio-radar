@@ -98,6 +98,7 @@ export class AmazonApiService {
       inStock: raw.inStock,
       category: raw.category,
       url: `${raw.url}${separator}tag=${tag}`,
+      addToCartUrl: `https://www.amazon.${region === 'ES' ? 'es' : 'com'}/gp/aws/cart/add.html?tag=${tag}&ASIN.1=${raw.asin}&Quantity.1=1`,
       aboutItem: raw.aboutItem ?? [],
       region
     };

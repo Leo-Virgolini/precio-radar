@@ -19,6 +19,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DrawerModule } from 'primeng/drawer';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { GalleriaModule } from 'primeng/galleria';
+import { TooltipModule } from 'primeng/tooltip';
+import { ImageModule } from 'primeng/image';
 import { AmazonApiService } from '../services/amazon-api.service';
 import { AmazonProduct, SearchResponse } from '../models/product.model';
 import { SearchService } from '../services/search.service';
@@ -48,7 +50,9 @@ import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode,
     InputNumberModule,
     DrawerModule,
     ToggleSwitchModule,
-    GalleriaModule
+    GalleriaModule,
+    TooltipModule,
+    ImageModule
   ]
 })
 export class ProductSearchComponent implements OnInit {

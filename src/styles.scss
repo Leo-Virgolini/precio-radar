@@ -13,7 +13,11 @@ body {
   margin: 0;
 }
 
-* {
+body,
+input,
+button,
+select,
+textarea {
   font-family: var(--font-primary);
 }
 
@@ -45,30 +49,13 @@ main.flex-auto {
 
 /* ========== Custom Utilities (not in PrimeFlex) ========== */
 
-/* White glass button for colored backgrounds */
-.p-button.p-button-glass {
-  color: white !important;
-  border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  background: rgba(255, 255, 255, 0.15) !important;
-}
-
-.p-button.p-button-glass:hover {
-  background: rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Glassmorphism blur effect */
-.backdrop-blur-md {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
 /* Max-width container (72rem = 1152px) */
 .max-w-6xl {
   max-width: 72rem;
 }
 
 /* Vertical spacing between children */
-.space-y-2>*+* {
+.space-y-2 > * + * {
   margin-top: 0.5rem;
 }
 
@@ -160,6 +147,13 @@ main.flex-auto {
   display: none !important;
 }
 
+/* DataView paginator - remove top border-radius to connect with content */
+.p-dataview-paginator-bottom {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/* Mobile overrides - tabs & paginator */
 @media (max-width: 768px) {
   .p-tab {
     padding: 0.5rem 0.75rem !important;
@@ -170,16 +164,7 @@ main.flex-auto {
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
   }
-}
 
-/* DataView paginator - remove top border-radius to connect with content */
-.p-dataview-paginator-bottom {
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
-}
-
-/* Paginator - compact on mobile */
-@media (max-width: 768px) {
   .p-paginator {
     flex-wrap: wrap !important;
     justify-content: center !important;
@@ -237,6 +222,42 @@ main.flex-auto {
 /* All thumbnails same opacity - no active indicator */
 .p-galleria-thumbnail-item {
   opacity: 1 !important;
+}
+
+/* Discount badge - red pill (Amazon style) */
+.discount-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.5rem;
+  z-index: 1;
+  background: #dc2626;
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4);
+}
+
+.discount-badge-lg {
+  font-size: 0.95rem;
+  padding: 0.25rem 0.7rem;
+}
+
+.discount-badge-sm {
+  position: static;
+  margin: 0;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+}
+
+/* Favorites dialog image */
+.fav-dialog-image {
+  max-width: 100%;
+  max-height: 18rem;
+  object-fit: contain;
 }
 
 /* Product image container */
@@ -302,7 +323,6 @@ main.flex-auto {
   color: var(--p-primary-color) !important;
 }
 
-
 /* Scroll to top button */
 p-scrolltop button {
   background: var(--p-primary-color) !important;
@@ -336,7 +356,6 @@ p-scrolltop button {
 
 /* ========== Animations ========== */
 
-
 /* Fade in up - for empty states, tab content */
 .animate-fade-in {
   animation: fade-in-up 400ms ease-out both;
@@ -344,10 +363,12 @@ p-scrolltop button {
 
 @keyframes fade-in-up {
   from {
+    opacity: 0;
     transform: translateY(15px);
   }
 
   to {
+    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -359,10 +380,12 @@ p-scrolltop button {
 
 @keyframes card-enter {
   from {
+    opacity: 0;
     transform: translateY(20px) scale(0.97);
   }
 
   to {
+    opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
@@ -375,6 +398,7 @@ p-scrolltop button {
 
 @keyframes card-leave {
   to {
+    opacity: 0;
     transform: translateX(-20px) scale(0.95);
   }
 }

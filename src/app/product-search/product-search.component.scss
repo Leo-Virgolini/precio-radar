@@ -51,12 +51,6 @@
   --p-rating-icon-active-color: var(--p-primary-color);
 }
 
-// Discount badge - better contrast in dark mode
-:host-context(.my-app-dark) ::ng-deep .p-tag-success {
-  background: #facc15;
-  color: #1a1a1a;
-}
-
 @media (min-width: 768px) {
   .list-card-image {
     width: 18rem;

@@ -257,9 +257,9 @@
                             (onClick)="toggleFavorite(product); $event.stopPropagation()" />
                         </div>
                         @if (product.originalPrice && product.originalPrice > product.currentPrice) {
-                        <div class="absolute top-0 right-0 m-2" style="z-index: 1;">
-                          <p-tag [value]="'-' + getDiscountPercentage(product.originalPrice, product.currentPrice) + '%'" severity="success" class="text-lg" />
-                        </div>
+                        <span class="discount-badge discount-badge-lg">
+                          -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+                        </span>
                         }
                       </div>
                     </ng-template>
@@ -342,9 +342,13 @@
                             }
                           </div>
 
-                          <!-- CTA Button -->
-                          <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" styleClass="w-full"
-                            (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
+                          <!-- CTA Buttons -->
+                          <div class="flex flex-column gap-2">
+                            <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" styleClass="w-full"
+                              (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
+                            <p-button label="Agregar al carrito" icon="pi pi-shopping-cart" [outlined]="true" severity="warn" styleClass="w-full"
+                              (onClick)="openAmazonProduct(product.addToCartUrl); $event.stopPropagation()" />
+                          </div>
                         </div>
                       </div>
                     </ng-template>
@@ -375,9 +379,9 @@
                             size="small" (onClick)="toggleFavorite(product); $event.stopPropagation()" />
                         </div>
                         @if (product.originalPrice && product.originalPrice > product.currentPrice) {
-                        <div class="absolute top-0 right-0 m-1 md:m-2" style="z-index: 1;">
-                          <p-tag [value]="'-' + getDiscountPercentage(product.originalPrice, product.currentPrice) + '%'" severity="success" />
-                        </div>
+                        <span class="discount-badge">
+                          -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+                        </span>
                         }
                       </div>
 
@@ -446,15 +450,21 @@
                           <p-button [icon]="isFavorite(product.asin) ? 'pi pi-heart-fill' : 'pi pi-heart'" [rounded]="true" [severity]="isFavorite(product.asin) ? 'danger' : 'secondary'"
                             size="small" [text]="true" (onClick)="toggleFavorite(product); $event.stopPropagation()" class="ml-auto md:hidden" />
                         </div>
-                        <!-- Amazon button - mobile only -->
-                        <div class="md:hidden">
-                          <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" size="small" class="w-full"
+                        <!-- Amazon buttons - mobile only -->
+                        <div class="md:hidden flex gap-2">
+                          <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" size="small" class="flex-1"
                             (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
+                          <p-button icon="pi pi-shopping-cart" [outlined]="true" severity="warn" size="small"
+                            pTooltip="Agregar al carrito" tooltipPosition="top"
+                            (onClick)="openAmazonProduct(product.addToCartUrl); $event.stopPropagation()" />
                         </div>
 
-                        <!-- Amazon button - desktop only -->
-                        <div class="hidden md:flex mt-auto">
+                        <!-- Amazon buttons - desktop only -->
+                        <div class="hidden md:flex mt-auto gap-2">
                           <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" (onClick)="openAmazonProduct(product.url); $event.stopPropagation()" />
+                          <p-button icon="pi pi-shopping-cart" [outlined]="true" severity="warn"
+                            pTooltip="Agregar al carrito" tooltipPosition="top"
+                            (onClick)="openAmazonProduct(product.addToCartUrl); $event.stopPropagation()" />
                         </div>
                       </div>
                     </div>
@@ -614,7 +624,9 @@
       </span>
       }
       @if (product.originalPrice && product.originalPrice > product.currentPrice) {
-      <p-tag [value]="'-' + getDiscountPercentage(product.originalPrice, product.currentPrice) + '%'" severity="success" [style]="{ 'font-size': '0.7rem' }" />
+      <span class="discount-badge discount-badge-sm">
+        -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+      </span>
       }
     </div>
   </ng-template>
@@ -628,7 +640,7 @@
         [containerStyle]="{ 'max-width': '100%' }">
         <ng-template #item let-item>
           <div class="flex align-items-center justify-content-center product-image-bg border-round p-2 md:p-3" style="min-height: 10rem;">
-            <img [src]="item" [alt]="product.title" class="dialog-product-image" (error)="onImageError($event)" />
+            <p-image [src]="item" [alt]="product.title" imageClass="dialog-product-image" [preview]="true" (onImageError)="onImageError($event)" />
           </div>
         </ng-template>
         <ng-template #thumbnail let-item>
@@ -703,8 +715,9 @@
           <span class="text-sm text-muted">Envío a: Argentina</span>
         </div>
 
-        <!-- CTA Button -->
+        <!-- CTA Buttons -->
         <p-button label="Ver en Amazon" icon="pi pi-external-link" severity="warn" styleClass="w-full" (onClick)="openAmazonProduct(product.url)" />
+        <p-button label="Agregar al carrito" icon="pi pi-shopping-cart" [outlined]="true" severity="warn" styleClass="w-full" (onClick)="openAmazonProduct(product.addToCartUrl)" />
         <p class="text-xs m-0 text-muted text-center">
           <i class="pi pi-info-circle mr-1"></i>Precios sujetos a cambios.
         </p>
