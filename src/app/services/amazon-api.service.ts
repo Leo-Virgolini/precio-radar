@@ -69,7 +69,7 @@ export class AmazonApiService {
       this.http.get<RawProduct[]>('products-us.json'),
       this.http.get<RawProduct[]>('products-es.json')
     ]).pipe(
-      map(([us, es]) => [...us, ...es].filter(p => p.shipsToArgentina).map(p => this.mapProduct(p))),
+      map(([us, es]) => [...us, ...es].filter(p => p.shipsToArgentina && p.currentPrice > 0).map(p => this.mapProduct(p))),
       tap(products => {
         this.products.set(products);
         this.loaded = true;

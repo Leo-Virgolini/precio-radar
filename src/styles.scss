@@ -200,6 +200,7 @@ main.flex-auto {
   height: 2.5rem !important;
   margin: 0 0.5rem !important;
   transition: background 0.2s ease !important;
+  z-index: 3 !important;
 }
 
 .p-galleria-nav-button:hover {
@@ -214,15 +215,7 @@ main.flex-auto {
   height: 1rem !important;
 }
 
-/* Hide thumbnail nav arrows - main arrows + clickable thumbnails suffice */
-.p-galleria-thumbnail-nav-button {
-  display: none !important;
-}
 
-/* All thumbnails same opacity - no active indicator */
-.p-galleria-thumbnail-item {
-  opacity: 1 !important;
-}
 
 /* p-image inside galleria - fill container to prevent cropping */
 .p-galleria .p-image {
@@ -235,6 +228,12 @@ main.flex-auto {
 .p-galleria .p-image-preview-mask {
   width: 100% !important;
   height: 100% !important;
+}
+
+/* Ensure thumbnails stay above the image preview overlay */
+.p-galleria-thumbnail-container {
+  position: relative !important;
+  z-index: 2 !important;
 }
 
 /* Discount badge - red pill (Amazon style) */
@@ -269,7 +268,7 @@ main.flex-auto {
 /* Dialog product image - global so it reaches p-image's inner <img> */
 .dialog-product-image {
   max-width: 100%;
-  max-height: 10rem;
+  max-height: 15rem;
   object-fit: contain;
 }
 
@@ -282,7 +281,7 @@ main.flex-auto {
 
 @media (min-width: 768px) {
   .dialog-product-image {
-    max-height: 18rem;
+    max-height: 24rem;
   }
 }
 

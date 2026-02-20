@@ -16,7 +16,7 @@ import { ImageModule } from 'primeng/image';
 import { FavoritesService } from '../services/favorites.service';
 import { AmazonApiService } from '../services/amazon-api.service';
 import { AmazonProduct } from '../models/product.model';
-import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImages, formatNumber, handleImageError } from '../shared/product.utils';
+import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImages, resizeImageUrl, formatNumber, handleImageError, type ImageSize } from '../shared/product.utils';
 
 @Component({
   selector: 'app-favorites',
@@ -165,7 +165,11 @@ export class FavoritesComponent implements OnInit {
     return formatNumber(num);
   }
 
-  protected getProductImages(product: AmazonProduct): string[] {
-    return getProductImages(product);
+  protected getProductImages(product: AmazonProduct, size: ImageSize = 'full'): string[] {
+    return getProductImages(product, size);
+  }
+
+  protected resizeImageUrl(url: string, size: ImageSize): string {
+    return resizeImageUrl(url, size);
   }
 }

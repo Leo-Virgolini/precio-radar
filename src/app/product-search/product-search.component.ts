@@ -25,7 +25,7 @@ import { AmazonApiService } from '../services/amazon-api.service';
 import { AmazonProduct, SearchResponse } from '../models/product.model';
 import { SearchService } from '../services/search.service';
 import { FavoritesService } from '../services/favorites.service';
-import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImages, formatNumber, handleImageError } from '../shared/product.utils';
+import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode, getRegionLabel, getShippingPrice, getProductImages, resizeImageUrl, formatNumber, handleImageError, type ImageSize } from '../shared/product.utils';
 
 @Component({
   selector: 'app-product-search',
@@ -372,8 +372,12 @@ export class ProductSearchComponent implements OnInit {
     }
   }
 
-  protected getProductImages(product: AmazonProduct): string[] {
-    return getProductImages(product);
+  protected getProductImages(product: AmazonProduct, size: ImageSize = 'full'): string[] {
+    return getProductImages(product, size);
+  }
+
+  protected resizeImageUrl(url: string, size: ImageSize): string {
+    return resizeImageUrl(url, size);
   }
 
   protected readonly galleriaResponsiveOptions = [

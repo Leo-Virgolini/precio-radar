@@ -44,6 +44,32 @@
 
 <!-- Amazon Tabs -->
 <section class="p-1 md:p-3 surface-ground">
+  <!-- Promo Banners Carousel -->
+  <div class="mb-3 animate-fade-in promo-carousel">
+    <p-carousel [value]="promoBanners" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="5000" [showNavigators]="true" [showIndicators]="true">
+      <ng-template #item let-banner>
+        <a [href]="banner.url" target="_blank" rel="noopener noreferrer nofollow"
+          [class]="banner.bannerClass + ' flex flex-column md:flex-row align-items-center justify-content-between gap-3 p-3 md:p-4 border-round-xl no-underline mx-1'">
+          <div class="flex align-items-center gap-3">
+            <i [class]="banner.icon + ' text-3xl md:text-4xl'"></i>
+            <div>
+              <div class="flex align-items-center gap-2">
+                <h3 class="m-0 text-base md:text-xl font-bold">{{ banner.title }}</h3>
+                <img [src]="banner.region === 'ES' ? 'https://flagcdn.com/20x15/es.png' : 'https://flagcdn.com/20x15/us.png'"
+                  width="20" height="15" [alt]="banner.region === 'ES' ? 'España' : 'USA'" style="opacity: 0.9" />
+              </div>
+              <p class="m-0 mt-1 text-xs md:text-sm" style="opacity: 0.9">{{ banner.description }}</p>
+            </div>
+          </div>
+          <div [class]="'flex align-items-center gap-2 white-space-nowrap font-bold text-sm md:text-base ' + banner.ctaClass">
+            <span>Probá gratis</span>
+            <i class="pi pi-arrow-right"></i>
+          </div>
+        </a>
+      </ng-template>
+    </p-carousel>
+  </div>
+
   <p-tabs [(value)]="activeTab" class="w-full">
     <p-tablist>
       <p-tab value="0">
@@ -95,32 +121,6 @@
       </p-tabpanel>
     </p-tabpanels>
   </p-tabs>
-
-  <!-- Promo Banners Carousel -->
-  <div class="mt-3 animate-fade-in promo-carousel">
-    <p-carousel [value]="promoBanners" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="5000" [showNavigators]="true" [showIndicators]="true">
-      <ng-template #item let-banner>
-        <a [href]="banner.url" target="_blank" rel="noopener noreferrer nofollow"
-          [class]="banner.bannerClass + ' flex flex-column md:flex-row align-items-center justify-content-between gap-3 p-3 md:p-4 border-round-xl no-underline mx-1'">
-          <div class="flex align-items-center gap-3">
-            <i [class]="banner.icon + ' text-3xl md:text-4xl'"></i>
-            <div>
-              <div class="flex align-items-center gap-2">
-                <h3 class="m-0 text-base md:text-xl font-bold">{{ banner.title }}</h3>
-                <img [src]="banner.region === 'ES' ? 'https://flagcdn.com/20x15/es.png' : 'https://flagcdn.com/20x15/us.png'"
-                  width="20" height="15" [alt]="banner.region === 'ES' ? 'España' : 'USA'" style="opacity: 0.9" />
-              </div>
-              <p class="m-0 mt-1 text-xs md:text-sm" style="opacity: 0.9">{{ banner.description }}</p>
-            </div>
-          </div>
-          <div [class]="'flex align-items-center gap-2 white-space-nowrap font-bold text-sm md:text-base ' + banner.ctaClass">
-            <span>Probá gratis</span>
-            <i class="pi pi-arrow-right"></i>
-          </div>
-        </a>
-      </ng-template>
-    </p-carousel>
-  </div>
 
   <!-- Info Footer -->
   <div class="mt-3 info-footer border-round-xl p-2 md:p-6">

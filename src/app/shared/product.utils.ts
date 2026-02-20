@@ -26,8 +26,22 @@ export function getShippingPrice(product: AmazonProduct): number {
   return product.shippingPrice;
 }
 
-export function getProductImages(product: AmazonProduct): string[] {
-  return product.imageUrls.length ? product.imageUrls : [FALLBACK_IMAGE];
+export type ImageSize = 'thumbnail' | 'card' | 'detail' | 'full';
+
+const IMAGE_SIZE_MAP: Record<ImageSize, string> = {
+  thumbnail: '_AC_SL200_',
+  card: '_AC_SL500_',
+  detail: '_AC_SL800_',
+  full: '_AC_SL1500_',
+};
+
+export function resizeImageUrl(url: string, size: ImageSize): string {
+  return url.replace(/_AC_SL\d+_/, IMAGE_SIZE_MAP[size]);
+}
+
+export function getProductImages(product: AmazonProduct, size: ImageSize = 'full'): string[] {
+  if (!product.imageUrls.length) return [FALLBACK_IMAGE];
+  return product.imageUrls.map(url => resizeImageUrl(url, size));
 }
 
 export function formatNumber(num: string): string {
