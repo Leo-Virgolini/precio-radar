@@ -224,6 +224,19 @@ main.flex-auto {
   opacity: 1 !important;
 }
 
+/* p-image inside galleria - fill container to prevent cropping */
+.p-galleria .p-image {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.p-galleria .p-image-preview-mask {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* Discount badge - red pill (Amazon style) */
 .discount-badge {
   position: absolute;
@@ -253,11 +266,24 @@ main.flex-auto {
   padding: 0.15rem 0.5rem;
 }
 
+/* Dialog product image - global so it reaches p-image's inner <img> */
+.dialog-product-image {
+  max-width: 100%;
+  max-height: 10rem;
+  object-fit: contain;
+}
+
 /* Favorites dialog image */
 .fav-dialog-image {
   max-width: 100%;
   max-height: 18rem;
   object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .dialog-product-image {
+    max-height: 18rem;
+  }
 }
 
 /* Product image container */

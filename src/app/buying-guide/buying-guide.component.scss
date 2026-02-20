@@ -1,4 +1,4 @@
-.amazon-guide-container {
+.buying-guide-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 
@@ -68,7 +68,7 @@ html {
 .faq-list {
   .faq-item {
     transition: all 0.3s ease;
-    
+
     &:hover {
       transform: translateX(4px);
     }
@@ -91,11 +91,11 @@ html {
   .guide-header h1 {
     font-size: 2rem !important;
   }
-  
+
   .guide-header p {
     font-size: 1rem !important;
   }
-  
+
   .max-w-6xl {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -104,15 +104,15 @@ html {
 
 // Print styles
 @media print {
-  .amazon-guide-container {
+  .buying-guide-container {
     background: white;
   }
-  
+
   .p-card {
     box-shadow: none;
     border: 1px solid #e2e8f0;
   }
-  
+
   .p-button {
     display: none;
   }

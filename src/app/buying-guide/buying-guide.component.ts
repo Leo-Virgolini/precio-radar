@@ -15,7 +15,7 @@ import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 
 @Component({
-  selector: 'app-amazon-guide',
+  selector: 'app-buying-guide',
   imports: [
     CardModule,
     TagModule,
@@ -30,11 +30,11 @@ import { PanelModule } from 'primeng/panel';
     MessageModule,
     PanelModule
   ],
-  templateUrl: './amazon-guide.component.html',
-  styleUrl: './amazon-guide.component.scss',
+  templateUrl: './buying-guide.component.html',
+  styleUrl: './buying-guide.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AmazonGuideComponent implements OnInit, OnDestroy {
+export class BuyingGuideComponent implements OnInit, OnDestroy {
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
   private faqScriptElement: HTMLScriptElement | null = null;

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, signal, inject, OnInit, PLATFORM_ID, DestroyRef, ViewChild, ElementRef } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -24,7 +24,6 @@ import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode,
   styleUrl: './favorites.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     FormsModule,
     RouterLink,
     CardModule,

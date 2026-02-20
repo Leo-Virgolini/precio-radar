@@ -38,13 +38,6 @@
   min-height: 14rem;
 }
 
-// Dialog product image - compact on mobile
-.dialog-product-image {
-  max-width: 100%;
-  max-height: 10rem;
-  object-fit: contain;
-}
-
 :host ::ng-deep .filter-rating .p-rating {
   --p-rating-icon-color: var(--p-primary-200);
   --p-rating-icon-hover-color: var(--p-primary-color);
@@ -60,9 +53,5 @@
   .list-card-title {
     -webkit-line-clamp: unset;
     overflow: visible;
-  }
-
-  .dialog-product-image {
-    max-height: 18rem;
   }
 }

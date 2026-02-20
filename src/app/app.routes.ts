@@ -17,7 +17,7 @@ export const routes: Routes = [
       },
       {
         path: 'guia-de-compra',
-        loadComponent: () => import('./amazon-guide/amazon-guide.component').then(m => m.AmazonGuideComponent),
+        loadComponent: () => import('./buying-guide/buying-guide.component').then(m => m.BuyingGuideComponent),
         data: {
           title: 'Guía Definitiva: Cómo Comprar en Amazon desde Argentina (2026) | PrecioRadar',
           description: 'Guía completa y actualizada para comprar en Amazon desde Argentina. Paso a paso, impuestos, restricciones, envío gratis en pedidos de $99 USD y consejos para ahorrar.',
