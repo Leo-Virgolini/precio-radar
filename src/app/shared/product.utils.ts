@@ -36,7 +36,7 @@ const IMAGE_SIZE_MAP: Record<ImageSize, string> = {
 };
 
 export function resizeImageUrl(url: string, size: ImageSize): string {
-  return url.replace(/_AC_SL\d+_/, IMAGE_SIZE_MAP[size]);
+  return url.replace(/\.(\w+)$/, `.${IMAGE_SIZE_MAP[size]}.$1`);
 }
 
 export function getProductImages(product: AmazonProduct, size: ImageSize = 'full'): string[] {

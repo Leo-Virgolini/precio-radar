@@ -78,6 +78,11 @@
                       -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
                     </span>
                   }
+                  @if (!product.inStock) {
+                    <div class="out-of-stock-overlay">
+                      <span class="out-of-stock-badge">Sin stock</span>
+                    </div>
+                  }
                 </div>
               </ng-template>
 
@@ -283,8 +288,8 @@
 
           <!-- Availability + Destination -->
           <div class="flex align-items-center gap-2">
-            <i class="pi pi-check-circle price-green text-sm"></i>
-            <span class="text-sm text-body">{{ product.inStock ? 'En stock' : 'Sin stock' }}</span>
+            <i [class]="'pi text-sm ' + (product.inStock ? 'pi-check-circle price-green' : 'pi-times-circle text-red-500')"></i>
+            <span [class]="'text-sm ' + (product.inStock ? 'text-body' : 'text-red-500 font-semibold')">{{ product.inStock ? 'En stock' : 'Sin stock' }}</span>
           </div>
           <div class="flex align-items-center gap-2">
             <i class="pi pi-map-marker text-muted text-sm"></i>
