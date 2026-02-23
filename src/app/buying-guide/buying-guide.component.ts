@@ -13,6 +13,10 @@ import { ChipModule } from 'primeng/chip';
 import { AvatarModule } from 'primeng/avatar';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
+import { AccordionModule } from 'primeng/accordion';
+import { AnimateOnScrollModule } from 'primeng/animateonscroll';
+import { Breadcrumb } from 'primeng/breadcrumb';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-buying-guide',
@@ -28,7 +32,10 @@ import { PanelModule } from 'primeng/panel';
     ChipModule,
     AvatarModule,
     MessageModule,
-    PanelModule
+    PanelModule,
+    AccordionModule,
+    AnimateOnScrollModule,
+    Breadcrumb
   ],
   templateUrl: './buying-guide.component.html',
   styleUrl: './buying-guide.component.scss',
@@ -40,6 +47,11 @@ export class BuyingGuideComponent implements OnInit, OnDestroy {
   private faqScriptElement: HTMLScriptElement | null = null;
 
   protected readonly currentDate = new Date().toLocaleDateString('es-AR');
+
+  protected readonly homeItem: MenuItem = { icon: 'pi pi-home', routerLink: '/' };
+  protected readonly breadcrumbItems: MenuItem[] = [
+    { label: 'Guía de Compra', icon: 'pi pi-book' }
+  ];
 
   protected readonly tableOfContents = [
     { id: 'introduccion', label: 'Introducción' },

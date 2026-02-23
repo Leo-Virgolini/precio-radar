@@ -3,7 +3,7 @@
 <p-megamenu [model]="megaMenuItems" class="border-noround border-white-alpha-20 shadow-2">
     <ng-template #start>
         <div class="flex align-items-center gap-2 w-full">
-            <a routerLink="/" (click)="onGoHome()" class="no-underline cursor-pointer flex-shrink-0">
+            <a routerLink="/" (click)="onGoHome()" class="no-underline cursor-pointer flex-shrink-0" pTooltip="Home" tooltipPosition="bottom">
                 <img src="logo.svg" alt="PrecioRadar" class="header-logo" />
             </a>
             <!-- Desktop: Search bar -->

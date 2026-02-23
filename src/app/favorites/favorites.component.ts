@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -13,6 +13,8 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { DialogModule } from 'primeng/dialog';
 import { GalleriaModule } from 'primeng/galleria';
 import { ImageModule } from 'primeng/image';
+import { Breadcrumb } from 'primeng/breadcrumb';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 import { FavoritesService } from '../services/favorites.service';
 import { AmazonApiService } from '../services/amazon-api.service';
 import { AmazonProduct } from '../models/product.model';
@@ -34,8 +36,11 @@ import { getDiscountPercentage, formatPrice, getCurrencySymbol, getCurrencyCode,
     SkeletonModule,
     DialogModule,
     GalleriaModule,
-    ImageModule
-  ]
+    ImageModule,
+    Breadcrumb,
+    ConfirmDialog
+  ],
+  providers: [ConfirmationService]
 })
 export class FavoritesComponent implements OnInit {
 
@@ -44,6 +49,12 @@ export class FavoritesComponent implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly destroyRef = inject(DestroyRef);
   private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
+
+  protected readonly homeItem: MenuItem = { icon: 'pi pi-home', routerLink: '/' };
+  protected readonly breadcrumbItems: MenuItem[] = [
+    { label: 'Favoritos', icon: 'pi pi-heart' }
+  ];
 
   protected readonly products = signal<AmazonProduct[]>([]);
   protected readonly isLoading = signal(true);
@@ -99,15 +110,25 @@ export class FavoritesComponent implements OnInit {
     }, 300);
   }
 
-  protected clearAll(): void {
-    const count = this.products().length;
-    this.favoritesService.clearAll();
-    this.products.set([]);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Favoritos eliminados',
-      detail: `Se eliminaron ${count} productos de tus favoritos`,
-      life: 1500
+  protected confirmClearAll(): void {
+    this.confirmationService.confirm({
+      message: `Se eliminarán ${this.products().length} productos de tus favoritos. Esta acción no se puede deshacer.`,
+      header: 'Eliminar todos los favoritos',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Eliminar',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        const count = this.products().length;
+        this.favoritesService.clearAll();
+        this.products.set([]);
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Favoritos eliminados',
+          detail: `Se eliminaron ${count} productos de tus favoritos`,
+          life: 1500
+        });
+      }
     });
   }
 

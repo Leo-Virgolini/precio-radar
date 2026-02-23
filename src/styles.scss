@@ -153,6 +153,33 @@ main.flex-auto {
   border-top-right-radius: 0 !important;
 }
 
+/* Toast - compact on mobile */
+@media (max-width: 768px) {
+  .p-toast {
+    width: auto !important;
+    max-width: 85vw !important;
+    min-width: 0 !important;
+  }
+
+  .p-toast-message-content {
+    padding: 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .p-toast-summary {
+    font-size: 0.85rem !important;
+  }
+
+  .p-toast-detail {
+    font-size: 0.75rem !important;
+  }
+
+  .p-toast-close-button {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+}
+
 /* Mobile overrides - tabs & paginator */
 @media (max-width: 768px) {
   .p-tab {

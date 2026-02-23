@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { BadgeModule } from 'primeng/badge';
 import { InputGroupModule } from 'primeng/inputgroup';
+import { TooltipModule } from 'primeng/tooltip';
 import { SearchService } from '../../services/search.service';
 import { FavoritesService } from '../../services/favorites.service';
 import { AmazonApiService } from '../../services/amazon-api.service';
@@ -15,7 +16,7 @@ import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [ButtonModule, MegaMenuModule, ReactiveFormsModule, InputTextModule, SelectModule, RouterLink, BadgeModule, InputGroupModule],
+  imports: [ButtonModule, MegaMenuModule, ReactiveFormsModule, InputTextModule, SelectModule, RouterLink, BadgeModule, InputGroupModule, TooltipModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
