@@ -263,33 +263,32 @@ main.flex-auto {
   z-index: 2 !important;
 }
 
-/* Discount badge - red pill (Amazon style) */
+/* Discount badge - Amazon style */
 .discount-badge {
   position: absolute;
   top: 0;
   right: 0;
   margin: 0.5rem;
   z-index: 1;
-  background: #dc2626;
-  color: white;
+  background: #fef2f2;
+  color: #b91c1c;
   font-weight: 700;
-  font-size: 0.8rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  line-height: 1.4;
-  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  line-height: 1.3;
 }
 
 .discount-badge-lg {
-  font-size: 0.95rem;
-  padding: 0.25rem 0.7rem;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.6rem;
 }
 
 .discount-badge-sm {
   position: static;
   margin: 0;
   font-size: 0.7rem;
-  padding: 0.15rem 0.5rem;
+  padding: 0.15rem 0.4rem;
 }
 
 /* Dialog product image - global so it reaches p-image's inner <img> */
@@ -555,6 +554,11 @@ p-scrolltop button {
   }
 
   .savings-highlight {
+    color: var(--p-red-300) !important;
+    background: rgba(239, 68, 68, 0.15) !important;
+  }
+
+  .discount-badge {
     color: var(--p-red-300) !important;
     background: rgba(239, 68, 68, 0.15) !important;
   }

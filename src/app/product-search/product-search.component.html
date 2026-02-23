@@ -618,7 +618,7 @@
 
 <!-- Product Detail Dialog -->
 @if (selectedProduct(); as product) {
-<p-dialog [(visible)]="showProductDialog" [modal]="true" [dismissableMask]="true" [draggable]="false" [style]="{ width: '90vw', 'max-width': '50rem' }" [breakpoints]="{ '768px': '95vw' }"
+<p-dialog [visible]="showProductDialog()" (visibleChange)="onDialogVisibilityChange($event)" [modal]="true" [dismissableMask]="true" [draggable]="false" [style]="{ width: '90vw', 'max-width': '50rem' }" [breakpoints]="{ '768px': '95vw' }"
   appendTo="body">
   <ng-template #header>
     <div class="flex align-items-center gap-1 md:gap-2 flex-wrap">

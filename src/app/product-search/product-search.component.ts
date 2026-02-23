@@ -140,8 +140,10 @@ export class ProductSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForms();
-    this.loadTopSellingProducts();
-    this.setupMobileDetection();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadTopSellingProducts();
+      this.setupMobileDetection();
+    }
   }
 
   private setupMobileDetection(): void {
@@ -215,6 +217,13 @@ export class ProductSearchComponent implements OnInit {
           console.error('Error loading top products:', error);
         }
       });
+  }
+
+  protected onDialogVisibilityChange(visible: boolean): void {
+    this.showProductDialog.set(visible);
+    if (!visible) {
+      this.selectedProduct.set(null);
+    }
   }
 
   protected openProductDetail(product: AmazonProduct): void {

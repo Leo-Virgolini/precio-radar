@@ -195,7 +195,7 @@
 
 <!-- Product Detail Dialog -->
 @if (selectedProduct(); as product) {
-  <p-dialog [visible]="showProductDialog()" (visibleChange)="showProductDialog.set($event)" [modal]="true" [dismissableMask]="true" [draggable]="false"
+  <p-dialog [visible]="showProductDialog()" (visibleChange)="onDialogVisibilityChange($event)" [modal]="true" [dismissableMask]="true" [draggable]="false"
     [style]="{ width: '90vw', 'max-width': '50rem' }" [breakpoints]="{ '768px': '95vw' }">
     <ng-template #header>
       <div class="flex align-items-center gap-2">

@@ -148,6 +148,13 @@ export class FavoritesComponent implements OnInit {
     }
   }
 
+  protected onDialogVisibilityChange(visible: boolean): void {
+    this.showProductDialog.set(visible);
+    if (!visible) {
+      this.selectedProduct.set(null);
+    }
+  }
+
   protected openAmazonProduct(url: string): void {
     if (isPlatformBrowser(this.platformId)) {
       window.open(url, '_blank');
