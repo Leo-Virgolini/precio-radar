@@ -67,7 +67,7 @@
           </div>
           <div class="flex align-items-center gap-2 flex-1 md:flex-none">
             <label class="text-color font-medium text-sm md:text-base white-space-nowrap"><i class="pi pi-sort-alt mr-1"></i>Ordenar:</label>
-            <p-select [options]="sortOptions" formControlName="selectedSort" optionLabel="label" optionValue="value" (onChange)="onSortChange($event.value)" placeholder="Ordenar por"
+            <p-select [options]="sortOptions" formControlName="selectedSort" optionLabel="label" (onChange)="onSortChange($event.value)" placeholder="Ordenar por"
               class="flex-1 md:w-19rem">
               <ng-template #selectedItem let-option>
                 <div class="flex align-items-center gap-2">
@@ -90,7 +90,7 @@
     <div class="grid">
       <!-- Filters Sidebar (desktop only) -->
       <div class="hidden lg:block lg:col-2">
-        <form [formGroup]="filterForm" class="surface-card border-round-xl p-4 border-1 surface-border">
+        <form [formGroup]="filterForm" class="surface-card border-round-xl p-4 border-2 border-primary-100 shadow-2">
           <h4 class="text-color font-semibold mt-0"><i class="pi pi-filter mr-2"></i>Filtros</h4>
 
           <!-- Region Filter (only in ALL tab) -->
@@ -132,13 +132,13 @@
                 @else { (USD) }
               </span>
             </label>
-            <p-slider formControlName="priceRange" [min]="0" [max]="10000" [range]="true" (onChange)="applyFilters()" class="w-full mb-3">
+            <p-slider formControlName="priceRange" [min]="0" [max]="maxPriceLimit" [range]="true" (onChange)="applyFilters()" class="w-full mb-3">
             </p-slider>
             <div class="flex align-items-center gap-2">
-              <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[0] || 0" (onInput)="onPriceInputChange(0, $event.value)" [min]="0" [max]="10000"
+              <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[0] || 0" (onInput)="onPriceInputChange(0, $event.value)" [min]="0" [max]="maxPriceLimit"
                 [ngModelOptions]="{standalone: true}" placeholder="Min" size="small" inputStyleClass="w-full text-sm" class="flex-1" />
               <span class="text-color text-sm">-</span>
-              <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[1] || 10000" (onInput)="onPriceInputChange(1, $event.value)" [min]="0" [max]="10000"
+              <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[1] || maxPriceLimit" (onInput)="onPriceInputChange(1, $event.value)" [min]="0" [max]="maxPriceLimit"
                 [ngModelOptions]="{standalone: true}" placeholder="Max" size="small" inputStyleClass="w-full text-sm" class="flex-1" />
             </div>
           </div>
@@ -146,13 +146,15 @@
           <!-- Category Filter -->
           <div class="mb-4">
             <label class="text-color font-medium mb-2 block"><i class="pi pi-th-large mr-1 text-sm"></i>Categoría</label>
-            <p-select [options]="categories()" formControlName="selectedCategory" optionLabel="label" optionValue="value" placeholder="Todas las categorías" (onChange)="applyFilters()"
+            <p-select [options]="categories" formControlName="selectedCategory" optionLabel="label" optionValue="value" placeholder="Todas las categorías" (onChange)="applyFilters()"
               class="w-full">
               <ng-template #selectedItem let-option>
-                <div class="flex align-items-center gap-2">
-                  <i [class]="option.icon"></i>
-                  <span>{{ option.label }}</span>
-                </div>
+                @if (option?.label) {
+                  <div class="flex align-items-center gap-2">
+                    <i [class]="option.icon"></i>
+                    <span>{{ option.label }}</span>
+                  </div>
+                }
               </ng-template>
               <ng-template #item let-option>
                 <div class="flex align-items-center gap-2">
@@ -161,6 +163,14 @@
                 </div>
               </ng-template>
             </p-select>
+          </div>
+
+          <!-- In Stock Filter -->
+          <div class="mb-4">
+            <div class="flex align-items-center justify-content-between">
+              <label class="text-sm text-color"><i class="pi pi-check-circle mr-1 text-xs"></i>Con stock</label>
+              <p-toggleswitch formControlName="inStockOnly" (onChange)="applyFilters()" />
+            </div>
           </div>
 
           <!-- Free Shipping Filter -->
@@ -217,9 +227,9 @@
           </div>
           } @else {
           <div #dataViewAnchor style="scroll-margin-top: 8rem"></div>
-          <p-dataView #dv [value]="searchResults()?.products" [layout]="effectiveLayout()" [paginator]="true" [rows]="12" [totalRecords]="searchResults()?.totalResults || 0"
+          <p-dataView #dv [value]="searchResults()?.products" [layout]="effectiveLayout()" [paginator]="true" [rows]="12" [first]="dataViewFirst()" [totalRecords]="searchResults()?.totalResults || 0"
             [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} de {totalRecords} productos" class="w-full border-round-xl overflow-hidden"
-            (onPage)="onPageChange()">
+            (onPage)="onPageChange($event)">
 
             <ng-template #header>
               <div class="flex justify-content-between align-items-center">
@@ -249,16 +259,16 @@
                           <span><i class="pi pi-eye"></i>Ver detalles</span>
                         </div>
                         <div class="flex align-items-center justify-content-center product-image-bg grid-card-image">
-                          <img [src]="resizeImageUrl(product.imageUrls[0], 'card')" [alt]="product.title" class="grid-card-img" (error)="onImageError($event)" />
+                          <img [src]="resizeImageUrl(product.imageUrls?.[0] ?? '', 'card')" [alt]="product.title" class="grid-card-img" (error)="onImageError($event)" />
                         </div>
                         <div class="absolute top-0 left-0 m-2" style="z-index: 1;">
                           <p-button [icon]="isFavorite(product.asin) ? 'pi pi-heart-fill' : 'pi pi-heart'" [rounded]="true" [severity]="isFavorite(product.asin) ? 'danger' : 'secondary'"
                             size="small" [attr.aria-label]="isFavorite(product.asin) ? 'Quitar de favoritos' : 'Agregar a favoritos'"
                             (onClick)="toggleFavorite(product); $event.stopPropagation()" />
                         </div>
-                        @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                        @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
                         <span class="discount-badge discount-badge-lg">
-                          -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+                          -{{ getDiscountPercentage(product.originalPrice, product.currentPrice ?? 0) }}%
                         </span>
                         }
                         @if (!product.inStock) {
@@ -316,12 +326,12 @@
                               {{ getCurrencySymbol(product) }}{{ formatPrice(product.currentPrice) }}
                             </span>
                             <span class="text-xs text-muted">{{ getCurrencyCode(product) }}</span>
-                            @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                            @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
                             <span class="text-sm line-through text-muted">
                               {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice) }}
                             </span>
                             <span class="text-xs font-semibold savings-highlight">
-                              <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - product.currentPrice) }}
+                              <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - (product.currentPrice ?? 0)) }}
                             </span>
                             }
                           </div>
@@ -377,15 +387,15 @@
                           <span><i class="pi pi-eye"></i>Ver detalles</span>
                         </div>
                         <div class="flex align-items-center justify-content-center product-image-bg border-round h-full">
-                          <img [src]="resizeImageUrl(product.imageUrls[0], 'card')" [alt]="product.title" class="grid-card-img" (error)="onImageError($event)" />
+                          <img [src]="resizeImageUrl(product.imageUrls?.[0] ?? '', 'card')" [alt]="product.title" class="grid-card-img" (error)="onImageError($event)" />
                         </div>
                         <div class="absolute top-0 left-0 m-1 md:m-2 hidden md:block" style="z-index: 1;">
                           <p-button [icon]="isFavorite(product.asin) ? 'pi pi-heart-fill' : 'pi pi-heart'" [rounded]="true" [severity]="isFavorite(product.asin) ? 'danger' : 'secondary'"
                             size="small" (onClick)="toggleFavorite(product); $event.stopPropagation()" />
                         </div>
-                        @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                        @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
                         <span class="discount-badge">
-                          -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+                          -{{ getDiscountPercentage(product.originalPrice, product.currentPrice ?? 0) }}%
                         </span>
                         }
                         @if (!product.inStock) {
@@ -437,10 +447,10 @@
                         <div class="flex align-items-baseline gap-2 flex-wrap">
                           <span class="text-lg md:text-2xl font-bold price-green">{{ getCurrencySymbol(product) }}{{ formatPrice(product.currentPrice) }}</span>
                           <span class="hidden md:inline text-xs text-muted">{{ getCurrencyCode(product) }}</span>
-                          @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                          @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
                           <span class="text-xs md:text-sm line-through text-muted">{{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice) }}</span>
                           <span class="hidden md:inline-flex text-xs font-semibold savings-highlight">
-                            <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - product.currentPrice) }}
+                            <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - (product.currentPrice ?? 0)) }}
                           </span>
                           }
                         </div>
@@ -545,13 +555,13 @@
           @else { (USD) }
         </span>
       </label>
-      <p-slider formControlName="priceRange" [min]="0" [max]="10000" [range]="true" (onChange)="applyFilters()" class="w-full mb-3">
+      <p-slider formControlName="priceRange" [min]="0" [max]="maxPriceLimit" [range]="true" (onChange)="applyFilters()" class="w-full mb-3">
       </p-slider>
       <div class="flex align-items-center gap-2">
-        <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[0] || 0" (onInput)="onPriceInputChange(0, $event.value)" [min]="0" [max]="10000"
+        <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[0] || 0" (onInput)="onPriceInputChange(0, $event.value)" [min]="0" [max]="maxPriceLimit"
           [ngModelOptions]="{standalone: true}" placeholder="Min" size="small" inputStyleClass="w-full text-sm" class="flex-1" />
         <span class="text-sm">-</span>
-        <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[1] || 10000" (onInput)="onPriceInputChange(1, $event.value)" [min]="0" [max]="10000"
+        <p-inputNumber [ngModel]="filterForm.get('priceRange')?.value?.[1] || maxPriceLimit" (onInput)="onPriceInputChange(1, $event.value)" [min]="0" [max]="maxPriceLimit"
           [ngModelOptions]="{standalone: true}" placeholder="Max" size="small" inputStyleClass="w-full text-sm" class="flex-1" />
       </div>
     </div>
@@ -559,7 +569,7 @@
     <!-- Category Filter -->
     <div class="mb-4">
       <label class="font-medium mb-2 block"><i class="pi pi-th-large mr-1 text-sm"></i>Categoría</label>
-      <p-select [options]="categories()" formControlName="selectedCategory" optionLabel="label" optionValue="value" placeholder="Todas las categorías" (onChange)="applyFilters()"
+      <p-select [options]="categories" formControlName="selectedCategory" optionLabel="label" optionValue="value" placeholder="Todas las categorías" (onChange)="applyFilters()"
         class="w-full">
         <ng-template #selectedItem let-option>
           <div class="flex align-items-center gap-2">
@@ -574,6 +584,14 @@
           </div>
         </ng-template>
       </p-select>
+    </div>
+
+    <!-- In Stock Filter -->
+    <div class="mb-4">
+      <div class="flex align-items-center justify-content-between">
+        <label class="text-sm"><i class="pi pi-check-circle mr-1 text-xs"></i>Con stock</label>
+        <p-toggleswitch formControlName="inStockOnly" (onChange)="applyFilters()" />
+      </div>
     </div>
 
     <!-- Free Shipping Filter -->
@@ -633,9 +651,9 @@
         {{ getRegionLabel(product) }}
       </span>
       }
-      @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+      @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
       <span class="discount-badge discount-badge-sm">
-        -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+        -{{ getDiscountPercentage(product.originalPrice, product.currentPrice ?? 0) }}%
       </span>
       }
     </div>
@@ -669,13 +687,13 @@
           </span>
           <span class="text-xs text-muted">{{ getCurrencyCode(product) }}</span>
         </div>
-        @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+        @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
         <div class="flex align-items-center gap-2 flex-wrap">
           <span class="text-sm line-through text-muted">
             {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice) }}
           </span>
           <span class="text-xs font-semibold savings-highlight">
-            <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - product.currentPrice) }}
+            <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - (product.currentPrice ?? 0)) }}
           </span>
         </div>
         }
@@ -704,7 +722,7 @@
         }
 
         <!-- Import Charges -->
-        @if (product.importCharges > 0) {
+        @if ((product.importCharges ?? 0) > 0) {
         <div class="flex align-items-center gap-2">
           <i class="pi pi-globe shipping-info text-sm"></i>
           <span class="shipping-info text-sm">

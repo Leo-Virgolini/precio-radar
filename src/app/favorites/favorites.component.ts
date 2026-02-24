@@ -169,7 +169,7 @@ export class FavoritesComponent implements OnInit {
     return getDiscountPercentage(original, current);
   }
 
-  protected formatPrice(price: number): string {
+  protected formatPrice(price: number | null): string {
     return formatPrice(price);
   }
 

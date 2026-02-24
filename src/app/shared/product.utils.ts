@@ -23,7 +23,7 @@ export function getRegionLabel(product: AmazonProduct): string {
 }
 
 export function getShippingPrice(product: AmazonProduct): number {
-  return product.shippingPrice;
+  return product.shippingPrice ?? 0;
 }
 
 export type ImageSize = 'thumbnail' | 'card' | 'detail' | 'full';

@@ -77,9 +77,9 @@
                     <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small"
                       aria-label="Quitar de favoritos" (onClick)="removeFavorite(product); $event.stopPropagation()" />
                   </div>
-                  @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                  @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
                     <span class="discount-badge discount-badge-lg">
-                      -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+                      -{{ getDiscountPercentage(product.originalPrice, product.currentPrice ?? 0) }}%
                     </span>
                   }
                   @if (!product.inStock) {
@@ -135,12 +135,12 @@
                         {{ getCurrencySymbol(product) }}{{ formatPrice(product.currentPrice) }}
                       </span>
                       <span class="text-xs text-muted">{{ getCurrencyCode(product) }}</span>
-                      @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                      @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
                         <span class="text-sm line-through text-muted">
                           {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice) }}
                         </span>
                         <span class="text-xs font-semibold savings-highlight">
-                          <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - product.currentPrice) }}
+                          <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - (product.currentPrice ?? 0)) }}
                         </span>
                       }
                     </div>
@@ -206,9 +206,9 @@
             width="16" height="12" [alt]="product.region === 'ES' ? 'España' : 'USA'" />
           {{ getRegionLabel(product) }}
         </span>
-        @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+        @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
           <span class="discount-badge discount-badge-sm">
-            -{{ getDiscountPercentage(product.originalPrice, product.currentPrice) }}%
+            -{{ getDiscountPercentage(product.originalPrice, product.currentPrice ?? 0) }}%
           </span>
         }
         <p-button icon="pi pi-trash" [rounded]="true" severity="danger" size="small"
@@ -246,13 +246,13 @@
             </span>
             <span class="text-xs text-muted">{{ getCurrencyCode(product) }}</span>
           </div>
-          @if (product.originalPrice && product.originalPrice > product.currentPrice) {
+          @if (product.originalPrice && product.originalPrice > (product.currentPrice ?? 0)) {
           <div class="flex align-items-center gap-2 flex-wrap">
             <span class="text-sm line-through text-muted">
               {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice) }}
             </span>
             <span class="text-xs font-semibold savings-highlight">
-              <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - product.currentPrice) }}
+              <i class="pi pi-bolt text-xs mr-1"></i>Ahorrás {{ getCurrencySymbol(product) }}{{ formatPrice(product.originalPrice - (product.currentPrice ?? 0)) }}
             </span>
           </div>
           }
@@ -281,7 +281,7 @@
           }
 
           <!-- Import Charges -->
-          @if (product.importCharges > 0) {
+          @if ((product.importCharges ?? 0) > 0) {
           <div class="flex align-items-center gap-2">
             <i class="pi pi-globe shipping-info text-sm"></i>
             <span class="shipping-info text-sm">

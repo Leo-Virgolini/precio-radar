@@ -89,6 +89,7 @@ export class ProductSearchComponent implements OnInit {
   protected readonly searchResults = signal<SearchResponse | null>(null);
   protected readonly isLoading = signal(false);
   protected readonly currentPage = signal(1);
+  protected readonly dataViewFirst = signal(0);
 
   // Store original unfiltered results for price filter
   private originalProducts: AmazonProduct[] = [];
@@ -102,7 +103,6 @@ export class ProductSearchComponent implements OnInit {
     { label: 'Vista de Cuadrícula', icon: 'pi pi-th-large', value: 'grid' }
   ];
   protected readonly sortOptions = [
-    { label: 'Relevancia', value: 'relevance', icon: 'pi pi-search' },
     { label: 'Más Vendidos', value: 'bestsellers', icon: 'pi pi-trophy' },
     { label: 'Mejor Calificación', value: 'rating-desc', icon: 'pi pi-star-fill' },
     { label: 'Precio: Menor a Mayor', value: 'price-asc', icon: 'pi pi-sort-amount-up' },
@@ -112,7 +112,7 @@ export class ProductSearchComponent implements OnInit {
     { label: 'Mayor Descuento', value: 'discount-desc', icon: 'pi pi-percentage' },
     { label: 'Más Recientes', value: 'newest', icon: 'pi pi-clock' }
   ];
-  protected readonly maxPriceLimit = 10000;
+  protected readonly maxPriceLimit = 3000;
 
   protected readonly regionOptions = [
     { label: 'Todas las regiones', value: '', icon: 'pi pi-globe', flag: '' },
@@ -158,12 +158,13 @@ export class ProductSearchComponent implements OnInit {
     this.filterForm = this.formBuilder.group({
       selectedCategory: [this.searchCategory || ''],
       priceRange: [[0, this.maxPriceLimit]],
+      inStockOnly: [false],
       freeShippingOnly: [false],
       freeShippingThreshold: [false],
       discountOnly: [false],
       minRating: [0],
       regionFilter: [''],
-      selectedSort: ['relevance']
+      selectedSort: [this.sortOptions[0]]
     });
 
     this.layoutForm = this.formBuilder.group({
@@ -275,7 +276,8 @@ export class ProductSearchComponent implements OnInit {
     return formatNumber(num);
   }
 
-  protected onPageChange(): void {
+  protected onPageChange(event: { first: number; rows: number }): void {
+    this.dataViewFirst.set(event.first);
     this.scrollToDataView();
   }
 
@@ -291,9 +293,9 @@ export class ProductSearchComponent implements OnInit {
     this.layoutForm.patchValue({ selectedLayout: layout });
   }
 
-  protected onSortChange(sort: string): void {
+  protected onSortChange(sort: { label: string; value: string; icon: string }): void {
     this.filterForm.patchValue({ selectedSort: sort });
-    this.sortProducts(sort);
+    this.sortProducts(sort.value);
   }
 
   private sortProducts(sort: string): void {
@@ -304,13 +306,19 @@ export class ProductSearchComponent implements OnInit {
 
     switch (sort) {
       case 'price-asc':
-        sortedProducts.sort((a, b) => a.currentPrice - b.currentPrice);
+        sortedProducts.sort((a, b) => (a.currentPrice ?? 0) - (b.currentPrice ?? 0));
         break;
       case 'price-desc':
-        sortedProducts.sort((a, b) => b.currentPrice - a.currentPrice);
+        sortedProducts.sort((a, b) => (b.currentPrice ?? 0) - (a.currentPrice ?? 0));
         break;
       case 'bestsellers':
-        sortedProducts.sort((a, b) => b.rating - a.rating);
+        sortedProducts.sort((a, b) => {
+          const rankA = a.bestSellersRank ?? Infinity;
+          const rankB = b.bestSellersRank ?? Infinity;
+          if (rankA !== rankB) return rankA - rankB;
+          if (b.ratingCount !== a.ratingCount) return b.ratingCount - a.ratingCount;
+          return a.asin.localeCompare(b.asin);
+        });
         break;
       case 'rating-desc':
         sortedProducts.sort((a, b) => b.rating - a.rating || b.ratingCount - a.ratingCount);
@@ -323,8 +331,8 @@ export class ProductSearchComponent implements OnInit {
         break;
       case 'discount-desc':
         sortedProducts.sort((a, b) => {
-          const discountA = a.originalPrice ? ((a.originalPrice - a.currentPrice) / a.originalPrice) * 100 : 0;
-          const discountB = b.originalPrice ? ((b.originalPrice - b.currentPrice) / b.originalPrice) * 100 : 0;
+          const discountA = a.originalPrice ? ((a.originalPrice - (a.currentPrice ?? 0)) / a.originalPrice) * 100 : 0;
+          const discountB = b.originalPrice ? ((b.originalPrice - (b.currentPrice ?? 0)) / b.originalPrice) * 100 : 0;
           return discountB - discountA;
         });
         break;
@@ -333,7 +341,6 @@ export class ProductSearchComponent implements OnInit {
         sortedProducts.sort((a, b) => b.asin.localeCompare(a.asin));
         break;
       default:
-        // Keep original order for relevance
         break;
     }
 
@@ -350,6 +357,7 @@ export class ProductSearchComponent implements OnInit {
     const priceRange = this.filterForm.get('priceRange')?.value || [0, this.maxPriceLimit];
     const minPrice = priceRange[0];
     const maxPrice = priceRange[1];
+    const inStockOnly = this.filterForm.get('inStockOnly')?.value || false;
     const freeShippingOnly = this.filterForm.get('freeShippingOnly')?.value || false;
     const freeShippingThreshold = this.filterForm.get('freeShippingThreshold')?.value || false;
     const discountOnly = this.filterForm.get('discountOnly')?.value || false;
@@ -358,7 +366,8 @@ export class ProductSearchComponent implements OnInit {
     const regionFilter = this.filterForm.get('regionFilter')?.value || '';
 
     const filteredProducts = this.originalProducts.filter((product: AmazonProduct) => {
-      if (product.currentPrice < minPrice || product.currentPrice > maxPrice) return false;
+      if ((product.currentPrice ?? 0) < minPrice || (product.currentPrice ?? 0) > maxPrice) return false;
+      if (inStockOnly && !product.inStock) return false;
       if (freeShippingOnly && !this.isFreeShipping(product)) return false;
       if (freeShippingThreshold && !this.isFreeShippingByThreshold(product)) return false;
       if (discountOnly && !product.originalPrice) return false;
@@ -373,11 +382,12 @@ export class ProductSearchComponent implements OnInit {
       products: filteredProducts,
       totalResults: filteredProducts.length
     });
+    this.dataViewFirst.set(0);
 
     // Re-apply current sort after filtering
     const currentSort = this.filterForm.get('selectedSort')?.value;
-    if (currentSort && currentSort !== 'relevance') {
-      this.sortProducts(currentSort);
+    if (currentSort?.value) {
+      this.sortProducts(currentSort.value);
     }
   }
 
@@ -395,7 +405,7 @@ export class ProductSearchComponent implements OnInit {
   ];
 
   protected getTotalPrice(product: AmazonProduct): number {
-    return product.currentPrice + product.shippingPrice;
+    return (product.currentPrice ?? 0) + (product.shippingPrice ?? 0);
   }
 
   protected getShippingPrice(product: AmazonProduct): number {
@@ -403,7 +413,7 @@ export class ProductSearchComponent implements OnInit {
   }
 
   protected isFreeShipping(product: AmazonProduct): boolean {
-    return product.shippingPrice === 0;
+    return (product.shippingPrice ?? 0) === 0;
   }
 
   protected isFreeShippingByThreshold(product: AmazonProduct): boolean {
@@ -411,7 +421,7 @@ export class ProductSearchComponent implements OnInit {
   }
 
 
-  protected formatPrice(price: number): string {
+  protected formatPrice(price: number | null): string {
     return formatPrice(price);
   }
 
@@ -435,12 +445,13 @@ export class ProductSearchComponent implements OnInit {
     this.filterForm?.patchValue({
       selectedCategory: '',
       priceRange: [0, this.maxPriceLimit],
+      inStockOnly: false,
       freeShippingOnly: false,
       freeShippingThreshold: false,
       discountOnly: false,
       minRating: 0,
       regionFilter: '',
-      selectedSort: 'relevance'
+      selectedSort: this.sortOptions[0]
     });
     this.searchQuery = '';
     this.searchCategory = '';

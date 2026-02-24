@@ -1,6 +1,6 @@
 <!-- MegaMenu Navigation -->
 <nav aria-label="Navegación principal">
-<p-megamenu [model]="megaMenuItems" class="border-noround border-white-alpha-20 shadow-2">
+<p-megamenu [model]="megaMenuItems" class="border-noround border-white-alpha-20 shadow-3 surface-ground">
     <ng-template #start>
         <div class="flex align-items-center gap-2 w-full">
             <a routerLink="/" (click)="onGoHome()" class="no-underline cursor-pointer flex-shrink-0" pTooltip="Home" tooltipPosition="bottom">
@@ -9,7 +9,7 @@
             <!-- Desktop: Search bar -->
             <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="hidden md:flex flex-1">
                 <p-inputgroup class="search-input-group w-full">
-                    <p-select formControlName="selectedCategory" [options]="categories()" placeholder="Categoría" optionLabel="label" optionValue="value" class="search-category-select">
+                    <p-select formControlName="selectedCategory" [options]="categories" placeholder="Categoría" optionLabel="label" optionValue="value" class="search-category-select">
                         <ng-template #selectedItem let-option>
                             <div class="flex align-items-center gap-1">
                                 <i [class]="option.icon" class="text-sm"></i>
@@ -42,7 +42,7 @@
                 <div class="flex flex-column gap-2">
                     <input type="text" pInputText formControlName="searchQuery" placeholder="Buscar productos..." class="w-full" />
                     <div class="flex align-items-center gap-2">
-                        <p-select formControlName="selectedCategory" [options]="categories()" placeholder="Categoría" optionLabel="label" optionValue="value" class="flex-1 min-w-0 mobile-category-select">
+                        <p-select formControlName="selectedCategory" [options]="categories" placeholder="Categoría" optionLabel="label" optionValue="value" class="flex-1 min-w-0 mobile-category-select">
                             <ng-template #selectedItem let-option>
                                 <div class="flex align-items-center gap-2">
                                     <i [class]="option.icon"></i>

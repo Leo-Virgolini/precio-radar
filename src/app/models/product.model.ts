@@ -1,12 +1,12 @@
 export interface AmazonProduct {
   asin: string;
   title: string;
-  currentPrice: number;
+  currentPrice: number | null;
   originalPrice: number | null;
   currency: string;
-  shippingPrice: number;
+  shippingPrice: number | null;
   freeShippingOver99: boolean;
-  importCharges: number;
+  importCharges: number | null;
   shipsToArgentina: boolean;
   imageUrls: string[];
   rating: number;
@@ -17,6 +17,7 @@ export interface AmazonProduct {
   addToCartUrl: string;
   aboutItem: string[];
   region: 'US' | 'ES';
+  bestSellersRank: number | null;
 }
 
 export interface SearchResponse {
