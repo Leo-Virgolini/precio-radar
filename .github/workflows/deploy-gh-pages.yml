@@ -27,22 +27,35 @@ jobs:
 
       - run: npm ci
 
-      # Remove SSR options for static CSR build
-      - name: Configure for static build
+      # Switch from SSR (runtime server) to static prerendering
+      - name: Configure for static prerendering
         run: |
           node -e "
             const fs = require('fs');
+
+            // angular.json: switch outputMode to static, remove ssr runtime entry
             const cfg = JSON.parse(fs.readFileSync('angular.json', 'utf8'));
             const opts = cfg.projects.sales.architect.build.options;
-            delete opts.server;
-            delete opts.outputMode;
+            opts.outputMode = 'static';
             delete opts.ssr;
             fs.writeFileSync('angular.json', JSON.stringify(cfg, null, 2));
+
+            // app.routes.server.ts: change Server routes to Prerender for static output
+            let routes = fs.readFileSync('src/app/app.routes.server.ts', 'utf8');
+            routes = routes.replace(
+              \"{ path: '', renderMode: RenderMode.Server }\",
+              \"{ path: '', renderMode: RenderMode.Prerender }\"
+            );
+            routes = routes.replace(
+              \"{ path: '**', renderMode: RenderMode.Server }\",
+              \"{ path: '**', renderMode: RenderMode.Client }\"
+            );
+            fs.writeFileSync('src/app/app.routes.server.ts', routes);
           "
 
       - run: npx ng build --configuration production
 
-      # SPA routing: copy index.html to 404.html
+      # SPA fallback: copy index.html to 404.html for unknown routes
       - name: Prepare for GitHub Pages
         run: |
           cp dist/sales/browser/index.html dist/sales/browser/404.html
