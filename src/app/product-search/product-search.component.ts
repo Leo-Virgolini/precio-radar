@@ -296,6 +296,7 @@ export class ProductSearchComponent implements OnInit {
   protected onSortChange(sort: { label: string; value: string; icon: string }): void {
     this.filterForm.patchValue({ selectedSort: sort });
     this.sortProducts(sort.value);
+    this.dataViewFirst.set(0);
   }
 
   private sortProducts(sort: string): void {
