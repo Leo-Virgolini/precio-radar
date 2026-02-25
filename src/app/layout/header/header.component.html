@@ -4,7 +4,7 @@
     <ng-template #start>
         <div class="flex align-items-center gap-2 w-full">
             <a routerLink="/" (click)="onGoHome()" class="no-underline cursor-pointer flex-shrink-0" pTooltip="Home" tooltipPosition="bottom">
-                <img src="logo.svg" alt="PrecioRadar" class="header-logo" />
+                <img [src]="isDark() ? 'logo-white.svg' : 'logo.svg'" alt="PrecioRadar" class="header-logo" />
             </a>
             <!-- Desktop: Search bar -->
             <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="hidden md:flex flex-1">

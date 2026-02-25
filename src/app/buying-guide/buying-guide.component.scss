@@ -1,7 +1,6 @@
 .buying-guide-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-
+  background: var(--p-surface-ground);
 }
 
 .guide-header {
@@ -10,12 +9,12 @@
 }
 
 .prose {
-  color: #374151;
+  color: var(--p-text-color);
   line-height: 1.7;
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
-  color: #1f2937;
+  color: var(--p-text-color);
   font-weight: 600;
 }
 
@@ -39,7 +38,6 @@ html {
 // Card hover effects
 .p-card {
   transition: all 0.3s ease;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .p-card:hover {
@@ -49,7 +47,6 @@ html {
 
 // Table of contents hover effect
 .cursor-pointer:hover {
-  background-color: rgba(59, 130, 246, 0.1) !important;
   transform: translateX(4px);
 }
 

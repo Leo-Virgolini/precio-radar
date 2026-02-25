@@ -125,6 +125,11 @@
   .p-carousel-indicator-list {
     padding: 0.5rem 0 0;
   }
+
+  // Allow vertical scroll through the carousel on mobile
+  .p-carousel-items-container {
+    touch-action: pan-y;
+  }
 }
 
 .info-footer {

@@ -1,7 +1,7 @@
 <!-- Hero Header -->
 <div class="hero-gradient p-1 md:p-3 text-center">
-  <h1 class="text-3xl md:text-5xl font-bold mb-2">
-    <img src="logo-icon.svg" alt="" class="logo-icon vertical-align-middle mr-2" />
+  <h1 class="text-xl md:text-5xl font-bold mb-1 md:mb-2">
+    <img src="logo-icon.svg" alt="" class="logo-icon vertical-align-middle mr-1 md:mr-2" />
     Productos con Envío a Argentina
     <picture>
       <source type="image/webp" srcset="https://flagcdn.com/28x21/ar.webp,
@@ -13,7 +13,7 @@
       <img src="https://flagcdn.com/28x21/ar.png" class="flag-title" alt="Argentina">
     </picture>
   </h1>
-  <p class="text-sm md:text-xl font-normal mb-2 md:mb-3">
+  <p class="hidden md:block text-xl font-normal mb-3">
     Productos de Amazon USA
     <picture>
       <source type="image/webp" srcset="https://flagcdn.com/24x18/us.webp, https://flagcdn.com/48x36/us.webp 2x">
@@ -31,11 +31,11 @@
     </picture>
   </p>
 
-  <p class="text-xs md:text-base mb-2 md:mb-3" style="color: rgba(255,255,255,0.85)">
+  <p class="hidden md:block text-base mb-3" style="color: rgba(255,255,255,0.85)">
     Compará precios, encontrá ofertas y ahorrá en tus compras internacionales
   </p>
 
-  <div class="flex flex-wrap justify-content-center gap-2 mb-2 md:mb-4">
+  <div class="flex flex-wrap justify-content-center gap-2 mb-1 md:mb-4">
     <p-chip label="Envío Gratis +$99 USD" icon="pi pi-truck" />
     <p-chip label="Precios Actualizados" icon="pi pi-sync" />
     <p-chip label="Guía de Compra" icon="pi pi-book" />
@@ -50,12 +50,12 @@
       <p-carousel [value]="promoBanners" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="5000" [showNavigators]="true" [showIndicators]="true">
         <ng-template #item let-banner>
           <a [href]="banner.url" target="_blank" rel="noopener noreferrer nofollow"
-            [class]="banner.bannerClass + ' flex flex-column md:flex-row align-items-center justify-content-between gap-3 p-3 md:p-4 border-round-xl no-underline mx-1'">
-            <div class="flex align-items-center gap-3">
-              <i [class]="banner.icon + ' text-3xl md:text-4xl'"></i>
+            [class]="banner.bannerClass + ' flex flex-column md:flex-row align-items-center justify-content-between gap-2 md:gap-3 p-2 md:p-4 border-round-xl no-underline mx-1'">
+            <div class="flex align-items-center gap-2 md:gap-3">
+              <i [class]="banner.icon + ' text-2xl md:text-4xl'"></i>
               <div>
                 <div class="flex align-items-center gap-2">
-                  <h3 class="m-0 text-base md:text-xl font-bold">{{ banner.title }}</h3>
+                  <h3 class="m-0 text-sm md:text-xl font-bold">{{ banner.title }}</h3>
                   <img [src]="banner.region === 'ES' ? 'https://flagcdn.com/20x15/es.png' : 'https://flagcdn.com/20x15/us.png'"
                     width="20" height="15" [alt]="banner.region === 'ES' ? 'España' : 'USA'" style="opacity: 0.9" />
                 </div>

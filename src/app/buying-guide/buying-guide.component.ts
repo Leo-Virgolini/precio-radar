@@ -14,7 +14,6 @@ import { AvatarModule } from 'primeng/avatar';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { AccordionModule } from 'primeng/accordion';
-import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 
@@ -34,7 +33,6 @@ import { MenuItem } from 'primeng/api';
     MessageModule,
     PanelModule,
     AccordionModule,
-    AnimateOnScrollModule,
     Breadcrumb
   ],
   templateUrl: './buying-guide.component.html',

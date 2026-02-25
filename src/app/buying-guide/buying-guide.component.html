@@ -41,10 +41,10 @@
                 <div class="grid">
                     @for (item of tableOfContents; track item.id; let i = $index) {
                         <div class="col-12 md:col-6">
-                            <div class="flex align-items-center gap-2 p-2 cursor-pointer hover:bg-primary-50 border-round transition-colors transition-duration-200"
+                            <div class="flex align-items-center gap-2 p-2 cursor-pointer hover:surface-hover border-round transition-colors transition-duration-200"
                                 (click)="scrollToSection(item.id)">
                                 <span class="text-primary font-semibold">{{ i + 1 }}.</span>
-                                <span class="text-primary-700 hover:text-primary">{{ item.label }}</span>
+                                <span class="text-color hover:text-primary">{{ item.label }}</span>
                                 <i class="pi pi-arrow-right text-xs ml-auto"></i>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
         </section>
 
         <!-- Introduction -->
-        <section id="introduccion" class="mb-8" pAnimateOnScroll enterClass="animate-fade-in">
+        <section id="introduccion" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -80,7 +80,7 @@
         </section>
 
         <!-- Step by Step -->
-        <section id="paso-a-paso" class="mb-8" pAnimateOnScroll enterClass="animate-fade-in">
+        <section id="paso-a-paso" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -92,34 +92,34 @@
                 <div class="grid">
                     <!-- Timeline View (Left) -->
                     <div class="col-12 md:col-4">
-                        <h2 class="text-primary-800 font-semibold mb-4 text-lg">Proceso de Compra</h2>
+                        <h2 class="text-color font-semibold mb-4 text-lg">Proceso de Compra</h2>
                         <p-timeline [value]="timelineEvents" align="left">
                             <ng-template #content let-event>
                                 <div class="flex align-items-center gap-2 mb-2">
                                     <i [class]="event.icon" class="text-primary text-lg"></i>
-                                    <h3 class="text-primary-800 font-semibold mb-0 text-base">{{ event.title }}</h3>
+                                    <h3 class="text-color font-semibold mb-0 text-base">{{ event.title }}</h3>
                                 </div>
-                                <p class="text-primary-600 mb-0">{{ event.description }}</p>
+                                <p class="text-color-secondary mb-0">{{ event.description }}</p>
                             </ng-template>
                         </p-timeline>
                     </div>
 
                     <!-- Detailed Steps (Right) -->
                     <div class="col-12 md:col-8">
-                        <h2 class="text-primary-800 font-semibold mb-4 text-lg">Instrucciones Detalladas</h2>
+                        <h2 class="text-color font-semibold mb-4 text-lg">Instrucciones Detalladas</h2>
                         @for (step of steps; track step.number) {
                             <p-panel [header]="step.title" [toggleable]="true" class="mb-4">
                                 <div class="flex align-items-start gap-3">
                                     <p-avatar [icon]="step.icon" size="large" styleClass="bg-primary text-white"></p-avatar>
                                     <div class="flex-1">
-                                        <p class="text-primary-700 mb-3">{{ step.description }}</p>
+                                        <p class="text-color mb-3">{{ step.description }}</p>
 
                                         <div class="grid">
                                             @for (detail of step.details; track $index) {
                                                 <div class="col-12">
                                                     <div class="flex align-items-center gap-2 mb-2">
                                                         <p-chip label="✓" styleClass="bg-green-100 text-green-800"></p-chip>
-                                                        <span class="text-primary-600">{{ detail }}</span>
+                                                        <span class="text-color-secondary">{{ detail }}</span>
                                                     </div>
                                                 </div>
                                             }
@@ -142,7 +142,7 @@
         </section>
 
         <!-- Restrictions -->
-        <section id="restricciones" class="mb-8" pAnimateOnScroll enterClass="animate-fade-in">
+        <section id="restricciones" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -151,7 +151,7 @@
                     </div>
                 </ng-template>
 
-                <p class="mb-4 text-primary-700">
+                <p class="mb-4 text-color">
                     Para evitar problemas, asegúrate de cumplir con estas restricciones:
                 </p>
 
@@ -162,7 +162,7 @@
                                 <div class="flex align-items-center gap-3 mb-3">
                                     <p-avatar [icon]="restriction.icon" size="normal" styleClass="bg-primary text-white"></p-avatar>
                                     <div class="flex-1">
-                                        <p class="text-primary-600 mb-0 font-medium">{{ restriction.value }}</p>
+                                        <p class="text-color-secondary mb-0 font-medium">{{ restriction.value }}</p>
                                     </div>
                                 </div>
                             </p-panel>
@@ -180,7 +180,7 @@
         </section>
 
         <!-- Taxes and Fees -->
-        <section id="impuestos" class="mb-8" pAnimateOnScroll enterClass="animate-fade-in">
+        <section id="impuestos" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -189,9 +189,9 @@
                     </div>
                 </ng-template>
 
-                <h2 class="text-primary-800 font-semibold mb-3 text-lg">Envíos de hasta USD 400</h2>
+                <h2 class="text-color font-semibold mb-3 text-lg">Envíos de hasta USD 400</h2>
 
-                <p class="text-primary-700 mb-4">
+                <p class="text-color mb-4">
                     Los envíos con valor FOB de hasta <strong>USD 400</strong> están exentos del derecho de importación (arancel).
                     Solo se paga:
                 </p>
@@ -199,42 +199,42 @@
                 <ul class="list-none p-0 m-0 mb-4">
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-check text-green-600"></i>
-                        <span class="text-primary-600">IVA (21%)</span>
+                        <span class="text-color-secondary">IVA (21%)</span>
                     </li>
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-check text-green-600"></i>
-                        <span class="text-primary-600">Tasa de estadística (si corresponde)</span>
+                        <span class="text-color-secondary">Tasa de estadística (si corresponde)</span>
                     </li>
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-check text-green-600"></i>
-                        <span class="text-primary-600">Gastos del courier</span>
+                        <span class="text-color-secondary">Gastos del courier</span>
                     </li>
                 </ul>
 
                 <p-divider />
 
-                <h2 class="text-primary-800 font-semibold mb-3 text-lg">Envíos superiores a USD 400 (hasta USD 3.000)</h2>
+                <h2 class="text-color font-semibold mb-3 text-lg">Envíos superiores a USD 400 (hasta USD 3.000)</h2>
 
-                <p class="text-primary-700 mb-4">
+                <p class="text-color mb-4">
                     Si el envío supera los USD 400, se aplican los siguientes costos:
                 </p>
 
                 <ul class="list-none p-0 m-0 mb-4">
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-exclamation-circle text-orange-500"></i>
-                        <span class="text-primary-600"><strong>50% de arancel</strong> sobre el monto que exceda los USD 400</span>
+                        <span class="text-color-secondary"><strong>50% de arancel</strong> sobre el monto que exceda los USD 400</span>
                     </li>
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-exclamation-circle text-orange-500"></i>
-                        <span class="text-primary-600">IVA (21%)</span>
+                        <span class="text-color-secondary">IVA (21%)</span>
                     </li>
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-exclamation-circle text-orange-500"></i>
-                        <span class="text-primary-600">Otros tributos si aplican</span>
+                        <span class="text-color-secondary">Otros tributos si aplican</span>
                     </li>
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-exclamation-circle text-orange-500"></i>
-                        <span class="text-primary-600">Gastos del courier</span>
+                        <span class="text-color-secondary">Gastos del courier</span>
                     </li>
                 </ul>
 
@@ -244,20 +244,20 @@
 
                 <p-divider />
 
-                <h2 class="text-primary-800 font-semibold mb-3 text-lg">¿Cómo funcionan los impuestos en Amazon?</h2>
+                <h2 class="text-color font-semibold mb-3 text-lg">¿Cómo funcionan los impuestos en Amazon?</h2>
 
-                <p class="text-primary-700 mb-4">
+                <p class="text-color mb-4">
                     Amazon cobra los impuestos de importación por adelantado. Esto significa que:
                 </p>
 
                 <ul class="list-none p-0 m-0 mb-4">
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-check text-green-600"></i>
-                        <span class="text-primary-600">No necesitas pagar nada al recibir el paquete</span>
+                        <span class="text-color-secondary">No necesitas pagar nada al recibir el paquete</span>
                     </li>
                     <li class="flex align-items-center gap-2 mb-2">
                         <i class="pi pi-check text-green-600"></i>
-                        <span class="text-primary-600">Si Amazon calcula mal los impuestos (cobra de más), devuelve el excedente automáticamente</span>
+                        <span class="text-color-secondary">Si Amazon calcula mal los impuestos (cobra de más), devuelve el excedente automáticamente</span>
                     </li>
                 </ul>
 
@@ -275,7 +275,7 @@
         </section>
 
         <!-- Excepciones -->
-        <section id="excepciones" class="mb-8" pAnimateOnScroll enterClass="animate-fade-in">
+        <section id="excepciones" class="mb-8">
             <p-panel [toggleable]="true" [collapsed]="true">
                 <ng-template #header>
                     <div class="flex align-items-center gap-2">
@@ -283,7 +283,7 @@
                         <span class="font-semibold">Excepciones para Pequeños Envíos</span>
                     </div>
                 </ng-template>
-                <p class="text-primary-500 text-sm mb-3">
+                <p class="text-color-secondary text-sm mb-3">
                     Según ARCA, los pequeños envíos están exceptuados de ciertas intervenciones:
                 </p>
                 <ul class="list-none p-0 m-0">
@@ -292,12 +292,12 @@
                             <div class="flex align-items-start gap-2">
                                 <i class="pi pi-check text-green-600 text-sm mt-1"></i>
                                 <div>
-                                    <span class="text-primary-700 text-sm font-medium">{{ exception.title }}:</span>
-                                    <span class="text-primary-500 text-sm"> {{ exception.description }}</span>
+                                    <span class="text-color text-sm font-medium">{{ exception.title }}:</span>
+                                    <span class="text-color-secondary text-sm"> {{ exception.description }}</span>
                                     @if (exception.details) {
                                         <ul class="list-none p-0 mt-1 pl-3">
                                             @for (detail of exception.details; track $index) {
-                                                <li class="text-primary-400 text-xs mb-1">— {{ detail }}</li>
+                                                <li class="text-color-secondary text-xs mb-1">— {{ detail }}</li>
                                             }
                                         </ul>
                                     }
@@ -316,7 +316,7 @@
         </section>
 
         <!-- Tips -->
-        <section id="consejos" class="mb-8" pAnimateOnScroll enterClass="animate-fade-in">
+        <section id="consejos" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -332,7 +332,7 @@
                                 <div class="flex align-items-start gap-3">
                                     <p-avatar [icon]="tip.icon" size="normal" [styleClass]="'bg-' + tip.color + '-100 text-' + tip.color + '-800'"></p-avatar>
                                     <div class="flex-1">
-                                        <p class="text-primary-600 mb-0">{{ tip.description }}</p>
+                                        <p class="text-color-secondary mb-0">{{ tip.description }}</p>
                                     </div>
                                 </div>
                             </p-panel>
@@ -343,7 +343,7 @@
         </section>
 
         <!-- FAQ -->
-        <section id="faq" class="mb-8" pAnimateOnScroll enterClass="animate-fade-in">
+        <section id="faq" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -359,7 +359,7 @@
                             <p-accordion-content>
                                 <div class="flex align-items-center gap-3 p-2">
                                     <i class="pi pi-comment text-primary text-2xl flex-shrink-0"></i>
-                                    <p class="text-primary-700 line-height-3 mb-0">{{ item.answer }}</p>
+                                    <p class="text-color line-height-3 mb-0">{{ item.answer }}</p>
                                 </div>
                             </p-accordion-content>
                         </p-accordion-panel>
@@ -369,7 +369,7 @@
         </section>
 
         <!-- Conclusion -->
-        <section id="conclusion" class="mb-8" pAnimateOnScroll enterClass="animate-fade-in">
+        <section id="conclusion" class="mb-8">
             <p-card>
                 <ng-template #title>
                     <div class="flex align-items-center gap-2">
@@ -400,30 +400,16 @@
 
     <!-- Bottom Section -->
     <section class="bg-primary text-white p-6">
-        <div class="max-w-6xl mx-auto">
-            <!-- Affiliate Disclosure -->
-            <div class="bg-white-alpha-10 border-round-xl p-4 mb-4">
-                <p class="text-sm text-blue-100 line-height-3 m-0">
-                    <i class="pi pi-info-circle mr-1"></i>
-                    <strong>Aviso:</strong> Como Asociado de Amazon, obtengo ingresos por compras adscritas.
-                    Los precios y la disponibilidad de los productos son precisos a la fecha/hora indicada y están sujetos a cambios.
-                    Esta guía contiene enlaces de afiliado. Si realizas una compra a través de estos enlaces,
-                    podemos recibir una comisión sin costo adicional para vos.
-                </p>
-            </div>
-
-            <!-- Footer Note -->
-            <div class="text-center">
-                <h2 class="text-white font-semibold mb-2 text-xl">¿Tenés dudas?</h2>
-                <p class="text-blue-100 mb-4">
-                    Esta guía está basada en información actualizada y regulaciones argentinas vigentes.
-                    Los precios y políticas pueden cambiar, siempre verificá la información más reciente.
-                </p>
-                <p class="text-sm text-blue-200">
-                    <i class="pi pi-info-circle mr-1"></i>
-                    Última actualización: {{ currentDate }}
-                </p>
-            </div>
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-white font-semibold mb-2 text-xl">¿Tenés dudas?</h2>
+            <p class="text-blue-100 mb-4">
+                Esta guía está basada en información actualizada y regulaciones argentinas vigentes.
+                Los precios y políticas pueden cambiar, siempre verificá la información más reciente.
+            </p>
+            <p class="text-sm text-blue-200">
+                <i class="pi pi-info-circle mr-1"></i>
+                Última actualización: {{ currentDate }}
+            </p>
         </div>
     </section>
 </div>
