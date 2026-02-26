@@ -55,7 +55,7 @@ main.flex-auto {
 }
 
 /* Vertical spacing between children */
-.space-y-2 > * + * {
+.space-y-2>*+* {
   margin-top: 0.5rem;
 }
 
@@ -89,6 +89,10 @@ main.flex-auto {
   box-shadow: 0 1px 0 0 var(--p-content-border-color) !important;
 }
 
+.p-tablist-content {
+  padding: 2px !important;
+}
+
 .p-tablist::before,
 .p-tablist::after,
 .p-tablist-content::before,
@@ -113,10 +117,9 @@ main.flex-auto {
 }
 
 .p-tab:hover:not([data-p-active='true']) {
-  background: rgba(0, 0, 0, 0.05) !important;
+  background: var(--p-primary-50) !important;
   color: var(--p-primary-color) !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
-  transform: translateY(-1px);
+  border-color: var(--p-primary-200) !important;
 }
 
 .p-tab[data-p-active='true'] {
@@ -559,8 +562,8 @@ p-scrolltop button {
   }
 
   .discount-badge {
-    color: var(--p-red-300) !important;
-    background: rgba(239, 68, 68, 0.15) !important;
+    color: #fca5a5 !important;
+    background: rgba(127, 29, 29, 0.85) !important;
   }
 
   /* Region badges - softer on dark backgrounds */

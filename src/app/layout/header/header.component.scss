@@ -31,6 +31,9 @@
       .p-select {
         border-top-right-radius: 0 !important;
         border-bottom-right-radius: 0 !important;
+        background: var(--p-primary-50) !important;
+        border-right: 2px solid var(--p-primary-200) !important;
+        color: var(--p-primary-color) !important;
       }
     }
 

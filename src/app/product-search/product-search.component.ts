@@ -314,11 +314,18 @@ export class ProductSearchComponent implements OnInit {
         break;
       case 'bestsellers':
         sortedProducts.sort((a, b) => {
-          const rankA = a.bestSellersRank ?? Infinity;
-          const rankB = b.bestSellersRank ?? Infinity;
-          if (rankA !== rankB) return rankA - rankB;
-          if (b.ratingCount !== a.ratingCount) return b.ratingCount - a.ratingCount;
-          return a.asin.localeCompare(b.asin);
+          // Weighted score: lower rank and higher ratingCount = better
+          // Products without rank go to the end
+          const hasRankA = a.bestSellersRank != null && a.bestSellersRank > 0;
+          const hasRankB = b.bestSellersRank != null && b.bestSellersRank > 0;
+          if (hasRankA && !hasRankB) return -1;
+          if (!hasRankA && hasRankB) return 1;
+          if (!hasRankA && !hasRankB) return b.ratingCount - a.ratingCount;
+
+          // Both have rank: combine rank (inverted, lower=better) with ratingCount and rating
+          const scoreA = (1 / a.bestSellersRank!) * Math.log10(Math.max(a.ratingCount, 1)) * (a.rating || 1);
+          const scoreB = (1 / b.bestSellersRank!) * Math.log10(Math.max(b.ratingCount, 1)) * (b.rating || 1);
+          return scoreB - scoreA;
         });
         break;
       case 'rating-desc':
