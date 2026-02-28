@@ -3,6 +3,7 @@ import { AmazonProduct } from '../models/product.model';
 const FALLBACK_IMAGE = '/sin_imagen.png';
 
 export function getDiscountPercentage(original: number, current: number): number {
+  if (!original || original <= 0) return 0;
   return Math.round(((original - current) / original) * 100);
 }
 

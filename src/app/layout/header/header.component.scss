@@ -21,6 +21,30 @@
     min-width: 0;
   }
 
+  // === MegaMenu dropdown panel ===
+  .p-megamenu-overlay {
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+    padding: 0.5rem !important;
+  }
+
+  // Submenu section headers
+  .p-megamenu-submenu-label {
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: var(--p-primary-color) !important;
+    padding: 0.5rem 0.75rem !important;
+    border-bottom: 2px solid color-mix(in srgb, var(--p-primary-color) 30%, transparent) !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  // Submenu items - remove default padding so custom template controls it
+  .p-megamenu-item-content {
+    border-radius: 8px !important;
+  }
+
   // === InputGroup search bar ===
   .search-input-group {
     // Category select - compact, left side

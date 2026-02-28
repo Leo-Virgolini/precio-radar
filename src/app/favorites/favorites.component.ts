@@ -85,9 +85,14 @@ export class FavoritesComponent implements OnInit {
     const items = favorites.map(f => ({ asin: f.asin, region: f.region }));
     this.amazonApiService.getProductsByAsins(items)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(products => {
-        this.products.set(products);
-        this.isLoading.set(false);
+      .subscribe({
+        next: products => {
+          this.products.set(products);
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this.isLoading.set(false);
+        }
       });
   }
 
@@ -187,6 +192,14 @@ export class FavoritesComponent implements OnInit {
 
   protected getShippingPrice(product: AmazonProduct): number {
     return getShippingPrice(product);
+  }
+
+  protected isDigitalProduct(product: AmazonProduct): boolean {
+    return product.category === 'Software' && (product.shippingPrice ?? 0) === 0;
+  }
+
+  protected isFreeShipping(product: AmazonProduct): boolean {
+    return (product.shippingPrice ?? 0) === 0 && !this.isDigitalProduct(product);
   }
 
   protected formatNumber(num: string): string {

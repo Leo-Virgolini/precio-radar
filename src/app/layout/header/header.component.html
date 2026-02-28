@@ -1,6 +1,44 @@
 <!-- MegaMenu Navigation -->
 <nav aria-label="Navegación principal">
 <p-megamenu [model]="megaMenuItems" class="border-noround border-white-alpha-20 shadow-3 surface-ground">
+    <ng-template #item let-item>
+        @if (item.routerLink) {
+            <a [routerLink]="item.routerLink" class="mega-menu-item">
+                <div class="mega-menu-icon-wrapper">
+                    <i [class]="item.icon"></i>
+                </div>
+                <div class="flex flex-column">
+                    <span class="font-medium">{{ item.label }}</span>
+                    @if (item.title) {
+                        <span class="text-xs text-color-secondary">{{ item.title }}</span>
+                    }
+                </div>
+            </a>
+        } @else if (item.command) {
+            <a (click)="item.command({ item: item })" class="mega-menu-item">
+                <div class="mega-menu-icon-wrapper">
+                    <i [class]="item.icon"></i>
+                </div>
+                <div class="flex flex-column">
+                    <span class="font-medium">{{ item.label }}</span>
+                    @if (item.title) {
+                        <span class="text-xs text-color-secondary">{{ item.title }}</span>
+                    }
+                </div>
+            </a>
+        } @else {
+            <a class="mega-menu-root-item">
+                @if (item.icon) {
+                    <i [class]="item.icon"></i>
+                }
+                <span>{{ item.label }}</span>
+                @if (item.badge) {
+                    <span class="mega-menu-badge">{{ item.badge }}</span>
+                }
+                <i class="pi pi-angle-down text-xs ml-1"></i>
+            </a>
+        }
+    </ng-template>
     <ng-template #start>
         <div class="flex align-items-center gap-2 w-full">
             <a routerLink="/" (click)="onGoHome()" class="no-underline cursor-pointer flex-shrink-0" pTooltip="Home" tooltipPosition="bottom">

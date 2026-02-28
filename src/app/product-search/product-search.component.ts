@@ -339,8 +339,8 @@ export class ProductSearchComponent implements OnInit {
         break;
       case 'discount-desc':
         sortedProducts.sort((a, b) => {
-          const discountA = a.originalPrice ? ((a.originalPrice - (a.currentPrice ?? 0)) / a.originalPrice) * 100 : 0;
-          const discountB = b.originalPrice ? ((b.originalPrice - (b.currentPrice ?? 0)) / b.originalPrice) * 100 : 0;
+          const discountA = a.originalPrice ? getDiscountPercentage(a.originalPrice, a.currentPrice ?? 0) : 0;
+          const discountB = b.originalPrice ? getDiscountPercentage(b.originalPrice, b.currentPrice ?? 0) : 0;
           return discountB - discountA;
         });
         break;
@@ -378,7 +378,7 @@ export class ProductSearchComponent implements OnInit {
       if (inStockOnly && !product.inStock) return false;
       if (freeShippingOnly && !this.isFreeShipping(product)) return false;
       if (freeShippingThreshold && !this.isFreeShippingByThreshold(product)) return false;
-      if (discountOnly && !product.originalPrice) return false;
+      if (discountOnly && (!product.originalPrice || product.originalPrice <= (product.currentPrice ?? 0))) return false;
       if (minRating > 0 && product.rating < minRating) return false;
       if (selectedCategory && product.category !== selectedCategory) return false;
       if (regionFilter && product.region !== regionFilter) return false;
@@ -420,8 +420,12 @@ export class ProductSearchComponent implements OnInit {
     return getShippingPrice(product);
   }
 
+  protected isDigitalProduct(product: AmazonProduct): boolean {
+    return product.category === 'Software' && (product.shippingPrice ?? 0) === 0;
+  }
+
   protected isFreeShipping(product: AmazonProduct): boolean {
-    return (product.shippingPrice ?? 0) === 0;
+    return (product.shippingPrice ?? 0) === 0 && !this.isDigitalProduct(product);
   }
 
   protected isFreeShippingByThreshold(product: AmazonProduct): boolean {

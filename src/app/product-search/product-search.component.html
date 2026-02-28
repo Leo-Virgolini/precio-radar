@@ -338,7 +338,12 @@
 
                           <!-- Shipping -->
                           <div class="flex flex-column gap-1 text-sm">
-                            @if (getShippingPrice(product) === 0) {
+                            @if (isDigitalProduct(product)) {
+                            <div class="flex align-items-center gap-2">
+                              <i class="pi pi-download text-xs price-green"></i>
+                              <span class="price-green font-medium">Descarga digital</span>
+                            </div>
+                            } @else if (isFreeShipping(product)) {
                             <div class="flex align-items-center gap-2">
                               <i class="pi pi-truck text-xs price-green"></i>
                               <span class="price-green font-medium">Envío gratis a Argentina</span>
@@ -457,7 +462,9 @@
 
                         <!-- Shipping + Favorite (mobile) -->
                         <div class="flex align-items-center gap-2">
-                          @if (getShippingPrice(product) === 0) {
+                          @if (isDigitalProduct(product)) {
+                          <span class="price-green text-xs md:text-sm font-medium"><i class="pi pi-download text-xs mr-1"></i>Descarga digital</span>
+                          } @else if (isFreeShipping(product)) {
                           <span class="price-green text-xs md:text-sm font-medium"><i class="pi pi-truck text-xs mr-1"></i>Envío gratis</span>
                           } @else {
                           <span class="shipping-info text-xs md:text-sm"><i class="pi pi-truck text-xs mr-1"></i>Envío: {{ getCurrencySymbol(product) }}{{
@@ -701,7 +708,12 @@
         <p-divider class="my-0" />
 
         <!-- Shipping -->
-        @if (getShippingPrice(product) === 0) {
+        @if (isDigitalProduct(product)) {
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-download price-green text-sm"></i>
+          <span class="price-green font-medium text-sm">Descarga digital</span>
+        </div>
+        } @else if (isFreeShipping(product)) {
         <div class="flex align-items-center gap-2">
           <i class="pi pi-truck price-green text-sm"></i>
           <span class="price-green font-medium text-sm">Envío gratis a Argentina</span>

@@ -147,7 +147,12 @@
 
                     <!-- Shipping -->
                     <div class="flex flex-column gap-1 text-sm">
-                      @if (getShippingPrice(product) === 0) {
+                      @if (isDigitalProduct(product)) {
+                        <div class="flex align-items-center gap-2">
+                          <i class="pi pi-download text-xs price-green"></i>
+                          <span class="price-green font-medium">Descarga digital</span>
+                        </div>
+                      } @else if (isFreeShipping(product)) {
                         <div class="flex align-items-center gap-2">
                           <i class="pi pi-truck text-xs price-green"></i>
                           <span class="price-green font-medium">Envío gratis a Argentina</span>
@@ -260,7 +265,12 @@
           <p-divider class="my-0" />
 
           <!-- Shipping -->
-          @if (getShippingPrice(product) === 0) {
+          @if (isDigitalProduct(product)) {
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-download price-green text-sm"></i>
+            <span class="price-green font-medium text-sm">Descarga digital</span>
+          </div>
+          } @else if (isFreeShipping(product)) {
           <div class="flex align-items-center gap-2">
             <i class="pi pi-truck price-green text-sm"></i>
             <span class="price-green font-medium text-sm">Envío gratis a Argentina</span>

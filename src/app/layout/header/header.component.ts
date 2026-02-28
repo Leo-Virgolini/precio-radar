@@ -61,9 +61,9 @@ export class HeaderComponent implements OnInit {
           {
             label: 'Cómo Comprar',
             items: [
-              { label: 'Guía Paso a Paso', icon: 'pi pi-list-check', command: () => this.navigateToGuide('paso-a-paso') },
-              { label: 'Restricciones', icon: 'pi pi-exclamation-triangle', command: () => this.navigateToGuide('restricciones') },
-              { label: 'Impuestos y Tarifas', icon: 'pi pi-calculator', command: () => this.navigateToGuide('impuestos') }
+              { label: 'Guía Paso a Paso', icon: 'pi pi-list-check', title: 'Aprende a comprar desde Argentina', command: () => this.navigateToGuide('paso-a-paso') },
+              { label: 'Restricciones', icon: 'pi pi-exclamation-triangle', title: 'Qué productos no se pueden importar', command: () => this.navigateToGuide('restricciones') },
+              { label: 'Impuestos y Tarifas', icon: 'pi pi-calculator', title: 'Costos de importación y aduana', command: () => this.navigateToGuide('impuestos') }
             ]
           }
         ],
@@ -71,8 +71,8 @@ export class HeaderComponent implements OnInit {
           {
             label: 'Más Información',
             items: [
-              { label: 'Consejos de Ahorro', icon: 'pi pi-wallet', command: () => this.navigateToGuide('consejos') },
-              { label: 'Preguntas Frecuentes', icon: 'pi pi-question-circle', command: () => this.navigateToGuide('faq') }
+              { label: 'Consejos de Ahorro', icon: 'pi pi-wallet', title: 'Tips para conseguir mejores precios', command: () => this.navigateToGuide('consejos') },
+              { label: 'Preguntas Frecuentes', icon: 'pi pi-question-circle', title: 'Dudas comunes sobre compras', command: () => this.navigateToGuide('faq') }
             ]
           }
         ],
@@ -80,8 +80,8 @@ export class HeaderComponent implements OnInit {
           {
             label: 'PrecioRadar',
             items: [
-              { label: 'Sobre Nosotros', icon: 'pi pi-users', routerLink: '/sobre-nosotros' },
-              { label: 'Política de Privacidad', icon: 'pi pi-shield', routerLink: '/privacidad' }
+              { label: 'Sobre Nosotros', icon: 'pi pi-users', title: 'Conoce nuestro proyecto', routerLink: '/sobre-nosotros' },
+              { label: 'Política de Privacidad', icon: 'pi pi-shield', title: 'Cómo protegemos tus datos', routerLink: '/privacidad' }
             ]
           }
         ]
