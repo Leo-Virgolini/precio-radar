@@ -195,11 +195,11 @@ export class FavoritesComponent implements OnInit {
   }
 
   protected isDigitalProduct(product: AmazonProduct): boolean {
-    return product.category === 'Software' && (product.shippingPrice ?? 0) === 0;
+    return product.category === 'Software' && product.shippingPrice === null;
   }
 
   protected isFreeShipping(product: AmazonProduct): boolean {
-    return (product.shippingPrice ?? 0) === 0 && !this.isDigitalProduct(product);
+    return product.shippingPrice === 0 && !this.isDigitalProduct(product);
   }
 
   protected formatNumber(num: string): string {

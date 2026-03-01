@@ -348,10 +348,21 @@
                               <i class="pi pi-truck text-xs price-green"></i>
                               <span class="price-green font-medium">Envío gratis a Argentina</span>
                             </div>
-                            } @else {
+                            } @else if (product.shippingPrice !== null) {
                             <div class="flex align-items-center gap-2">
                               <i class="pi pi-truck text-xs shipping-info"></i>
                               <span class="shipping-info">Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }}</span>
+                            </div>
+                            @if (product.freeShippingOver99) {
+                            <div class="flex align-items-center gap-1">
+                              <i class="pi pi-info-circle text-xs price-green"></i>
+                              <span class="price-green text-xs">Envío gratis en pedidos $99+</span>
+                            </div>
+                            }
+                            } @else {
+                            <div class="flex align-items-center gap-2">
+                              <i class="pi pi-truck text-xs text-color-secondary"></i>
+                              <span class="text-color-secondary">Consultar envío</span>
                             </div>
                             @if (product.freeShippingOver99) {
                             <div class="flex align-items-center gap-1">
@@ -466,11 +477,13 @@
                           <span class="price-green text-xs md:text-sm font-medium"><i class="pi pi-download text-xs mr-1"></i>Descarga digital</span>
                           } @else if (isFreeShipping(product)) {
                           <span class="price-green text-xs md:text-sm font-medium"><i class="pi pi-truck text-xs mr-1"></i>Envío gratis</span>
-                          } @else {
+                          } @else if (product.shippingPrice !== null) {
                           <span class="shipping-info text-xs md:text-sm"><i class="pi pi-truck text-xs mr-1"></i>Envío: {{ getCurrencySymbol(product) }}{{
                             formatPrice(getShippingPrice(product)) }}</span>
+                          } @else {
+                          <span class="text-color-secondary text-xs md:text-sm"><i class="pi pi-truck text-xs mr-1"></i>Consultar envío</span>
                           }
-                          @if (product.freeShippingOver99 && getShippingPrice(product) !== 0) {
+                          @if (product.freeShippingOver99 && product.shippingPrice !== 0) {
                           <span class="hidden md:inline-flex price-green text-xs"><i class="pi pi-info-circle text-xs mr-1"></i>Gratis en $99+</span>
                           }
                           <!-- Favorite button - mobile only -->
@@ -718,12 +731,23 @@
           <i class="pi pi-truck price-green text-sm"></i>
           <span class="price-green font-medium text-sm">Envío gratis a Argentina</span>
         </div>
-        } @else {
+        } @else if (product.shippingPrice !== null) {
         <div class="flex align-items-center gap-2">
           <i class="pi pi-truck shipping-info text-sm"></i>
           <span class="shipping-info text-sm">
             Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }} {{ getCurrencyCode(product) }}
           </span>
+        </div>
+        @if (product.freeShippingOver99) {
+        <div class="flex align-items-center gap-1">
+          <i class="pi pi-info-circle text-xs price-green"></i>
+          <span class="price-green text-xs">Envío gratis en pedidos $99+</span>
+        </div>
+        }
+        } @else {
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-truck text-color-secondary text-sm"></i>
+          <span class="text-color-secondary text-sm">Consultar envío</span>
         </div>
         @if (product.freeShippingOver99) {
         <div class="flex align-items-center gap-1">

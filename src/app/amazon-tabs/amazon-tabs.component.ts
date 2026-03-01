@@ -7,6 +7,7 @@ import { ChipModule } from 'primeng/chip';
 import { CarouselModule } from 'primeng/carousel';
 import { ProductSearchComponent } from '../product-search/product-search.component';
 import { AmazonApiService } from '../services/amazon-api.service';
+import { SearchService } from '../services/search.service';
 
 @Component({
   selector: 'app-amazon-tabs',
@@ -25,6 +26,7 @@ import { AmazonApiService } from '../services/amazon-api.service';
 export class AmazonTabsComponent {
 
   private readonly amazonApi = inject(AmazonApiService);
+  private readonly searchService = inject(SearchService);
 
   protected readonly activeTab = signal('0');
 
@@ -89,7 +91,7 @@ export class AmazonTabsComponent {
   ];
 
   getCount(region: string): number {
-    return this.amazonApi.getProductCount(region);
+    return this.searchService.getFilteredCount(region) ?? this.amazonApi.getProductCount(region);
   }
 
 }

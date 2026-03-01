@@ -141,7 +141,13 @@ export class ProductSearchComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForms();
     if (isPlatformBrowser(this.platformId)) {
-      this.loadTopSellingProducts();
+      const saved = this.searchService.filterState();
+      if (saved?.searchQuery) {
+        this.searchQuery = saved.searchQuery;
+        this.onSearch(saved.searchQuery);
+      } else {
+        this.loadTopSellingProducts();
+      }
       this.setupMobileDetection();
     }
   }
@@ -155,20 +161,44 @@ export class ProductSearchComponent implements OnInit {
   }
 
   private initializeForms(): void {
+    const saved = this.searchService.filterState();
+
     this.filterForm = this.formBuilder.group({
-      selectedCategory: [this.searchCategory || ''],
-      priceRange: [[0, this.maxPriceLimit]],
-      inStockOnly: [false],
-      freeShippingOnly: [false],
-      freeShippingThreshold: [false],
-      discountOnly: [false],
-      minRating: [0],
-      regionFilter: [''],
-      selectedSort: [this.sortOptions[0]]
+      selectedCategory: [this.searchCategory || saved?.selectedCategory || ''],
+      priceRange: [saved?.priceRange || [0, this.maxPriceLimit]],
+      inStockOnly: [saved?.inStockOnly ?? false],
+      freeShippingOnly: [saved?.freeShippingOnly ?? false],
+      freeShippingThreshold: [saved?.freeShippingThreshold ?? false],
+      discountOnly: [saved?.discountOnly ?? false],
+      minRating: [saved?.minRating ?? 0],
+      regionFilter: [saved?.regionFilter || ''],
+      selectedSort: [saved?.selectedSort || this.sortOptions[0]]
     });
 
+    const savedLayout = saved?.selectedLayout || 'grid';
+    this.selectedLayout.set(savedLayout);
+
     this.layoutForm = this.formBuilder.group({
-      selectedLayout: ['grid']
+      selectedLayout: [savedLayout]
+    });
+
+    this.destroyRef.onDestroy(() => this.saveFilters());
+  }
+
+  private saveFilters(): void {
+    const formValue = this.filterForm.value;
+    this.searchService.saveFilterState({
+      searchQuery: this.searchQuery || '',
+      selectedCategory: formValue.selectedCategory || '',
+      priceRange: formValue.priceRange || [0, this.maxPriceLimit],
+      inStockOnly: formValue.inStockOnly ?? false,
+      freeShippingOnly: formValue.freeShippingOnly ?? false,
+      freeShippingThreshold: formValue.freeShippingThreshold ?? false,
+      discountOnly: formValue.discountOnly ?? false,
+      minRating: formValue.minRating ?? 0,
+      regionFilter: formValue.regionFilter || '',
+      selectedSort: formValue.selectedSort || this.sortOptions[0],
+      selectedLayout: this.selectedLayout()
     });
   }
 
@@ -391,12 +421,47 @@ export class ProductSearchComponent implements OnInit {
       totalResults: filteredProducts.length
     });
     this.dataViewFirst.set(0);
+    this.updateAllFilteredCounts();
 
     // Re-apply current sort after filtering
     const currentSort = this.filterForm.get('selectedSort')?.value;
     if (currentSort?.value) {
       this.sortProducts(currentSort.value);
     }
+  }
+
+  private updateAllFilteredCounts(): void {
+    let allProducts = this.amazonApiService.getAllProducts();
+    const priceRange = this.filterForm.get('priceRange')?.value || [0, this.maxPriceLimit];
+    const minPrice = priceRange[0];
+    const maxPrice = priceRange[1];
+    const inStockOnly = this.filterForm.get('inStockOnly')?.value || false;
+    const freeShippingOnly = this.filterForm.get('freeShippingOnly')?.value || false;
+    const freeShippingThreshold = this.filterForm.get('freeShippingThreshold')?.value || false;
+    const discountOnly = this.filterForm.get('discountOnly')?.value || false;
+    const minRating = this.filterForm.get('minRating')?.value || 0;
+    const selectedCategory = this.filterForm.get('selectedCategory')?.value || '';
+
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      allProducts = allProducts.filter(p => p.title.toLowerCase().includes(query));
+    }
+
+    const matchesFilter = (product: AmazonProduct): boolean => {
+      if ((product.currentPrice ?? 0) < minPrice || (product.currentPrice ?? 0) > maxPrice) return false;
+      if (inStockOnly && !product.inStock) return false;
+      if (freeShippingOnly && !this.isFreeShipping(product)) return false;
+      if (freeShippingThreshold && !this.isFreeShippingByThreshold(product)) return false;
+      if (discountOnly && (!product.originalPrice || product.originalPrice <= (product.currentPrice ?? 0))) return false;
+      if (minRating > 0 && product.rating < minRating) return false;
+      if (selectedCategory && product.category !== selectedCategory) return false;
+      return true;
+    };
+
+    const filtered = allProducts.filter(matchesFilter);
+    this.searchService.setFilteredCount('ALL', filtered.length);
+    this.searchService.setFilteredCount('US', filtered.filter(p => p.region === 'US').length);
+    this.searchService.setFilteredCount('ES', filtered.filter(p => p.region === 'ES').length);
   }
 
   protected getProductImages(product: AmazonProduct, size: ImageSize = 'full'): string[] {
@@ -416,16 +481,20 @@ export class ProductSearchComponent implements OnInit {
     return (product.currentPrice ?? 0) + (product.shippingPrice ?? 0);
   }
 
+  protected hasShippingPrice(product: AmazonProduct): boolean {
+    return product.shippingPrice !== null;
+  }
+
   protected getShippingPrice(product: AmazonProduct): number {
     return getShippingPrice(product);
   }
 
   protected isDigitalProduct(product: AmazonProduct): boolean {
-    return product.category === 'Software' && (product.shippingPrice ?? 0) === 0;
+    return product.category === 'Software' && product.shippingPrice === null;
   }
 
   protected isFreeShipping(product: AmazonProduct): boolean {
-    return (product.shippingPrice ?? 0) === 0 && !this.isDigitalProduct(product);
+    return product.shippingPrice === 0 && !this.isDigitalProduct(product);
   }
 
   protected isFreeShippingByThreshold(product: AmazonProduct): boolean {
@@ -472,6 +541,8 @@ export class ProductSearchComponent implements OnInit {
 
   protected clearFilters(): void {
     this.resetFilters();
+    this.searchService.clearFilterState();
+    this.searchService.clearFilteredCounts();
     this.searchService.triggerClear();
   }
 

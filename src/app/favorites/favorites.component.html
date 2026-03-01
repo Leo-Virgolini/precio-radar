@@ -157,10 +157,21 @@
                           <i class="pi pi-truck text-xs price-green"></i>
                           <span class="price-green font-medium">Envío gratis a Argentina</span>
                         </div>
-                      } @else {
+                      } @else if (product.shippingPrice !== null) {
                         <div class="flex align-items-center gap-2">
                           <i class="pi pi-truck text-xs shipping-info"></i>
                           <span class="shipping-info">Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }}</span>
+                        </div>
+                        @if (product.freeShippingOver99) {
+                          <div class="flex align-items-center gap-1">
+                            <i class="pi pi-info-circle text-xs price-green"></i>
+                            <span class="price-green text-xs">Envío gratis en pedidos $99+</span>
+                          </div>
+                        }
+                      } @else {
+                        <div class="flex align-items-center gap-2">
+                          <i class="pi pi-truck text-xs text-color-secondary"></i>
+                          <span class="text-color-secondary">Consultar envío</span>
                         </div>
                         @if (product.freeShippingOver99) {
                           <div class="flex align-items-center gap-1">
@@ -275,12 +286,23 @@
             <i class="pi pi-truck price-green text-sm"></i>
             <span class="price-green font-medium text-sm">Envío gratis a Argentina</span>
           </div>
-          } @else {
+          } @else if (product.shippingPrice !== null) {
           <div class="flex align-items-center gap-2">
             <i class="pi pi-truck shipping-info text-sm"></i>
             <span class="shipping-info text-sm">
               Envío: {{ getCurrencySymbol(product) }}{{ formatPrice(getShippingPrice(product)) }} {{ getCurrencyCode(product) }}
             </span>
+          </div>
+          @if (product.freeShippingOver99) {
+          <div class="flex align-items-center gap-1">
+            <i class="pi pi-info-circle text-xs price-green"></i>
+            <span class="price-green text-xs">Envío gratis en pedidos $99+</span>
+          </div>
+          }
+          } @else {
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-truck text-color-secondary text-sm"></i>
+            <span class="text-color-secondary text-sm">Consultar envío</span>
           </div>
           @if (product.freeShippingOver99) {
           <div class="flex align-items-center gap-1">

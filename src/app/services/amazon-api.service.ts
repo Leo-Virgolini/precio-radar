@@ -116,6 +116,10 @@ export class AmazonApiService {
     };
   }
 
+  getAllProducts(): AmazonProduct[] {
+    return this.products();
+  }
+
   getProductCount(region: string): number {
     return this.getProductsByRegion(region).length;
   }
